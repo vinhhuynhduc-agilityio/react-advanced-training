@@ -1,0 +1,305 @@
+{
+  "users": [
+    {
+      "pk_user": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      "full_name": "John Doe",
+      "earnings": "$5000",
+      "email": "john@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=1",
+      "registered": "May 21, 2020 17:02:06",
+      "last_updated": "October 10, 2023 12:30:00"
+    },
+    {
+      "pk_user": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "full_name": "Jane Smith",
+      "earnings": "$6200",
+      "email": "jane@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=2",
+      "registered": "June 10, 2021 09:20:15",
+      "last_updated": "October 15, 2023 09:45:00"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174000",
+      "full_name": "Alice Brown",
+      "earnings": "$7000",
+      "email": "alice@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=3",
+      "registered": "April 15, 2020 14:02:06",
+      "last_updated": "October 11, 2023 10:00:00"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174001",
+      "full_name": "Bob White",
+      "earnings": "$3500",
+      "email": "bob@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=4",
+      "registered": "March 21, 2021 08:40:00",
+      "last_updated": "October 12, 2023 16:25:00"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174002",
+      "full_name": "Charlie Black",
+      "earnings": "$4800",
+      "email": "charlie@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=5",
+      "registered": "July 5, 2020 09:10:10",
+      "last_updated": "October 13, 2023 15:15:15"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174003",
+      "full_name": "David Green",
+      "earnings": "$5500",
+      "email": "david@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=6",
+      "registered": "May 21, 2021 11:12:13",
+      "last_updated": "October 14, 2023 08:55:05"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174004",
+      "full_name": "Eve Blue",
+      "earnings": "$6200",
+      "email": "eve@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=7",
+      "registered": "June 30, 2021 10:11:12",
+      "last_updated": "October 16, 2023 11:45:50"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174005",
+      "full_name": "Frank Gray",
+      "earnings": "$4300",
+      "email": "frank@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=8",
+      "registered": "August 12, 2020 13:15:30",
+      "last_updated": "October 12, 2023 16:30:45"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174006",
+      "full_name": "Grace Yellow",
+      "earnings": "$3900",
+      "email": "grace@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=9",
+      "registered": "February 20, 2021 12:20:30",
+      "last_updated": "October 14, 2023 17:22:05"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174007",
+      "full_name": "Hank Violet",
+      "earnings": "$5100",
+      "email": "hank@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=10",
+      "registered": "January 10, 2021 14:25:15",
+      "last_updated": "October 11, 2023 12:35:30"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174008",
+      "full_name": "Ivy Red",
+      "earnings": "$5800",
+      "email": "ivy@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=11",
+      "registered": "December 1, 2020 15:30:00",
+      "last_updated": "October 13, 2023 13:40:45"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174009",
+      "full_name": "Jack Orange",
+      "earnings": "$6000",
+      "email": "jack@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=12",
+      "registered": "April 18, 2020 16:35:20",
+      "last_updated": "October 16, 2023 18:50:05"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174010",
+      "full_name": "Karen Indigo",
+      "earnings": "$6400",
+      "email": "karen@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=13",
+      "registered": "March 9, 2021 17:40:10",
+      "last_updated": "October 15, 2023 19:55:30"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174011",
+      "full_name": "Leo Pink",
+      "earnings": "$4700",
+      "email": "leo@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=14",
+      "registered": "November 5, 2020 18:45:05",
+      "last_updated": "October 10, 2023 10:15:45"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174012",
+      "full_name": "Mia Teal",
+      "earnings": "$7200",
+      "email": "mia@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=15",
+      "registered": "August 17, 2020 19:50:00",
+      "last_updated": "October 14, 2023 14:20:05"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174013",
+      "full_name": "Nick Maroon",
+      "earnings": "$5300",
+      "email": "nick@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=16",
+      "registered": "July 8, 2021 20:55:15",
+      "last_updated": "October 12, 2023 15:35:00"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174014",
+      "full_name": "Olivia Magenta",
+      "earnings": "$5600",
+      "email": "olivia@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=17",
+      "registered": "February 14, 2021 21:00:45",
+      "last_updated": "October 15, 2023 16:40:30"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174015",
+      "full_name": "Paul Silver",
+      "earnings": "$6700",
+      "email": "paul@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=18",
+      "registered": "June 22, 2020 22:05:50",
+      "last_updated": "October 16, 2023 14:25:15"
+    },
+    {
+      "pk_user": "123e4567-e89b-12d3-a456-426614174016",
+      "full_name": "Quincy Gold",
+      "earnings": "$7400",
+      "email": "quincy@example.com",
+      "avatar_url": "https://i.pravatar.cc/150?img=19",
+      "registered": "May 13, 2021 23:10:05",
+      "last_updated": "October 14, 2023 10:50:20"
+    }
+  ],
+  "projects": [
+    {
+      "pk_project": "f2d32cb6-12c7-4ae7-bb28-74f16d1d2cbb",
+      "project_name": "Project Alpha"
+    },
+    {
+      "pk_project": "c1c20a2e-f450-4875-96e8-334f92e9b3b5",
+      "project_name": "Project Beta"
+    },
+    {
+      "pk_project": "e38e56a2-4d3c-469d-8345-45d6b5fae9f9",
+      "project_name": "Project Gamma"
+    },
+    {
+      "pk_project": "f49b68f4-5e5b-457d-bf16-1b5b78e6f5f1",
+      "project_name": "Project Delta"
+    }
+  ],
+  "tasks": [
+    {
+      "pk_task": "71e564f4-7c18-47f7-89f2-abe4b7ec2854",
+      "fk_user": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      "fk_project": "f2d32cb6-12c7-4ae7-bb28-74f16d1d2cbb",
+      "task_name": "Design Homepage",
+      "start_date": "10 Aug 2023",
+      "completed_date": "20 Aug 2023",
+      "currency": 2000,
+      "status": "Completed"
+    },
+    {
+      "pk_task": "0f9fd8b0-8f5c-4a25-b301-eebc6d5700d5",
+      "fk_user": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "fk_project": "c1c20a2e-f450-4875-96e8-334f92e9b3b5",
+      "task_name": "Develop Backend",
+      "start_date": "01 Sep 2023",
+      "completed_date": "",
+      "currency": 5000,
+      "status": "In Progress"
+    },
+    {
+      "pk_task": "76e564f4-7c18-47f7-89f2-abe4b7ec2855",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174000",
+      "fk_project": "e38e56a2-4d3c-469d-8345-45d6b5fae9f9",
+      "task_name": "Create Marketing Strategy",
+      "start_date": "12 Jul 2023",
+      "completed_date": "22 Jul 2023",
+      "currency": 3000,
+      "status": "Completed"
+    },
+    {
+      "pk_task": "82e564f4-7c18-47f7-89f2-abe4b7ec2856",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174001",
+      "fk_project": "f49b68f4-5e5b-457d-bf16-1b5b78e6f5f1",
+      "task_name": "Build Frontend",
+      "start_date": "05 Sep 2023",
+      "completed_date": "",
+      "currency": 4000,
+      "status": "In Progress"
+    },
+    {
+      "pk_task": "92e564f4-7c18-47f7-89f2-abe4b7ec2857",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174002",
+      "fk_project": "f2d32cb6-12c7-4ae7-bb28-74f16d1d2cbb",
+      "task_name": "Test Application",
+      "start_date": "07 Aug 2023",
+      "completed_date": "15 Aug 2023",
+      "currency": 1000,
+      "status": "Completed"
+    },
+    {
+      "pk_task": "a2e564f4-7c18-47f7-89f2-abe4b7ec2858",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174003",
+      "fk_project": "c1c20a2e-f450-4875-96e8-334f92e9b3b5",
+      "task_name": "SEO Optimization",
+      "start_date": "02 Sep 2023",
+      "completed_date": "",
+      "currency": 1500,
+      "status": "In Progress"
+    },
+    {
+      "pk_task": "b2e564f4-7c18-47f7-89f2-abe4b7ec2859",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174004",
+      "fk_project": "e38e56a2-4d3c-469d-8345-45d6b5fae9f9",
+      "task_name": "Database Migration",
+      "start_date": "15 Jul 2023",
+      "completed_date": "25 Jul 2023",
+      "currency": 2500,
+      "status": "Completed"
+    },
+    {
+      "pk_task": "c2e564f4-7c18-47f7-89f2-abe4b7ec2860",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174005",
+      "fk_project": "f49b68f4-5e5b-457d-bf16-1b5b78e6f5f1",
+      "task_name": "Social Media Campaign",
+      "start_date": "06 Sep 2023",
+      "completed_date": "",
+      "currency": 1200,
+      "status": "In Progress"
+    },
+    {
+      "pk_task": "d2e564f4-7c18-47f7-89f2-abe4b7ec2861",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174006",
+      "fk_project": "f2d32cb6-12c7-4ae7-bb28-74f16d1d2cbb",
+      "task_name": "Backend Integration",
+      "start_date": "12 Aug 2023",
+      "completed_date": "22 Aug 2023",
+      "currency": 3500,
+      "status": "Completed"
+    },
+    {
+      "pk_task": "e2e564f4-7c18-47f7-89f2-abe4b7ec2862",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174007",
+      "fk_project": "e38e56a2-4d3c-469d-8345-45d6b5fae9f9",
+      "task_name": "UX/UI Design",
+      "start_date": "09 Jul 2023",
+      "completed_date": "19 Jul 2023",
+      "currency": 1800,
+      "status": "Completed"
+    },
+    {
+      "pk_task": "f2e564f4-7c18-47f7-89f2-abe4b7ec2863",
+      "fk_user": "123e4567-e89b-12d3-a456-426614174008",
+      "fk_project": "f49b68f4-5e5b-457d-bf16-1b5b78e6f5f1",
+      "task_name": "Content Creation",
+      "start_date": "03 Sep 2023",
+      "completed_date": "",
+      "currency": 1000,
+      "status": "In Progress"
+    }
+  ]
+}

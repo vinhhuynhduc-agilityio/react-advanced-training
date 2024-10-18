@@ -1,0 +1,19 @@
+.custom-header {
+  font-size: 16px;
+  font-weight: 500;
+  color: #475466;
+  background-color: white;
+}
+
+.ag-header-viewport {
+  background-color: white;
+}
+
+.ag-theme-alpine {
+  scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+/* Custom background color for selected row */
+.ag-theme-alpine .ag-row-selected {
+  background-color: #F4F5F9 !important;
+}

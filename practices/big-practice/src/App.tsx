@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 
 // components
-import Header from "./components/Header";
-import UserListDrawer from "./components/UserListDrawer";
-import { Footer } from "./components/Footer";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import UserListDrawer from "./components/UserListDrawer/UserListDrawer";
 
 // types
-import { User } from "./types/users";
+import { RowData } from "./types/users";
 
 // utils
 import { apiRequest } from "./utils/apiRequest";
 
 const App: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<RowData[]>([]);
 
   // Fetch all users
   const fetchData = async () => {
-    const usersData: User[] = await apiRequest('GET', 'http://localhost:3001/users');
+    const usersData: RowData[] = await apiRequest('GET', 'http://localhost:3001/users');
     setUsers(usersData);
   };
 

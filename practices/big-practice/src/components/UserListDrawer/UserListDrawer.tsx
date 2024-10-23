@@ -7,13 +7,12 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 
 // component
 import DataGrid from "../DataGrid/DataGrid";
-import { PersonRenderer } from "../DataGrid/CustomCellRenderer/PersonRenderer";
+import { PersonRenderer } from "../DataGrid/CustomCellRenderer/PersonRenderer/PersonRenderer";
 
 // style
 import '../../style.css'
 
 import {
-  RowData,
   UserListDrawerProps
 } from "../../types/users";
 
@@ -33,25 +32,24 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({ users }) => {
     return params.node.id === selectedRow ? 'ag-row-selected' : '';
   };
 
-  const columnDefs: ColDef<RowData>[] = [
+  const columnDefs: ColDef[] = [
     {
       headerName: "Persons",
-      field: 'full_name',
+      field: 'fullName',
       cellRenderer: PersonRenderer,
-      autoHeight: true,
       headerClass: "custom-header",
+      flex: 1
     },
   ];
 
   return (
-    <div className="flex-grow ml-1 mr-2 my-4 h-full w-64 ag-theme-alpine">
-      <DataGrid
-        rowData={users}
-        columnDefs={columnDefs}
-        onRowClicked={onRowClicked}
-        getRowClass={getRowClass}
-      />
-    </div>
+    <DataGrid
+      rowData={users}
+      columnDefs={columnDefs}
+      onRowClicked={onRowClicked}
+      getRowClass={getRowClass}
+      rowHeight={75}
+    />
   );
 };
 

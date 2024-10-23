@@ -1,18 +1,17 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 
 // ag-grid
 import { AgGridReact } from "ag-grid-react";
 import { GridOptions } from "ag-grid-community";
 import { DataGridProps } from "../../types/aggrid";
 
-const DataGrid: React.FC<DataGridProps> = props => {  
+const DataGrid = <T,>(props: DataGridProps<T>) => {
   const defaultColDef = useMemo(() => {
     return {
-      flex: 1,
       resizable: false,
     };
   }, []);
-  
+
   const buildGridProps = (): GridOptions => {
 
     return {

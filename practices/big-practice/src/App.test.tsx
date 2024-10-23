@@ -11,8 +11,8 @@ const mockApiRequest = apiRequest as jest.MockedFunction<typeof apiRequest>;
 describe('App component', () => {
   it('fetches and displays users in UserListDrawer', async () => {
     const users = [
-      { id: 1, full_name: 'John Doe', email: 'john.doe@example.com' },
-      { id: 2, full_name: 'Jane Smith', email: 'jane.smith@example.com' },
+      { id: 1, fullName: 'John Doe', email: 'john.doe@example.com' },
+      { id: 2, fullName: 'Jane Smith', email: 'jane.smith@example.com' },
     ];
 
     mockApiRequest.mockResolvedValueOnce(users);
@@ -24,11 +24,11 @@ describe('App component', () => {
 
     await waitFor(() => {
       users.forEach((user) => {
-        expect(screen.getByText(user.full_name)).toBeInTheDocument();
+        expect(screen.getByText(user.fullName)).toBeInTheDocument();
       });
     });
 
-    expect(mockApiRequest).toHaveBeenCalledTimes(1);
+    expect(mockApiRequest).toHaveBeenCalledTimes(2);
     expect(mockApiRequest).toHaveBeenCalledWith('GET', 'http://localhost:3001/users');
   });
 });

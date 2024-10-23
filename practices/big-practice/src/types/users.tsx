@@ -1,13 +1,30 @@
 export interface RowData {
-  pk_user: string;
-  full_name: string;
+  id: string;
+  fullName: string;
   earnings: string;
   email: string;
-  avatar_url: string;
+  avatarUrl: string;
   registered: string;
-  last_updated: string;
+  lastUpdated: string;
 };
+
+export interface TaskData {
+  id: string;
+  userId: string;
+  projectId: string;
+  taskName: string;
+  startDate: string;
+  completedDate: string;
+  currency: number;
+  status: boolean;
+  projectName: string;
+  fullName: string;
+}
 
 export interface UserListDrawerProps {
   users: RowData[];
+};
+
+export interface TaskDataProps {
+  tasks: TaskData[];
 };

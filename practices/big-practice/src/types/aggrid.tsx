@@ -1,9 +1,9 @@
 import { ColDef, RowClassParams, RowClickedEvent } from "ag-grid-community";
-import { RowData } from "./users";
 
-export interface DataGridProps {
-  rowData: RowData[];
-  columnDefs: ColDef<RowData>[];
-  onRowClicked: (event: RowClickedEvent) => void;
-  getRowClass: (params: RowClassParams) => string;
+export interface DataGridProps<T> {
+  rowData: T[];
+  columnDefs: ColDef<T>[];
+  onRowClicked?: (event: RowClickedEvent) => void;
+  getRowClass?: (params: RowClassParams) => string;
+  rowHeight?: number;
 };

@@ -2,15 +2,16 @@ import { render } from '@testing-library/react';
 import { AgGridReact } from 'ag-grid-react';
 import DataGrid from './DataGrid';
 import { DataGridProps } from '../../types/aggrid';
+import { RowData } from '@/types/users';
 
 // Mock AgGridReact to avoid actual grid rendering during tests
 jest.mock('ag-grid-react', () => ({
   AgGridReact: jest.fn(() => null),
 }));
 
-const mockProps: DataGridProps = {
+const mockProps: DataGridProps<RowData> = {
   rowData: [],
-  columnDefs: [{ headerName: 'Persons', field: 'full_name' }],
+  columnDefs: [{ headerName: 'Persons', field: 'fullName' }],
   onRowClicked: jest.fn(),
   getRowClass: jest.fn(),
 };
@@ -28,7 +29,6 @@ describe('DataGrid Component', () => {
 
     // Check if defaultColDef is initialized with flex: 1 and resizable: false
     const expectedDefaultColDef = {
-      flex: 1,
       resizable: false,
     };
 

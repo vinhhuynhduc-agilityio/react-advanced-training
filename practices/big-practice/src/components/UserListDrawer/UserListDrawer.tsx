@@ -1,7 +1,18 @@
-import React, { useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 // ag-grid
-import { ColDef, RowClassParams, RowClickedEvent } from "ag-grid-community";
+import {
+  ColDef,
+  GetRowIdParams,
+  GridApi,
+  GridReadyEvent,
+  RowClassParams,
+  RowClickedEvent
+} from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
@@ -13,24 +24,53 @@ import { PersonRenderer } from "../DataGrid/CustomCellRenderer/PersonRenderer/Pe
 import '../../style.css'
 
 import {
+  RowData,
   UserListDrawerProps
-} from "../../types/users";
+} from "../../types/table";
 
-const UserListDrawer: React.FC<UserListDrawerProps> = ({ users }) => {
-  const [selectedRow, setSelectedRow] = useState<string | null>(null);
+const UserListDrawer: React.FC<UserListDrawerProps> = ({
+  users,
+  selectedUserId,
+  onUserSelected
+}) => {
+  const gridApi = useRef<GridApi | null>(null);
+  const [selectedRowUser, setSelectedRowUser] = useState<string | null>(null);
+
+  const onGridReady = (params: GridReadyEvent) => {
+    gridApi.current = params.api;
+  }
+
+  // When `selectedUserId` changes, scroll to the corresponding row
+  useEffect(() => {
+    if (selectedUserId && gridApi.current) {
+      const rowNode = gridApi.current.getRowNode(selectedUserId);
+      if (rowNode) {
+
+        // Scroll to row with matching userId
+        gridApi.current.ensureNodeVisible(rowNode, 'middle');
+      }
+      setSelectedRowUser(selectedUserId);
+    }
+  }, [selectedUserId]);
 
   const onRowClicked = (event: RowClickedEvent) => {
-    const rowId = event.node.id;
-    if (rowId) {
-      setSelectedRow(rowId);
-    } else {
-      setSelectedRow(null);
+    const userId = event.data.id;
+
+    if (userId) {
+      setSelectedRowUser(userId);
+
+      // Pass `userId` to parent component
+      onUserSelected(userId);
     }
   };
 
   const getRowClass = (params: RowClassParams) => {
-    return params.node.id === selectedRow ? 'ag-row-selected' : '';
+    return params.data.id === selectedRowUser
+      ? "ag-row-selected"
+      : "";
   };
+
+  const getRowId = (params: GetRowIdParams<RowData>) => params.data.id;
 
   const columnDefs: ColDef[] = [
     {
@@ -49,6 +89,9 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({ users }) => {
       onRowClicked={onRowClicked}
       getRowClass={getRowClass}
       rowHeight={75}
+      onGridReady={onGridReady}
+      getRowId={getRowId}
+
     />
   );
 };

@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
 import { AgGridReact } from 'ag-grid-react';
 import DataGrid from './DataGrid';
-import { DataGridProps } from '../../types/aggrid';
-import { RowData } from '@/types/users';
+import {
+  DataGridProps,
+  RowData
+} from '@/types/table';
 
 // Mock AgGridReact to avoid actual grid rendering during tests
 jest.mock('ag-grid-react', () => ({
@@ -14,6 +16,9 @@ const mockProps: DataGridProps<RowData> = {
   columnDefs: [{ headerName: 'Persons', field: 'fullName' }],
   onRowClicked: jest.fn(),
   getRowClass: jest.fn(),
+  rowHeight: 30,
+  onGridReady: jest.fn(),
+  getRowId: jest.fn()
 };
 
 describe('DataGrid Component', () => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'; // Import Jest DOM matchers
 import UserListDrawer from './UserListDrawer'; // Import the component to test
@@ -30,7 +29,13 @@ describe('UserListDrawer component', () => {
   // Test 1: Check if the user data is rendered correctly in the grid
   it('renders user data correctly', () => {
     // Render the UserListDrawer component with the mock users data
-    render(<UserListDrawer users={users} />);
+    render(
+      <UserListDrawer
+        users={users}
+        selectedUserId={null}
+        onUserSelected={jest.fn()}
+      />
+    );
 
     // Check if the user names are rendered inside the ag-grid
     expect(screen.getByText('John Doe')).toBeInTheDocument();

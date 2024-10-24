@@ -7,7 +7,7 @@ import UserListDrawer from "./components/UserListDrawer/UserListDrawer";
 import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 
 // types
-import { RowData, TaskData } from "./types/users";
+import { RowData, TaskData } from "./types/table";
 
 // utils
 import { apiRequest } from "./utils/apiRequest";
@@ -15,7 +15,8 @@ import { apiRequest } from "./utils/apiRequest";
 const App: React.FC = () => {
   const [users, setUsers] = useState<RowData[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>([]);
-  console.log('tasks:', tasks)
+  const [taskRowSelected, setTaskRowSelected] = useState<string | null>(null);
+  const [userRowSelected, setUserRowSelected] = useState<string | null>(null);
 
   // Fetch all users
   const fetchData = async () => {
@@ -31,6 +32,16 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
+  // Function to handle when row in TaskDashboard is selected
+  const handleTaskRowSelected = (userId: string | null) => {
+    setTaskRowSelected(userId);
+  };
+
+  // Function to handle when row in UserListDrawer is selected
+  const handleUserRowSelected = (userId: string | null) => {
+    setUserRowSelected(userId);
+  };
+
   return (
     <div className="flex flex-col h-screen w-screen">
       <Header />
@@ -38,6 +49,8 @@ const App: React.FC = () => {
         <div className="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto">
           <UserListDrawer
             users={users}
+            selectedUserId={taskRowSelected}
+            onUserSelected={handleUserRowSelected}
           />
         </div>
         <div className="flex-grow bg-slate-100 my-4 overflow-auto">
@@ -59,6 +72,8 @@ const App: React.FC = () => {
           <div className="bg-white shadow-lg mt-4 h-96 border-2 border-customBorder">
             <TaskDashboard
               tasks={tasks}
+              selectedUserId={userRowSelected}
+              onTaskRowSelected={handleTaskRowSelected}
             />
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 // ag-grid
 import { AgGridReact } from "ag-grid-react";
 import { GridOptions } from "ag-grid-community";
-import { DataGridProps } from "../../types/aggrid";
+import { DataGridProps } from "@/types/table";
 
 const DataGrid = <T,>(props: DataGridProps<T>) => {
   const defaultColDef = useMemo(() => {

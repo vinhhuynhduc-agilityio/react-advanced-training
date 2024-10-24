@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ICellRendererParams } from 'ag-grid-community';
-import { RowData } from '@/types/users';
+import { RowData } from '@/types/table';
 import { PersonRenderer } from './PersonRenderer';
 
 const mockData: RowData =     {

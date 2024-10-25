@@ -29,6 +29,11 @@ export interface TaskData {
   fullName: string;
 };
 
+export interface ProjectsData {
+  id: string;
+  projectName: string;
+};
+
 export interface DataGridProps<T> {
   rowData: T[];
   columnDefs: ColDef<T>[];
@@ -49,4 +54,5 @@ export interface TaskDataProps {
   tasks: TaskData[];
   selectedUserId: string | null;
   onTaskRowSelected: (userId: string | null) => void;
+  projects: ProjectsData[];
 };

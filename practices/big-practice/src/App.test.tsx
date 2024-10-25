@@ -28,7 +28,7 @@ describe('App component', () => {
       });
     });
 
-    expect(mockApiRequest).toHaveBeenCalledTimes(2);
+    expect(mockApiRequest).toHaveBeenCalledTimes(3);
     expect(mockApiRequest).toHaveBeenCalledWith('GET', 'http://localhost:3001/users');
   });
 });

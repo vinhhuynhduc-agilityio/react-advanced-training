@@ -7,7 +7,11 @@ import UserListDrawer from "./components/UserListDrawer/UserListDrawer";
 import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 
 // types
-import { RowData, TaskData } from "./types/table";
+import {
+  ProjectsData,
+  RowData,
+  TaskData
+} from "./types/table";
 
 // utils
 import { apiRequest } from "./utils/apiRequest";
@@ -15,17 +19,24 @@ import { apiRequest } from "./utils/apiRequest";
 const App: React.FC = () => {
   const [users, setUsers] = useState<RowData[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>([]);
+  const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [taskRowSelected, setTaskRowSelected] = useState<string | null>(null);
   const [userRowSelected, setUserRowSelected] = useState<string | null>(null);
 
   // Fetch all users
   const fetchData = async () => {
-    const [usersData, tasksData] = await Promise.all([
+    const [
+      usersData,
+      tasksData,
+      projects
+    ] = await Promise.all([
       apiRequest<RowData[], RowData[]>('GET', 'http://localhost:3001/users'),
       apiRequest<TaskData[], TaskData[]>('GET', 'http://localhost:3001/tasks'),
+      apiRequest<ProjectsData[], ProjectsData[]>('GET', 'http://localhost:3001/projects'),
     ]);
     setUsers(usersData);
     setTasks(tasksData);
+    setProjects(projects);
   };
 
   useEffect(() => {
@@ -72,6 +83,7 @@ const App: React.FC = () => {
           <div className="bg-white shadow-lg mt-4 h-96 border-2 border-customBorder">
             <TaskDashboard
               tasks={tasks}
+              projects={projects}
               selectedUserId={userRowSelected}
               onTaskRowSelected={handleTaskRowSelected}
             />

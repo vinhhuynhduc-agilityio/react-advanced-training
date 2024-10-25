@@ -1,37 +1,70 @@
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ICellEditorParams } from "ag-grid-community";
+import {
+  ProjectsData,
+  TaskData
+} from "@/types/table";
+import { useEffect } from "react";
 
-export const ProjectDropdownEditor: React.FC<ICellEditorParams> = props => {
-  const options = [
-    "Support",
-    "Failure Testing",
-    "Quality Management",
-    "Data Quality",
-  ];
+interface CustomCellEditorParams extends ICellEditorParams {
+  onSelectProject: (value: ProjectsData, data: TaskData) => void;
+  projects: ProjectsData[];
+}
 
-  const handleSelect = (value: string) => {
-    props.stopEditing(); // Stop editing after selection
-    props.node.setDataValue(props.column.getColId(), value); // Update the value in the grid
+export const ProjectDropdownEditor: React.FC<CustomCellEditorParams> = props => {
+  const {
+    stopEditing,
+    projects,
+    node,
+    onSelectProject,
+    column
+  } = props;
+
+  // Set the width of the dropdown editor to match the column width
+  const dropdownWidth = column.getActualWidth();
+
+  const handleSelect = (value: ProjectsData) => {
+    onSelectProject(value, node.data);
+
+    // Stop editing after selection
+    stopEditing();
   };
 
+  useEffect(() => {
+    const handleAnyClickOrScrollOrResize = () => {
+      stopEditing();
+    };
+
+    // Add event listeners for click, scroll, and resize
+    document.addEventListener("click", handleAnyClickOrScrollOrResize);
+    document.addEventListener("scroll", handleAnyClickOrScrollOrResize, true);
+    window.addEventListener("resize", handleAnyClickOrScrollOrResize);
+
+    // Cleanup event listeners when component unmounts
+    return () => {
+      document.removeEventListener("click", handleAnyClickOrScrollOrResize);
+      document.removeEventListener("scroll", handleAnyClickOrScrollOrResize, true);
+      window.removeEventListener("resize", handleAnyClickOrScrollOrResize);
+    };
+  }, [stopEditing]);
+
   return (
-    <div className="p-2 bg-white border border-gray-300 w-36" >
-      {options.map((option) => (
-        <div
-          className="p-1.5 cursor-pointer bg-gray-100 border-b border-gray-300"
-          key={option}
-          onClick={() => handleSelect(option)}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#ececec")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#f9f9f9")
-          }
-        >
-          {option}
-        </div>
-      ))}
+    <div
+      className="bg-white border border-gray-300 w-36"
+      style={{ width: dropdownWidth }}
+    >
+      {
+        projects.map((option) => (
+          <div
+            className="p-1.5 cursor-pointer border-b border-gray-300 hover:bg-gray-200"
+            key={option.id}
+            onClick={() => handleSelect(option)}
+          >
+            {option.projectName}
+          </div>
+        ))
+      }
     </div>
   );
 };

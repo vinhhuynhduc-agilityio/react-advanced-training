@@ -5,6 +5,7 @@ import {
 } from "react";
 
 import {
+  ProjectsData,
   TaskData,
   TaskDataProps
 } from "@/types/table";
@@ -24,10 +25,14 @@ import { IconRenderer } from "../DataGrid/CustomCellRenderer/StatusIcon/StatusIc
 import { ProjectDropdownEditor } from "../DataGrid/CustomCellRenderer/ProjectDropdownEditor/ProjectDropdownEditor";
 import DataGrid from "../DataGrid/DataGrid";
 
+// api
+import { apiRequest } from '../../utils/apiRequest';
+
 const TaskDashboard: React.FC<TaskDataProps> = ({
   tasks,
   selectedUserId,
-  onTaskRowSelected
+  onTaskRowSelected,
+  projects
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
@@ -63,6 +68,35 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     }
   }, [selectedUserId]);
 
+  const handleSaveProjectSelect = async (
+    value: ProjectsData,
+    rowData: TaskData
+  ) => {
+
+    // Update the selected row data with new project value
+    const updatedRow = {
+      ...rowData,
+      projectName: value.projectName,
+      projectId: value.id
+    };
+
+    // Call API to update row in the backend
+    await apiRequest<TaskData, TaskData>(
+      'PUT',
+      `http://localhost:3001/tasks/${rowData.id}`,
+      updatedRow
+    );
+
+    if (gridApi.current) {
+      const rowNode = gridApi.current.getRowNode(rowData.id);
+
+      if (rowNode) {
+
+        // Update the row data in the grid
+        rowNode.setData(updatedRow);
+      }
+    }
+  };
 
   const handleRowClicked = (event: RowClickedEvent) => {
     const userId = event.data.userId;
@@ -100,10 +134,14 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       headerName: "Project",
       field: "projectName",
       editable: true,
+      flex: 3.4,
       cellEditor: ProjectDropdownEditor,
+      cellEditorParams: {
+        onSelectProject: handleSaveProjectSelect,
+        projects,
+      },
       cellEditorPopup: true, // Make sure editor is visible in popup
       cellEditorPopupPosition: "under", // Show popup right below the cell
-      flex: 3.4,
     },
     {
       headerName: "User",

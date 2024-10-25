@@ -48,6 +48,7 @@ export interface UserListDrawerProps {
   users: RowData[];
   selectedUserId: string | null;
   onUserSelected: (userId: string | null) => void;
+  sourceComponent: string | null;
 };
 
 export interface TaskDataProps {
@@ -55,4 +56,5 @@ export interface TaskDataProps {
   selectedUserId: string | null;
   onTaskRowSelected: (userId: string | null) => void;
   projects: ProjectsData[];
+  sourceComponent: string | null;
 };

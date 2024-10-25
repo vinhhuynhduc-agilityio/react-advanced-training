@@ -20,8 +20,8 @@ const App: React.FC = () => {
   const [users, setUsers] = useState<RowData[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>([]);
   const [projects, setProjects] = useState<ProjectsData[]>([]);
-  const [taskRowSelected, setTaskRowSelected] = useState<string | null>(null);
-  const [userRowSelected, setUserRowSelected] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUser] = useState<string | null>(null);
+  const [sourceComponent, setSourceComponent] = useState<string | null>(null);
 
   // Fetch all users
   const fetchData = async () => {
@@ -45,12 +45,14 @@ const App: React.FC = () => {
 
   // Function to handle when row in TaskDashboard is selected
   const handleTaskRowSelected = (userId: string | null) => {
-    setTaskRowSelected(userId);
+    setSelectedUser(userId)
+    setSourceComponent("TaskDashboard");
   };
 
   // Function to handle when row in UserListDrawer is selected
   const handleUserRowSelected = (userId: string | null) => {
-    setUserRowSelected(userId);
+    setSourceComponent("UserListDrawer");
+    setSelectedUser(userId)
   };
 
   return (
@@ -60,8 +62,9 @@ const App: React.FC = () => {
         <div className="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto">
           <UserListDrawer
             users={users}
-            selectedUserId={taskRowSelected}
+            selectedUserId={selectedUserId}
             onUserSelected={handleUserRowSelected}
+            sourceComponent={sourceComponent}
           />
         </div>
         <div className="flex-grow bg-slate-100 my-4 overflow-auto">
@@ -84,8 +87,9 @@ const App: React.FC = () => {
             <TaskDashboard
               tasks={tasks}
               projects={projects}
-              selectedUserId={userRowSelected}
+              selectedUserId={selectedUserId}
               onTaskRowSelected={handleTaskRowSelected}
+              sourceComponent={sourceComponent}
             />
           </div>
         </div>

@@ -1,7 +1,6 @@
 import {
   useEffect,
   useRef,
-  useState
 } from "react";
 
 import {
@@ -32,12 +31,11 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   tasks,
   selectedUserId,
   onTaskRowSelected,
-  projects
+  projects,
+  sourceComponent
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
-
-  const [selectedTaskUser, setSelectedTaskUser] = useState<string | null>(null);
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
@@ -49,7 +47,11 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 
   //  When `selectedUserId` changes, scroll to the corresponding row
   useEffect(() => {
-    if (selectedUserId && gridApi.current) {
+    if (
+      sourceComponent !== "TaskDashboard"
+      && selectedUserId
+      && gridApi.current
+    ) {
       const idTask = tasksRef.current.find(
         item => item.userId === selectedUserId
       )?.id;
@@ -63,10 +65,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
           gridApi.current.ensureNodeVisible(rowNode, 'middle');
         }
       }
-
-      setSelectedTaskUser(selectedUserId);
     }
-  }, [selectedUserId]);
+  }, [selectedUserId, sourceComponent]);
 
   const handleSaveProjectSelect = async (
     value: ProjectsData,
@@ -102,7 +102,6 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     const userId = event.data.userId;
 
     if (userId) {
-      setSelectedTaskUser(userId);
 
       // Pass `userId` to parent component
       onTaskRowSelected(userId);
@@ -110,7 +109,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   };
 
   const getRowClass = (params: RowClassParams) => {
-    return params.data.userId === selectedTaskUser
+    return params.data.userId === selectedUserId
       ? 'ag-row-selected'
       : '';
   };

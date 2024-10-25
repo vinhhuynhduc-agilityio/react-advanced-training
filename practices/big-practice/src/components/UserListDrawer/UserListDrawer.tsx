@@ -23,7 +23,7 @@ import { PersonRenderer } from "../DataGrid/CustomCellRenderer/PersonRenderer/Pe
 import '../../style.css'
 
 import {
-  RowData,
+  UserData,
   UserListDrawerProps
 } from "../../types/table";
 
@@ -71,9 +71,11 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
       : "";
   };
 
-  const getRowId = (params: GetRowIdParams<RowData>) => params.data.id;
+  const getRowId = (params: GetRowIdParams<UserData>): string => {
+    return params.data.id;
+  };
 
-  const columnDefs: ColDef[] = [
+  const columnDefs: ColDef<UserData>[] = [
     {
       headerName: "Persons",
       field: 'fullName',
@@ -92,7 +94,6 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
       rowHeight={75}
       onGridReady={onGridReady}
       getRowId={getRowId}
-
     />
   );
 };

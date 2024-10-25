@@ -1,7 +1,7 @@
-import { RowData } from "@/types/table";
+import { UserData } from "@/types/table";
 import { ICellRendererParams } from "ag-grid-community";
 
-export const PersonRenderer = (params: ICellRendererParams<RowData>) => {
+export const PersonRenderer = (params: ICellRendererParams<UserData>) => {
   if (!params.data) {
     return null;
   }

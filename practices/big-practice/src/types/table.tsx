@@ -6,7 +6,7 @@ import {
   RowClickedEvent
 } from "ag-grid-community";
 
-export interface RowData {
+export interface UserData {
   id: string;
   fullName: string;
   earnings: string;
@@ -36,16 +36,17 @@ export interface ProjectsData {
 
 export interface DataGridProps<T> {
   rowData: T[];
+  userData?: T[];
   columnDefs: ColDef<T>[];
   onRowClicked?: (event: RowClickedEvent) => void;
   getRowClass?: (params: RowClassParams) => string;
   rowHeight?: number;
   onGridReady: (event: GridReadyEvent) => void;
-  getRowId: (params: GetRowIdParams<T>) => string
+  getRowId: (params: GetRowIdParams<T>) => string;
 };
 
 export interface UserListDrawerProps {
-  users: RowData[];
+  users: UserData[];
   selectedUserId: string | null;
   onUserSelected: (userId: string | null) => void;
   sourceComponent: string | null;
@@ -57,4 +58,5 @@ export interface TaskDataProps {
   onTaskRowSelected: (userId: string | null) => void;
   projects: ProjectsData[];
   sourceComponent: string | null;
+  users: UserData[]
 };

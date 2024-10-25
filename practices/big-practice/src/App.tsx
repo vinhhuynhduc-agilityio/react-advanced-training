@@ -9,7 +9,7 @@ import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 // types
 import {
   ProjectsData,
-  RowData,
+  UserData,
   TaskData
 } from "./types/table";
 
@@ -17,7 +17,7 @@ import {
 import { apiRequest } from "./utils/apiRequest";
 
 const App: React.FC = () => {
-  const [users, setUsers] = useState<RowData[]>([]);
+  const [users, setUsers] = useState<UserData[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>([]);
   const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [selectedUserId, setSelectedUser] = useState<string | null>(null);
@@ -30,7 +30,7 @@ const App: React.FC = () => {
       tasksData,
       projects
     ] = await Promise.all([
-      apiRequest<RowData[], RowData[]>('GET', 'http://localhost:3001/users'),
+      apiRequest<UserData[], UserData[]>('GET', 'http://localhost:3001/users'),
       apiRequest<TaskData[], TaskData[]>('GET', 'http://localhost:3001/tasks'),
       apiRequest<ProjectsData[], ProjectsData[]>('GET', 'http://localhost:3001/projects'),
     ]);
@@ -87,6 +87,7 @@ const App: React.FC = () => {
             <TaskDashboard
               tasks={tasks}
               projects={projects}
+              users={users}
               selectedUserId={selectedUserId}
               onTaskRowSelected={handleTaskRowSelected}
               sourceComponent={sourceComponent}

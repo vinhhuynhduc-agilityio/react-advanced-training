@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ICellRendererParams } from 'ag-grid-community';
-import { RowData } from '@/types/table';
+import { UserData } from '@/types/table';
 import { PersonRenderer } from './PersonRenderer';
 
-const mockData: RowData =     {
+const mockData: UserData = {
   "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
   "fullName": "John Doe",
   "earnings": "$5000",
@@ -16,7 +16,7 @@ const mockData: RowData =     {
 
 describe('PersonRenderer component', () => {
   it('should render user data correctly', () => {
-    const params: ICellRendererParams<RowData> = { data: mockData } as ICellRendererParams<RowData>;
+    const params: ICellRendererParams<UserData> = { data: mockData } as ICellRendererParams<UserData>;
 
     render(<PersonRenderer {...params} />);
 

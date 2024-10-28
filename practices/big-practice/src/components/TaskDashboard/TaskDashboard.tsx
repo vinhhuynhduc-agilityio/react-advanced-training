@@ -12,6 +12,8 @@ import {
 
 // ag-grid
 import {
+  CellEditingStartedEvent,
+  CellEditingStoppedEvent,
   ColDef,
   GetRowIdParams,
   GridApi,
@@ -30,6 +32,7 @@ import { apiRequest } from '../../utils/apiRequest';
 
 // helpers
 import { getUpdatedRow } from "./helpers/taskDashboardHelpers";
+import { FieldType } from "../../types/fieldEnums";
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
   tasks,
@@ -41,6 +44,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
+  const originalTaskNameRef = useRef<string | null>(null);
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
@@ -72,23 +76,24 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     }
   }, [selectedUserId, sourceComponent]);
 
+  // Stop editing when browser resizes.
+  useEffect(() => {
+    const handleResize = () => {
+      gridApi.current?.stopEditing();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const handleSaveSelect = async (
-    type: 'project' | 'user',
-    value: ProjectsData | UserData,
+    type: FieldType,
+    value: ProjectsData | UserData | string,
     row: TaskData
   ) => {
-    const currentValue = type === 'project'
-      ? row.projectName
-      : row.fullName;
-    const newValue = type === 'project'
-      ? (value as ProjectsData).projectName
-      : (value as UserData).fullName;
-
-    // Check if new value is same as current value, return.
-    if (currentValue === newValue) {
-      return;
-    }
-
     const updatedRow = getUpdatedRow(type, value, row);
 
     // Call API to update row in the backend
@@ -108,9 +113,31 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     }
   };
 
-  const getSelectOptionHandler = (
-    type: 'project' | 'user'
-  ) => (value: ProjectsData | UserData, row: TaskData) => {
+  const handleValueChange = (type: FieldType) => (
+    value: ProjectsData | UserData | string,
+    row: TaskData
+  ) => {
+
+    // Get the current value of the field being edited
+    const currentValue =
+      type === FieldType.TASK_NAME
+        ? originalTaskNameRef.current
+        : type === FieldType.PROJECT
+          ? row.projectName
+          : row.fullName;
+
+    const newValue =
+      type === FieldType.TASK_NAME
+        ? value
+        : type === FieldType.PROJECT
+          ? (value as ProjectsData).projectName
+          : (value as UserData).fullName;
+
+    // If the value hasn't changed, return.
+    if (newValue === currentValue) {
+      return;
+    }
+
     handleSaveSelect(type, value, row);
   };
 
@@ -128,6 +155,28 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     return params.data.userId === selectedUserId
       ? 'ag-row-selected'
       : '';
+  };
+
+  // Event when editing starts, save the original value
+  const handleCellEditingStarted = (event: CellEditingStartedEvent) => {
+    const { value, colDef } = event;
+
+    if (colDef.field === FieldType.TASK_NAME) {
+      originalTaskNameRef.current = value;
+    }
+  };
+
+  const handleOnCellEditingStopped = (event: CellEditingStoppedEvent) => {
+    const {
+      value,
+      data,
+      colDef
+    } = event;
+
+    // Check if the edited column is 'taskName'
+    if (colDef.field === FieldType.TASK_NAME) {
+      handleValueChange(FieldType.TASK_NAME)(value, data);
+    }
   };
 
   const getRowId = (params: GetRowIdParams<TaskData>) => params.data.id;
@@ -152,7 +201,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       flex: 3.4,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
-        onSelectOption: getSelectOptionHandler('project'),
+        onSelectOption: handleValueChange(FieldType.PROJECT),
         options: projects,
         displayKey: 'projectName'
       },
@@ -165,7 +214,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       flex: 2.4,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
-        onSelectOption: getSelectOptionHandler('user'),
+        onSelectOption: handleValueChange(FieldType.USER),
         options: users,
         displayKey: 'fullName'
       },
@@ -197,6 +246,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         getRowClass={getRowClass}
         onGridReady={onGridReady}
         getRowId={getRowId}
+        onCellEditingStarted={handleCellEditingStarted}
+        onCellEditingStopped={handleOnCellEditingStopped}
       />
     </div>
   )

@@ -3,6 +3,8 @@ import { useMemo } from "react";
 // ag-grid
 import { AgGridReact } from "ag-grid-react";
 import {
+  CellEditingStartedEvent,
+  CellEditingStoppedEvent,
   ColDef,
   GetRowIdParams,
   GridOptions,
@@ -20,6 +22,8 @@ export interface DataGridProps<T> {
   rowHeight?: number;
   onGridReady: (event: GridReadyEvent) => void;
   getRowId: (params: GetRowIdParams<T>) => string;
+  onCellEditingStarted?: (event: CellEditingStartedEvent) => void;
+  onCellEditingStopped?: (event: CellEditingStoppedEvent) => void;
 };
 
 const DataGrid = <T,>(props: DataGridProps<T>) => {

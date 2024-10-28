@@ -2,8 +2,25 @@ import { useMemo } from "react";
 
 // ag-grid
 import { AgGridReact } from "ag-grid-react";
-import { GridOptions } from "ag-grid-community";
-import { DataGridProps } from "@/types/table";
+import {
+  ColDef,
+  GetRowIdParams,
+  GridOptions,
+  GridReadyEvent,
+  RowClassParams,
+  RowClickedEvent
+} from "ag-grid-community";
+
+export interface DataGridProps<T> {
+  rowData: T[];
+  userData?: T[];
+  columnDefs: ColDef<T>[];
+  onRowClicked?: (event: RowClickedEvent) => void;
+  getRowClass?: (params: RowClassParams) => string;
+  rowHeight?: number;
+  onGridReady: (event: GridReadyEvent) => void;
+  getRowId: (params: GetRowIdParams<T>) => string;
+};
 
 const DataGrid = <T,>(props: DataGridProps<T>) => {
   const defaultColDef = useMemo(() => {

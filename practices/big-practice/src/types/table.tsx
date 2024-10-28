@@ -1,11 +1,3 @@
-import {
-  ColDef,
-  GetRowIdParams,
-  GridReadyEvent,
-  RowClassParams,
-  RowClickedEvent
-} from "ag-grid-community";
-
 export interface UserData {
   id: string;
   fullName: string;
@@ -32,17 +24,6 @@ export interface TaskData {
 export interface ProjectsData {
   id: string;
   projectName: string;
-};
-
-export interface DataGridProps<T> {
-  rowData: T[];
-  userData?: T[];
-  columnDefs: ColDef<T>[];
-  onRowClicked?: (event: RowClickedEvent) => void;
-  getRowClass?: (params: RowClassParams) => string;
-  rowHeight?: number;
-  onGridReady: (event: GridReadyEvent) => void;
-  getRowId: (params: GetRowIdParams<T>) => string;
 };
 
 export interface UserListDrawerProps {

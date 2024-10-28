@@ -34,6 +34,7 @@ describe('UserListDrawer component', () => {
         users={users}
         selectedUserId={null}
         onUserSelected={jest.fn()}
+        sourceComponent=''
       />
     );
 

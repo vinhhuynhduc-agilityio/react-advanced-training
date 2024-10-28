@@ -1,8 +1,7 @@
 import { render } from '@testing-library/react';
 import { AgGridReact } from 'ag-grid-react';
-import DataGrid from './DataGrid';
+import DataGrid, { DataGridProps } from './DataGrid';
 import {
-  DataGridProps,
   UserData
 } from '@/types/table';
 

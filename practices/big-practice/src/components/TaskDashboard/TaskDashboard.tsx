@@ -6,7 +6,8 @@ import {
 import {
   ProjectsData,
   TaskData,
-  TaskDataProps
+  TaskDataProps,
+  UserData
 } from "@/types/table";
 
 // ag-grid
@@ -21,18 +22,22 @@ import {
 
 // components
 import { IconRenderer } from "../DataGrid/CustomCellRenderer/StatusIcon/StatusIcon";
-import { ProjectDropdownEditor } from "../DataGrid/CustomCellRenderer/ProjectDropdownEditor/ProjectDropdownEditor";
+import { DropdownCellEditor } from "../DataGrid/CustomCellRenderer/DropdownCellEditor/DropdownCellEditor";
 import DataGrid from "../DataGrid/DataGrid";
 
 // api
 import { apiRequest } from '../../utils/apiRequest';
+
+// helpers
+import { getUpdatedRow } from "./helpers/taskDashboardHelpers";
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
   tasks,
   selectedUserId,
   onTaskRowSelected,
   projects,
-  sourceComponent
+  sourceComponent,
+  users
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
@@ -59,43 +64,54 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       if (idTask) {
         const rowNode = gridApi.current.getRowNode(idTask);
 
+        // Scroll to row with matching userId
         if (rowNode) {
-
-          // Scroll to row with matching userId
           gridApi.current.ensureNodeVisible(rowNode, 'middle');
         }
       }
     }
   }, [selectedUserId, sourceComponent]);
 
-  const handleSaveProjectSelect = async (
-    value: ProjectsData,
-    rowData: TaskData
+  const handleSaveSelect = async (
+    type: 'project' | 'user',
+    value: ProjectsData | UserData,
+    row: TaskData
   ) => {
+    const currentValue = type === 'project'
+      ? row.projectName
+      : row.fullName;
+    const newValue = type === 'project'
+      ? (value as ProjectsData).projectName
+      : (value as UserData).fullName;
 
-    // Update the selected row data with new project value
-    const updatedRow = {
-      ...rowData,
-      projectName: value.projectName,
-      projectId: value.id
-    };
+    // Check if new value is same as current value, return.
+    if (currentValue === newValue) {
+      return;
+    }
+
+    const updatedRow = getUpdatedRow(type, value, row);
 
     // Call API to update row in the backend
     await apiRequest<TaskData, TaskData>(
       'PUT',
-      `http://localhost:3001/tasks/${rowData.id}`,
+      `http://localhost:3001/tasks/${row.id}`,
       updatedRow
     );
 
     if (gridApi.current) {
-      const rowNode = gridApi.current.getRowNode(rowData.id);
+      const rowNode = gridApi.current.getRowNode(row.id);
 
+      // Update the row data in the grid
       if (rowNode) {
-
-        // Update the row data in the grid
         rowNode.setData(updatedRow);
       }
     }
+  };
+
+  const getSelectOptionHandler = (
+    type: 'project' | 'user'
+  ) => (value: ProjectsData | UserData, row: TaskData) => {
+    handleSaveSelect(type, value, row);
   };
 
   const handleRowClicked = (event: RowClickedEvent) => {
@@ -134,18 +150,26 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       field: "projectName",
       editable: true,
       flex: 3.4,
-      cellEditor: ProjectDropdownEditor,
+      cellEditor: DropdownCellEditor,
       cellEditorParams: {
-        onSelectProject: handleSaveProjectSelect,
-        projects,
+        onSelectOption: getSelectOptionHandler('project'),
+        options: projects,
+        displayKey: 'projectName'
       },
       cellEditorPopup: true, // Make sure editor is visible in popup
-      cellEditorPopupPosition: "under", // Show popup right below the cell
     },
     {
       headerName: "User",
       field: "fullName",
+      editable: true,
       flex: 2.4,
+      cellEditor: DropdownCellEditor,
+      cellEditorParams: {
+        onSelectOption: getSelectOptionHandler('user'),
+        options: users,
+        displayKey: 'fullName'
+      },
+      cellEditorPopup: true,
     },
     {
       headerName: "Currency",
@@ -166,7 +190,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 
   return (
     <div className="ag-theme-alpine h-full w-full">
-      <DataGrid<TaskData>
+      <DataGrid
         rowData={tasks}
         columnDefs={columnDefs}
         onRowClicked={handleRowClicked}

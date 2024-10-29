@@ -24,6 +24,8 @@ export interface DataGridProps<T> {
   getRowId: (params: GetRowIdParams<T>) => string;
   onCellEditingStarted?: (event: CellEditingStartedEvent) => void;
   onCellEditingStopped?: (event: CellEditingStoppedEvent) => void;
+  tooltipShowDelay?: number;
+  enableBrowserTooltips?: boolean;
 };
 
 const DataGrid = <T,>(props: DataGridProps<T>) => {

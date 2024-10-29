@@ -234,12 +234,14 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         onStatusValueChange: () => handleValueChange(FieldType.STATUS)(!params.data.status, params.data)
       }),
       width: 55,
+      tooltipValueGetter: () => 'Click to complete/uncomplete the task'
     },
     {
       headerName: "Task",
       field: "taskName",
       editable: true,
       flex: 4.5,
+      tooltipValueGetter: () => 'Double-click to edit the task name'
     },
     {
       headerName: "Project",
@@ -253,6 +255,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         displayKey: 'projectName'
       },
       cellEditorPopup: true, // Make sure editor is visible in popup
+      tooltipValueGetter: () => 'Double-click to change the project'
     },
     {
       headerName: "User",
@@ -266,21 +269,29 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         displayKey: 'fullName'
       },
       cellEditorPopup: true,
+      tooltipValueGetter: () => 'Double-click to assign to a different employee'
     },
     {
       headerName: "Currency",
       field: "currency",
       flex: 2,
+      tooltipValueGetter: () => 'Amount received upon task completion'
     },
     {
       headerName: "Start",
       field: "startDate",
       flex: 2,
+      tooltipValueGetter: () => 'The task was created'
     },
     {
       headerName: "Completed",
       field: "completedDate",
       flex: 2,
+      tooltipValueGetter: (params) => {
+        return params.data?.status
+          ? "The task was completed"
+          : "Click on the red clock to complete the task";
+      },
     },
   ];
 
@@ -295,6 +306,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         getRowId={getRowId}
         onCellEditingStarted={handleCellEditingStarted}
         onCellEditingStopped={handleOnCellEditingStopped}
+        tooltipShowDelay={0}
+        enableBrowserTooltips={true}
       />
     </div>
   )

@@ -19,6 +19,7 @@ export interface TaskData {
   status: boolean;
   projectName: string;
   fullName: string;
+  tooltipShowDelay?: number;
 }
 
 export interface ProjectsData {

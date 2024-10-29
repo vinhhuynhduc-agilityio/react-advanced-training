@@ -67,9 +67,9 @@ const App: React.FC = () => {
             sourceComponent={sourceComponent}
           />
         </div>
-        <div className="flex-grow bg-slate-100 my-4 overflow-auto">
+        <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
           <div className="bg-white border-2 border-customBorder h-96">
-            <h2 className="text-gray-600 text-xl font-semibold">Row 1: 1 Column</h2>
+            <h2 className="text-gray-600 text-xl font-semibold">Row 1: Column 1</h2>
             <p>Content for the first row</p>
           </div>
 

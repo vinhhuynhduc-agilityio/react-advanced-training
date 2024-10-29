@@ -1,50 +1,55 @@
-# React + TypeScript + Vite
+# React Advanced - Big practice
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application is using React to a web application to manage employee workload
 
-Currently, two official plugins are available:
+# Targets
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Apply knowledge of React Advanced.
+- Apply Unit testing 
+- Use Storybook for documenting React components.
+- Optimize performance
 
-## Expanding the ESLint configuration
+# Technical stacks
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [React](https://react.dev/) v18.3.1 (React lets you build user interfaces out of individual pieces called components.)
+- [AG Grid](https://www.ag-grid.com/) v32.2.2 (AG Grid is a powerful JavaScript data grid with extensive customization options, ideal for handling large datasets and complex data operations.)
+- [React-Testing-Library](https://testing-library.com/docs/react-testing-library/intro/) v16.0.1 (React Testing Library builds on top of DOM Testing Library by adding APIs for working with React components.)
 
-- Configure the top-level `parserOptions` property like this:
+# Design
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Design via [webix](<https://webix.com/demos/team-progress/#!/top/dashboard>)
+
+# Editor
+
+- Visual Studio Code
+
+# Author
+
+- vinh.huynhduc <[vinh.huynhduc@asnet.com.vn](vinh.huynhduc@asnet.com.vn)>
+
+# Getting started
+
+Step by step to get started this app at your location
+
+## Clone repository with ssh
+
+```bash
+git clone git@gitlab.asoft-python.com:vinh.huynhduc/react-advanced-training.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Install necessary packages
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Make sure you are stay at the root of application (`big-practice`), execute the command
+to install package dependencies
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+Step 1: pnpm install
+```
+
+```bash
+Step 2: json-server --watch db.json --port 3001
+```
+
+```bash
+Step 3: pnpm dev
 ```

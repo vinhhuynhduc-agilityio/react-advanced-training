@@ -1,5 +1,6 @@
-export  enum FieldType {
-  PROJECT = 'project',
-  USER = 'user',
-  TASK_NAME = 'taskName',
-};
+export enum FieldType {
+  PROJECT = "project",
+  USER = "user",
+  TASK_NAME = "taskName",
+  STATUS = "status",
+}

@@ -6,7 +6,7 @@ export interface UserData {
   avatarUrl: string;
   registered: string;
   lastUpdated: string;
-};
+}
 
 export interface TaskData {
   id: string;
@@ -19,19 +19,19 @@ export interface TaskData {
   status: boolean;
   projectName: string;
   fullName: string;
-};
+}
 
 export interface ProjectsData {
   id: string;
   projectName: string;
-};
+}
 
 export interface UserListDrawerProps {
   users: UserData[];
   selectedUserId: string | null;
   onUserSelected: (userId: string | null) => void;
   sourceComponent: string | null;
-};
+}
 
 export interface TaskDataProps {
   tasks: TaskData[];
@@ -39,5 +39,18 @@ export interface TaskDataProps {
   onTaskRowSelected: (userId: string | null) => void;
   projects: ProjectsData[];
   sourceComponent: string | null;
-  users: UserData[]
+  users: UserData[];
+}
+
+export type StatusWithDate = {
+  status: boolean;
+  completedDate: string;
 };
+
+export type FieldValue =
+  | string
+  | number
+  | boolean
+  | ProjectsData
+  | UserData
+  | StatusWithDate;

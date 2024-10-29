@@ -4,6 +4,7 @@ import {
 } from "react";
 
 import {
+  FieldValue,
   ProjectsData,
   TaskData,
   TaskDataProps,
@@ -18,6 +19,7 @@ import {
   GetRowIdParams,
   GridApi,
   GridReadyEvent,
+  ICellRendererParams,
   RowClassParams,
   RowClickedEvent
 } from "ag-grid-community";
@@ -44,7 +46,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
-  const originalTaskNameRef = useRef<string | null>(null);
+  const originalTaskNameRef = useRef<string>('');
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
@@ -91,7 +93,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 
   const handleSaveSelect = async (
     type: FieldType,
-    value: ProjectsData | UserData | string,
+    value: FieldValue,
     row: TaskData
   ) => {
     const updatedRow = getUpdatedRow(type, value, row);
@@ -113,32 +115,74 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     }
   };
 
+  const getCurrentValueByColumn = {
+    [FieldType.TASK_NAME]: (): FieldValue => originalTaskNameRef.current || "",
+    [FieldType.PROJECT]: (row: TaskData): FieldValue => row.projectName || "",
+    [FieldType.USER]: (row: TaskData): FieldValue => row.fullName || "",
+    [FieldType.STATUS]: (row: TaskData): FieldValue => row.status || false,
+  };
+
+  const getNewValueByColumn = {
+    [FieldType.TASK_NAME]: (value: string): FieldValue => value || "",
+    [FieldType.PROJECT]: (value: ProjectsData): FieldValue => (value as ProjectsData).projectName || "",
+    [FieldType.USER]: (value: UserData): FieldValue => (value as UserData).fullName || "",
+    [FieldType.STATUS]: (value: boolean): FieldValue => value,
+  };
+
   const handleValueChange = (type: FieldType) => (
-    value: ProjectsData | UserData | string,
+    value: FieldValue,
     row: TaskData
   ) => {
+    let currentValue;
+    let newValue;
+    let customValue;
 
-    // Get the current value of the field being edited
-    const currentValue =
-      type === FieldType.TASK_NAME
-        ? originalTaskNameRef.current
-        : type === FieldType.PROJECT
-          ? row.projectName
-          : row.fullName;
+    switch (type) {
+      case FieldType.TASK_NAME:
+        currentValue = getCurrentValueByColumn[FieldType.TASK_NAME]();
+        newValue = getNewValueByColumn[FieldType.TASK_NAME](value as string);
+        customValue = newValue;
+        break;
 
-    const newValue =
-      type === FieldType.TASK_NAME
-        ? value
-        : type === FieldType.PROJECT
-          ? (value as ProjectsData).projectName
-          : (value as UserData).fullName;
+      case FieldType.PROJECT:
+        currentValue = getCurrentValueByColumn[FieldType.PROJECT](row);
+        newValue = getNewValueByColumn[FieldType.PROJECT](value as ProjectsData);
+        customValue = value;
+        break;
+
+      case FieldType.USER:
+        currentValue = getCurrentValueByColumn[FieldType.USER](row);
+        newValue = getNewValueByColumn[FieldType.USER](value as UserData);
+        customValue = value;
+        break;
+
+      case FieldType.STATUS: {
+        const status = value as boolean;
+
+        // Define the formatted date
+        const completedDate = status
+          ? new Date().toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: '2-digit',
+          } as Intl.DateTimeFormatOptions)
+          : "incomplete";
+
+        newValue = { status, completedDate };
+        customValue = newValue;
+        break;
+      }
+
+      default:
+        return;
+    };
 
     // If the value hasn't changed, return.
     if (newValue === currentValue) {
       return;
     }
 
-    handleSaveSelect(type, value, row);
+    handleSaveSelect(type, customValue, row);
   };
 
   const handleRowClicked = (event: RowClickedEvent) => {
@@ -186,6 +230,9 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       headerName: "",
       field: "status",
       cellRenderer: IconRenderer,
+      cellRendererParams: (params: ICellRendererParams) => ({
+        onStatusValueChange: () => handleValueChange(FieldType.STATUS)(!params.data.status, params.data)
+      }),
       width: 55,
     },
     {

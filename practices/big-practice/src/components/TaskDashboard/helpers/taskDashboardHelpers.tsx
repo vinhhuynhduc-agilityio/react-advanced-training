@@ -1,45 +1,56 @@
 import { FieldType } from "@/types/fieldEnums";
 import {
+  FieldValue,
   ProjectsData,
+  StatusWithDate,
   TaskData,
   UserData
 } from "@/types/table";
 
 export const getUpdatedRow = (
   type: FieldType,
-  value: ProjectsData | UserData | string,
+  value: FieldValue,
   row: TaskData
 ): TaskData => {
-  const updateHandlers = {
-    project: () => {
-      const {
-        projectName,
-        id
-      } = value as ProjectsData;
+  switch (type) {
+    case FieldType.PROJECT: {
+      const { projectName, id } = value as ProjectsData;
 
       return {
         ...row,
         projectName,
-        projectId: id
+        projectId: id,
       };
-    },
-    user: () => {
-      const {
-        fullName,
-        id
-      } = value as UserData;
+    }
+
+    case FieldType.USER: {
+      const { fullName, id } = value as UserData;
 
       return {
         ...row,
         fullName,
-        userId: id
+        userId: id,
       };
-    },
-    taskName: () => ({
-      ...row,
-      taskName: value as string
-    })
-  };
+    }
 
-  return updateHandlers[type]?.() || row;
+    case FieldType.TASK_NAME:
+
+      return {
+        ...row,
+        taskName: value as string,
+      };
+
+    case FieldType.STATUS: {
+      const { status, completedDate } = value as StatusWithDate;
+
+      return {
+        ...row,
+        status,
+        completedDate,
+      };
+    }
+
+    default:
+      return row;
+  }
 };

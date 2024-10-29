@@ -234,14 +234,16 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         onStatusValueChange: () => handleValueChange(FieldType.STATUS)(!params.data.status, params.data)
       }),
       width: 55,
-      tooltipValueGetter: () => 'Click to complete/uncomplete the task'
+      tooltipValueGetter: () => 'Click to complete/uncomplete the task',
+      headerClass: "custom-header"
     },
     {
       headerName: "Task",
       field: "taskName",
       editable: true,
       flex: 4.5,
-      tooltipValueGetter: () => 'Double-click to edit the task name'
+      tooltipValueGetter: () => 'Double-click to edit the task name',
+      headerClass: "custom-header"
     },
     {
       headerName: "Project",
@@ -255,7 +257,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         displayKey: 'projectName'
       },
       cellEditorPopup: true, // Make sure editor is visible in popup
-      tooltipValueGetter: () => 'Double-click to change the project'
+      tooltipValueGetter: () => 'Double-click to change the project',
+      headerClass: "custom-header"
     },
     {
       headerName: "User",
@@ -269,19 +272,22 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         displayKey: 'fullName'
       },
       cellEditorPopup: true,
-      tooltipValueGetter: () => 'Double-click to assign to a different employee'
+      tooltipValueGetter: () => 'Double-click to assign to a different employee',
+      headerClass: "custom-header"
     },
     {
       headerName: "Currency",
       field: "currency",
       flex: 2,
-      tooltipValueGetter: () => 'Amount received upon task completion'
+      tooltipValueGetter: () => 'Amount received upon task completion',
+      headerClass: "custom-header"
     },
     {
       headerName: "Start",
       field: "startDate",
       flex: 2,
-      tooltipValueGetter: () => 'The task was created'
+      tooltipValueGetter: () => 'The task was created',
+      headerClass: "custom-header"
     },
     {
       headerName: "Completed",
@@ -292,6 +298,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
           ? "The task was completed"
           : "Click on the red clock to complete the task";
       },
+      headerClass: "custom-header"
     },
   ];
 

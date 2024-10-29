@@ -6,7 +6,7 @@
 }
 
 .ag-header-viewport {
-  background-color: white;
+  background-color: #F4F5F9;
 }
 
 .ag-theme-alpine {
@@ -15,5 +15,9 @@
 
 /* Custom background color for selected row */
 .ag-row-selected {
+  background-color: #F4F5F9 !important;
+}
+
+.custom-header {
   background-color: #F4F5F9 !important;
 }

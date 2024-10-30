@@ -33,7 +33,10 @@ import DataGrid from "../DataGrid/DataGrid";
 import { apiRequest } from '../../utils/apiRequest';
 
 // helpers
-import { getUpdatedRow } from "./helpers/taskDashboardHelpers";
+import {
+  getDateColumnSortComparator,
+  getUpdatedRow
+} from "./helpers/taskDashboardHelpers";
 import { FieldType } from "../../types/fieldEnums";
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
@@ -287,7 +290,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       field: "startDate",
       flex: 2,
       tooltipValueGetter: () => 'The task was created',
-      headerClass: "custom-header"
+      headerClass: "custom-header",
+      comparator: getDateColumnSortComparator
     },
     {
       headerName: "Completed",
@@ -298,7 +302,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
           ? "The task was completed"
           : "Click on the red clock to complete the task";
       },
-      headerClass: "custom-header"
+      headerClass: "custom-header",
+      comparator: getDateColumnSortComparator
     },
   ];
 

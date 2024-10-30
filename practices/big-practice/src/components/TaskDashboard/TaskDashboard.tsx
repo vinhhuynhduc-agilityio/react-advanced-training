@@ -39,6 +39,16 @@ import {
 } from "./helpers/taskDashboardHelpers";
 import { FieldType } from "../../types/fieldEnums";
 
+interface TaskDataProps {
+  tasks: TaskData[];
+  selectedUserId: string | null;
+  onTaskRowSelected: (userId: string | null) => void;
+  projects: ProjectsData[];
+  sourceComponent: string | null;
+  users: UserData[];
+  onUpdateUserEarnings: (userId: string, totalCurrency: number) => void;
+};
+
 const TaskDashboard: React.FC<TaskDataProps> = ({
   tasks,
   selectedUserId,
@@ -120,15 +130,15 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 
   const getCurrentValueByColumn = {
     [FieldType.TASK_NAME]: () => originalTaskNameRef.current,
-    [FieldType.PROJECT]: (row: TaskData) => row.projectName,
-    [FieldType.USER]: (row: TaskData) => row.fullName,
+    [FieldType.PROJECT]: (row: TaskData) => row.projectId,
+    [FieldType.USER]: (row: TaskData) => row.userId,
     [FieldType.STATUS]: (row: TaskData) => row.status,
   };
 
   const getNewValueByColumn = {
     [FieldType.TASK_NAME]: (value: string) => value,
-    [FieldType.PROJECT]: (value: ProjectsData) => (value as ProjectsData).projectName,
-    [FieldType.USER]: (value: UserData) => (value as UserData).fullName,
+    [FieldType.PROJECT]: (value: ProjectsData) => (value as ProjectsData).id,
+    [FieldType.USER]: (value: UserData) => (value as UserData).id,
     [FieldType.STATUS]: (value: boolean) => value,
   };
 

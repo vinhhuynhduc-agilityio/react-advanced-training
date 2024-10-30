@@ -34,15 +34,6 @@ export interface UserListDrawerProps {
   sourceComponent: string | null;
 }
 
-export interface TaskDataProps {
-  tasks: TaskData[];
-  selectedUserId: string | null;
-  onTaskRowSelected: (userId: string | null) => void;
-  projects: ProjectsData[];
-  sourceComponent: string | null;
-  users: UserData[];
-}
-
 export type StatusWithDate = {
   status: boolean;
   completedDate: string;

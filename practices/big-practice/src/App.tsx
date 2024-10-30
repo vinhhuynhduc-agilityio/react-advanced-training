@@ -68,17 +68,17 @@ const App: React.FC = () => {
           />
         </div>
         <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
-          <div className="bg-white border-2 border-customBorder h-96">
+          <div className="bg-white border border-customBorder h-96">
             <h2 className="text-gray-600 text-xl font-semibold">Row 1: Column 1</h2>
             <p>Content for the first row</p>
           </div>
 
           <div className="flex flex-row bg-slate-100 mt-4 h-80">
-            <div className="flex-1 mr-4 bg-white border-2 border-customBorder">
+            <div className="flex-1 mr-4 bg-white border border-customBorder">
               <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 1</h2>
               <p>Content for column 1 of second row</p>
             </div>
-            <div className="flex-1 bg-white border-2 border-customBorder">
+            <div className="flex-1 bg-white border border-customBorder">
               <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 2</h2>
               <p>Content for column 2 of second row</p>
             </div>

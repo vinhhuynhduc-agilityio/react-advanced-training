@@ -116,17 +116,17 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   };
 
   const getCurrentValueByColumn = {
-    [FieldType.TASK_NAME]: (): FieldValue => originalTaskNameRef.current || "",
-    [FieldType.PROJECT]: (row: TaskData): FieldValue => row.projectName || "",
-    [FieldType.USER]: (row: TaskData): FieldValue => row.fullName || "",
-    [FieldType.STATUS]: (row: TaskData): FieldValue => row.status || false,
+    [FieldType.TASK_NAME]: () => originalTaskNameRef.current,
+    [FieldType.PROJECT]: (row: TaskData) => row.projectName,
+    [FieldType.USER]: (row: TaskData) => row.fullName,
+    [FieldType.STATUS]: (row: TaskData) => row.status,
   };
 
   const getNewValueByColumn = {
-    [FieldType.TASK_NAME]: (value: string): FieldValue => value || "",
-    [FieldType.PROJECT]: (value: ProjectsData): FieldValue => (value as ProjectsData).projectName || "",
-    [FieldType.USER]: (value: UserData): FieldValue => (value as UserData).fullName || "",
-    [FieldType.STATUS]: (value: boolean): FieldValue => value,
+    [FieldType.TASK_NAME]: (value: string) => value,
+    [FieldType.PROJECT]: (value: ProjectsData) => (value as ProjectsData).projectName,
+    [FieldType.USER]: (value: UserData) => (value as UserData).fullName,
+    [FieldType.STATUS]: (value: boolean) => value,
   };
 
   const handleValueChange = (type: FieldType) => (

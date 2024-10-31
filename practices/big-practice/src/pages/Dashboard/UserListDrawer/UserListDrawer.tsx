@@ -16,13 +16,13 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
 // component
-import DataGrid from "../DataGrid/DataGrid";
-import { PersonRenderer } from "../DataGrid/CustomCellRenderer/PersonRenderer/PersonRenderer";
+import { PersonRenderer } from "@/components/DataGrid/CustomCellRenderer/PersonRenderer/PersonRenderer";
+import DataGrid from "@/components/DataGrid/DataGrid";
 
-// style
-import '../../style.css'
+// types
+import { UserData } from "@/types/table";
 
-import { UserData } from "../../types/table";
+import '../../../style.css'
 
 interface UserListDrawerProps {
   users: UserData[];

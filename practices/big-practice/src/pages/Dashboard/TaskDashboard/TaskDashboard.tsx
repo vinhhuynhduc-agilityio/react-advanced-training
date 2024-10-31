@@ -24,19 +24,21 @@ import {
 } from "ag-grid-community";
 
 // components
-import { IconRenderer } from "../DataGrid/CustomCellRenderer/StatusIcon/StatusIcon";
-import { DropdownCellEditor } from "../DataGrid/CustomCellRenderer/DropdownCellEditor/DropdownCellEditor";
-import DataGrid from "../DataGrid/DataGrid";
+import { IconRenderer } from "@/components/DataGrid/CustomCellRenderer/StatusIcon/StatusIcon";
+import { DropdownCellEditor } from "@/components/DataGrid/CustomCellRenderer/DropdownCellEditor/DropdownCellEditor";
+import DataGrid from "@/components/DataGrid/DataGrid";
 
-// api
-import { apiRequest } from '../../utils/apiRequest';
+// utils
+import { apiRequest } from "@/utils/apiRequest";
 
 // helpers
 import {
   getDateColumnSortComparator,
   getUpdatedRow
 } from "./helpers/taskDashboardHelpers";
-import { FieldType } from "../../types/fieldEnums";
+
+// types
+import { FieldType } from "@/types/fieldEnums";
 
 interface TaskDataProps {
   tasks: TaskData[];

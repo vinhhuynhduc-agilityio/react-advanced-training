@@ -35,6 +35,7 @@ describe('UserListDrawer component', () => {
         selectedUserId={null}
         onUserSelected={jest.fn()}
         sourceComponent=''
+        registerGridApi={jest.fn()}
       />
     );
 

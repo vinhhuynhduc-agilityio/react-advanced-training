@@ -22,21 +22,30 @@ import { PersonRenderer } from "../DataGrid/CustomCellRenderer/PersonRenderer/Pe
 // style
 import '../../style.css'
 
-import {
-  UserData,
-  UserListDrawerProps
-} from "../../types/table";
+import { UserData } from "../../types/table";
+
+interface UserListDrawerProps {
+  users: UserData[];
+  selectedUserId: string | null;
+  sourceComponent: string | null;
+  onUserSelected: (userId: string | null) => void;
+  registerGridApi: (api: GridApi) => void;
+}
 
 const UserListDrawer: React.FC<UserListDrawerProps> = ({
   users,
   selectedUserId,
   onUserSelected,
-  sourceComponent
+  sourceComponent,
+  registerGridApi
 }) => {
   const gridApi = useRef<GridApi | null>(null);
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
+
+    // Pass GridApi to App via registerGridApi
+    registerGridApi(params.api);
   }
 
   // When `selectedUserId` changes, scroll to the corresponding row

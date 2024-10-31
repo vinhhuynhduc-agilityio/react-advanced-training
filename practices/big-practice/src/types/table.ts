@@ -27,13 +27,6 @@ export interface ProjectsData {
   projectName: string;
 }
 
-export interface UserListDrawerProps {
-  users: UserData[];
-  selectedUserId: string | null;
-  onUserSelected: (userId: string | null) => void;
-  sourceComponent: string | null;
-}
-
 export type StatusWithDate = {
   status: boolean;
   completedDate: string;

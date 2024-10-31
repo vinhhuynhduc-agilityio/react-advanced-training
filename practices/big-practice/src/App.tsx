@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React,
+{
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 // components
 import Footer from "./components/Footer/Footer";
@@ -15,8 +20,11 @@ import {
 
 // utils
 import { apiRequest } from "./utils/apiRequest";
+import { GridApi } from "ag-grid-community";
 
 const App: React.FC = () => {
+  const userListGridApi = useRef<GridApi | null>(null);
+
   const [users, setUsers] = useState<UserData[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>([]);
   const [projects, setProjects] = useState<ProjectsData[]>([]);
@@ -55,6 +63,51 @@ const App: React.FC = () => {
     setSelectedUser(userId)
   };
 
+  const updateEarningsForUsers = async (
+    oldUserId: string,
+    newUserId: string,
+    currency: number
+  ) => {
+    if (!userListGridApi.current) return;
+
+    const updates: Promise<UserData>[] = [];
+
+    [oldUserId, newUserId].forEach(userId => {
+      const rowNode = userListGridApi.current!.getRowNode(userId);
+
+      if (rowNode) {
+        const currentEarnings = parseInt(rowNode.data.earnings.slice(1)) || 0;
+        const adjustedEarnings = userId === oldUserId
+          ? currentEarnings - currency
+          : currentEarnings + currency;
+
+        rowNode.setData({
+          ...rowNode.data,
+          earnings: `$${adjustedEarnings}`
+        });
+
+        updates.push(
+          apiRequest<UserData, UserData>("PUT", `http://localhost:3001/users/${userId}`, {
+            ...rowNode.data,
+            earnings: `$${adjustedEarnings}`,
+          })
+        );
+      }
+    });
+
+    handleTaskRowSelected(newUserId);
+
+    try {
+      await Promise.all(updates);
+    } catch (error) {
+      console.error("Failed to update earnings:", error);
+    }
+  };
+
+  const registerGridApi = (api: GridApi) => {
+    userListGridApi.current = api
+  };
+
   return (
     <div className="flex flex-col h-screen w-screen">
       <Header />
@@ -65,6 +118,7 @@ const App: React.FC = () => {
             selectedUserId={selectedUserId}
             onUserSelected={handleUserRowSelected}
             sourceComponent={sourceComponent}
+            registerGridApi={registerGridApi}
           />
         </div>
         <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
@@ -91,6 +145,7 @@ const App: React.FC = () => {
               selectedUserId={selectedUserId}
               onTaskRowSelected={handleTaskRowSelected}
               sourceComponent={sourceComponent}
+              updateEarningsForUsers={updateEarningsForUsers}
             />
           </div>
         </div>

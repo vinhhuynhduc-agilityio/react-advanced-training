@@ -7,7 +7,6 @@ import {
   FieldValue,
   ProjectsData,
   TaskData,
-  TaskDataProps,
   UserData
 } from "@/types/table";
 
@@ -46,16 +45,17 @@ interface TaskDataProps {
   projects: ProjectsData[];
   sourceComponent: string | null;
   users: UserData[];
-  onUpdateUserEarnings: (userId: string, totalCurrency: number) => void;
+  updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number) => void;
 };
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
   tasks,
   selectedUserId,
-  onTaskRowSelected,
   projects,
   sourceComponent,
-  users
+  users,
+  onTaskRowSelected,
+  updateEarningsForUsers
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
@@ -163,11 +163,18 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         customValue = value;
         break;
 
-      case FieldType.USER:
-        currentValue = getCurrentValueByColumn[FieldType.USER](row);
-        newValue = getNewValueByColumn[FieldType.USER](value as UserData);
-        customValue = value;
-        break;
+        case FieldType.USER: {
+          const oldUserId = row.userId;
+          const newUserId = (value as UserData).id;
+          currentValue = getCurrentValueByColumn[FieldType.USER](row);
+          newValue = getNewValueByColumn[FieldType.USER](value as UserData);
+          customValue = value;
+        
+          if (oldUserId !== newUserId) {
+            updateEarningsForUsers(oldUserId, newUserId, row.currency);
+          }
+          break;
+        } 
 
       case FieldType.STATUS: {
         const status = value as boolean;

@@ -4,7 +4,7 @@ import Dashboard from './Dashboard';
 import { apiRequest } from '@/utils/apiRequest';
 
 // Mock apiRequest to not actually call the API during testing
-jest.mock('./utils/apiRequest');
+jest.mock('../../utils/apiRequest');
 
 const mockApiRequest = apiRequest as jest.MockedFunction<typeof apiRequest>;
 

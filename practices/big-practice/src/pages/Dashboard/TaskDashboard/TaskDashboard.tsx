@@ -48,6 +48,7 @@ interface TaskDataProps {
   sourceComponent: string | null;
   users: UserData[];
   updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number) => void;
+  updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
 };
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
@@ -57,7 +58,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   sourceComponent,
   users,
   onTaskRowSelected,
-  updateEarningsForUsers
+  updateEarningsForUsers,
+  updateEarningsOnStatusChange
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
@@ -165,23 +167,24 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         customValue = value;
         break;
 
-        case FieldType.USER: {
-          const oldUserId = row.userId;
-          const newUserId = (value as UserData).id;
-          currentValue = getCurrentValueByColumn[FieldType.USER](row);
-          newValue = getNewValueByColumn[FieldType.USER](value as UserData);
-          customValue = value;
-        
-          if (oldUserId !== newUserId) {
-            updateEarningsForUsers(oldUserId, newUserId, row.currency);
-          }
-          break;
-        } 
+      case FieldType.USER: {
+        const oldUserId = row.userId;
+        const newUserId = (value as UserData).id;
+        currentValue = getCurrentValueByColumn[FieldType.USER](row);
+        newValue = getNewValueByColumn[FieldType.USER](value as UserData);
+        customValue = value;
+
+        if (oldUserId !== newUserId) {
+          updateEarningsForUsers(oldUserId, newUserId, row.currency);
+        }
+
+        break;
+      }
 
       case FieldType.STATUS: {
         const status = value as boolean;
-
-        // Define the formatted date
+        const currency = row.currency;
+        const userId = row.userId;
         const completedDate = status
           ? new Date().toLocaleDateString('en-GB', {
             day: '2-digit',
@@ -192,6 +195,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 
         newValue = { status, completedDate };
         customValue = newValue;
+
+        updateEarningsOnStatusChange(userId, currency, status);
         break;
       }
 

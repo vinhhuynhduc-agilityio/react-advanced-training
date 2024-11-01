@@ -107,8 +107,67 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const updateEarningsOnStatusChange = async (
+    userId: string,
+    currency: number,
+    status: boolean
+  ) => {
+    if (!userListGridApi.current) return;
+
+    // Retrieve `rowNode` by `userId` to update the specific row
+    const rowNode = userListGridApi.current.getRowNode(userId);
+
+    if (rowNode) {
+      const currentEarnings = parseInt(rowNode.data.earnings.slice(1)) || 0;
+      const adjustedEarnings = status
+        ? currentEarnings + currency
+        : currentEarnings - currency;
+
+      // Update row edit data
+      rowNode.setData({
+        ...rowNode.data,
+        earnings: `$${adjustedEarnings}`
+      });
+
+      // Update earnings to backend
+      await apiRequest<UserData, UserData>("PUT", `http://localhost:3001/users/${userId}`, {
+        ...rowNode.data,
+        earnings: `$${adjustedEarnings}`,
+      });
+    }
+  };
+
   const registerGridApi = (api: GridApi) => {
     userListGridApi.current = api
+  };
+
+  const renderTaskDashboard = () => {
+
+    return (
+      <TaskDashboard
+        tasks={tasks}
+        projects={projects}
+        users={users}
+        selectedUserId={selectedUserId}
+        onTaskRowSelected={handleTaskRowSelected}
+        sourceComponent={sourceComponent}
+        updateEarningsForUsers={updateEarningsForUsers}
+        updateEarningsOnStatusChange={updateEarningsOnStatusChange}
+      />
+    )
+  };
+
+  const renderUserListDrawer = () => {
+
+    return (
+      <UserListDrawer
+        users={users}
+        selectedUserId={selectedUserId}
+        onUserSelected={handleUserRowSelected}
+        sourceComponent={sourceComponent}
+        registerGridApi={registerGridApi}
+      />
+    )
   };
 
   return (
@@ -116,13 +175,7 @@ const Dashboard: React.FC = () => {
       <Header />
       <div className="flex flex-row flex-grow bg-slate-100 min-h-0">
         <div className="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto">
-          <UserListDrawer
-            users={users}
-            selectedUserId={selectedUserId}
-            onUserSelected={handleUserRowSelected}
-            sourceComponent={sourceComponent}
-            registerGridApi={registerGridApi}
-          />
+          {renderUserListDrawer()}
         </div>
         <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
           <div className="bg-white border border-customBorder h-96">
@@ -138,15 +191,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="bg-white mt-4 h-96 border-customBorder">
-            <TaskDashboard
-              tasks={tasks}
-              projects={projects}
-              users={users}
-              selectedUserId={selectedUserId}
-              onTaskRowSelected={handleTaskRowSelected}
-              sourceComponent={sourceComponent}
-              updateEarningsForUsers={updateEarningsForUsers}
-            />
+            {renderTaskDashboard()}
           </div>
         </div>
       </div>

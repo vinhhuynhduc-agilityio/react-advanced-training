@@ -39,3 +39,10 @@ export type FieldValue =
   | ProjectsData
   | UserData
   | StatusWithDate;
+
+export interface UserFormData {
+  fullName: string;
+  email: string;
+  avatar: FileList | null;
+  avatarUrl?: string | null;
+};

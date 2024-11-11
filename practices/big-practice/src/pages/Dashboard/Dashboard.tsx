@@ -4,15 +4,19 @@ import React,
   useRef,
   useState
 } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 // components
 import Header from "@/components/Header/Header";
 import UserListDrawer from "./UserListDrawer/UserListDrawer";
 import TaskDashboard from "./TaskDashboard/TaskDashboard";
 import Footer from "@/components/Footer/Footer";
+import Modal from "@/components/ModalDialog/ModalDialog";
+import UserProfileForm from "./UserProfileForm/UserProfileForm";
 
 // types
 import {
+  UserFormData,
   ProjectsData,
   TaskData,
   UserData
@@ -23,6 +27,7 @@ import { apiRequest } from "@/utils/apiRequest";
 
 // ag-grid
 import { GridApi } from "ag-grid-community";
+import { getRegisteredDate } from "./helpers/Dashboard";
 
 
 const Dashboard: React.FC = () => {
@@ -33,6 +38,10 @@ const Dashboard: React.FC = () => {
   const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [selectedUserId, setSelectedUser] = useState<string | null>(null);
   const [sourceComponent, setSourceComponent] = useState<string | null>(null);
+
+  // State variables related to opening modal dialog
+  const [isModalOpen, setModalOpen] = React.useState(false);
+  const [isEditUser, setEditUser] = React.useState(false);
 
   // Fetch all users
   const fetchData = async () => {
@@ -141,62 +150,138 @@ const Dashboard: React.FC = () => {
     userListGridApi.current = api
   };
 
-  const renderTaskDashboard = () => {
+  const handleToggleUserProfileForm = () => {
+    setModalOpen(true);
+    setEditUser(false);
+  };
 
+  const handleAddNewUser = async (data: UserFormData) => {
+    const avatarUrl = data.avatarUrl ?? 'https://via.placeholder.com/80';
+    const registeredDate = getRegisteredDate();
+
+    const newUser = {
+      id: uuidv4(),
+      fullName: data.fullName,
+      earnings: "$0",
+      email: data.email,
+      avatarUrl: avatarUrl,
+      registered: registeredDate,
+      lastUpdated: registeredDate,
+    };
+
+    try {
+      const addedUser = await apiRequest<UserData, UserData>('POST', 'http://localhost:3001/users', newUser);
+
+      // Update state users to add new users
+      setUsers((prevUsers) => [...prevUsers, addedUser]);
+
+      setModalOpen(false);
+    } catch (error) {
+      console.error("Failed to add new user:", error);
+    }
+  };
+
+
+  const renderTaskDashboard = () => {
     return (
-      <TaskDashboard
-        tasks={tasks}
-        projects={projects}
-        users={users}
-        selectedUserId={selectedUserId}
-        onTaskRowSelected={handleTaskRowSelected}
-        sourceComponent={sourceComponent}
-        updateEarningsForUsers={updateEarningsForUsers}
-        updateEarningsOnStatusChange={updateEarningsOnStatusChange}
-      />
+      <div className="bg-white mt-4 h-96 border-customBorder">
+        <TaskDashboard
+          tasks={tasks}
+          projects={projects}
+          users={users}
+          selectedUserId={selectedUserId}
+          onTaskRowSelected={handleTaskRowSelected}
+          sourceComponent={sourceComponent}
+          updateEarningsForUsers={updateEarningsForUsers}
+          updateEarningsOnStatusChange={updateEarningsOnStatusChange}
+        />
+      </div>
     )
   };
 
   const renderUserListDrawer = () => {
-
     return (
-      <UserListDrawer
-        users={users}
-        selectedUserId={selectedUserId}
-        onUserSelected={handleUserRowSelected}
-        sourceComponent={sourceComponent}
-        registerGridApi={registerGridApi}
+      <div className="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto">
+        <UserListDrawer
+          users={users}
+          selectedUserId={selectedUserId}
+          onUserSelected={handleUserRowSelected}
+          sourceComponent={sourceComponent}
+          registerGridApi={registerGridApi}
+        />
+      </div>
+    )
+  };
+
+  const renderHeader = () => {
+    return (
+      <Header
+        onAddUser={handleToggleUserProfileForm}
       />
     )
   };
 
-  return (
-    <div className="flex flex-col h-screen w-screen">
-      <Header />
-      <div className="flex flex-row flex-grow bg-slate-100 min-h-0">
-        <div className="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto">
-          {renderUserListDrawer()}
-        </div>
-        <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
-          <div className="bg-white border border-customBorder h-96">
-            <h2 className="text-gray-600 text-xl font-semibold">Row 1: Column 1</h2>
-          </div>
+  const renderUserProfileForm = () => {
+    const defaultValues = isEditUser
+      ? { name: "", email: "", avatarUrl: "" }
+      : undefined;
+    const title = isEditUser ? "Edit User" : "Add User";
 
-          <div className="flex flex-row bg-slate-100 mt-4 h-80">
-            <div className="flex-1 mr-4 bg-white border border-customBorder">
-              <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 1</h2>
-            </div>
-            <div className="flex-1 bg-white border border-customBorder">
-              <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 2</h2>
-            </div>
+    return (
+      <Modal
+        title={title}
+        onClose={() => setModalOpen(false)}
+        content={
+          <UserProfileForm
+            defaultValues={defaultValues}
+            isEditUser={isEditUser}
+            onClose={() => setModalOpen(false)}
+            onSubmit={handleAddNewUser}
+            users={users}
+          />
+        }
+      />
+    );
+  };
+
+  const renderChartAndTaskContent = () => {
+    return (
+      <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
+        <div className="bg-white border border-customBorder h-96">
+          <h2 className="text-gray-600 text-xl font-semibold">Row 1: Column 1</h2>
+        </div>
+
+        <div className="flex flex-row bg-slate-100 mt-4 h-80">
+          <div className="flex-1 mr-4 bg-white border border-customBorder">
+            <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 1</h2>
           </div>
-          <div className="bg-white mt-4 h-96 border-customBorder">
-            {renderTaskDashboard()}
+          <div className="flex-1 bg-white border border-customBorder">
+            <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 2</h2>
           </div>
         </div>
+        {renderTaskDashboard()}
       </div>
-      <Footer />
-    </div>
+    )
+  };
+
+  const renderContent = () => {
+    return (
+      <div className="flex flex-row flex-grow bg-slate-100 min-h-0">
+        {renderUserListDrawer()}
+        {renderChartAndTaskContent()}
+      </div>
+    )
+  };
+
+  return (
+    <>
+      <div className="flex flex-col h-screen w-screen">
+        {renderHeader()}
+        {renderContent()}
+        <Footer />
+      </div>
+      {isModalOpen && renderUserProfileForm()}
+    </>
   );
 };
 

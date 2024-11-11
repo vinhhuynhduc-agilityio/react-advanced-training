@@ -3,7 +3,13 @@ import React from "react";
 // component
 import Button from "../Button/Button";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onAddUser: () => void;
+};
+
+const Header: React.FC<HeaderProps> = ({
+  onAddUser
+}) => {
   const handleAddTask = () => {
     console.log("Add a task clicked!");
   };
@@ -20,6 +26,7 @@ const Header: React.FC = () => {
           Team Progress
         </h1>
       </div>
+      <Button label="Add a user" onClick={onAddUser} />
       <Button label="Add a task" onClick={handleAddTask} />
       <Button label="Add a project" onClick={handleAddProject} />
     </header>

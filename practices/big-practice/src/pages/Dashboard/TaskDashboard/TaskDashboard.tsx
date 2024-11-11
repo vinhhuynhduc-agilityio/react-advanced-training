@@ -35,7 +35,7 @@ import { apiRequest } from "@/utils/apiRequest";
 import {
   getDateColumnSortComparator,
   getUpdatedRow
-} from "./helpers/taskDashboardHelpers";
+} from "../helpers/taskDashboardHelpers";
 
 // types
 import { FieldType } from "@/types/fieldEnums";

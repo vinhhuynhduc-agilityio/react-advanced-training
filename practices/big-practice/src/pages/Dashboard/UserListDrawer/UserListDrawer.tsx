@@ -10,7 +10,8 @@ import {
   GridApi,
   GridReadyEvent,
   RowClassParams,
-  RowClickedEvent
+  RowClickedEvent,
+  RowDoubleClickedEvent
 } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -30,6 +31,7 @@ interface UserListDrawerProps {
   sourceComponent: string | null;
   onUserSelected: (userId: string | null) => void;
   registerGridApi: (api: GridApi) => void;
+  onUserDoubleClicked: (data: UserData) => void;
 }
 
 const UserListDrawer: React.FC<UserListDrawerProps> = ({
@@ -37,7 +39,8 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
   selectedUserId,
   onUserSelected,
   sourceComponent,
-  registerGridApi
+  registerGridApi,
+  onUserDoubleClicked
 }) => {
   const gridApi = useRef<GridApi | null>(null);
 
@@ -84,6 +87,10 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
     return params.data.id;
   };
 
+  const onRowDoubleClicked = (event: RowDoubleClickedEvent) => {
+    onUserDoubleClicked(event.data);
+  };
+
   const columnDefs: ColDef<UserData>[] = [
     {
       headerName: "Persons",
@@ -103,6 +110,7 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
       rowHeight={75}
       onGridReady={onGridReady}
       getRowId={getRowId}
+      onRowDoubleClicked={onRowDoubleClicked}
     />
   );
 };

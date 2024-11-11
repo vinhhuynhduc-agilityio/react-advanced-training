@@ -10,7 +10,8 @@ import {
   GridOptions,
   GridReadyEvent,
   RowClassParams,
-  RowClickedEvent
+  RowClickedEvent,
+  RowDoubleClickedEvent
 } from "ag-grid-community";
 
 export interface DataGridProps<T> {
@@ -26,6 +27,7 @@ export interface DataGridProps<T> {
   onCellEditingStopped?: (event: CellEditingStoppedEvent) => void;
   tooltipShowDelay?: number;
   enableBrowserTooltips?: boolean;
+  onRowDoubleClicked?: (event: RowDoubleClickedEvent) => void;
 };
 
 const DataGrid = <T,>(props: DataGridProps<T>) => {

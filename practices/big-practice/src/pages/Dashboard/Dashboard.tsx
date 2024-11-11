@@ -25,10 +25,12 @@ import {
 // utils
 import { apiRequest } from "@/utils/apiRequest";
 
+// constant
+import { initialDefaultValues } from "./constant/Dashboard";
+
 // ag-grid
 import { GridApi } from "ag-grid-community";
 import { getRegisteredDate } from "./helpers/Dashboard";
-
 
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
@@ -42,6 +44,7 @@ const Dashboard: React.FC = () => {
   // State variables related to opening modal dialog
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [isEditUser, setEditUser] = React.useState(false);
+  const [defaultValues, setDefaultValues] = useState<UserData>(initialDefaultValues);
 
   // Fetch all users
   const fetchData = async () => {
@@ -151,9 +154,21 @@ const Dashboard: React.FC = () => {
   };
 
   const handleToggleUserProfileForm = () => {
+    setDefaultValues(initialDefaultValues)
     setModalOpen(true);
     setEditUser(false);
   };
+
+  const handleUserDoubleClicked = (userData: UserData) => {
+    setDefaultValues(userData);
+    setModalOpen(true);
+    setEditUser(true);
+  };
+
+  const handleOnSubmit = (data: UserFormData) =>
+    isEditUser
+      ? handleEditUser(data)
+      : handleAddNewUser(data);
 
   const handleAddNewUser = async (data: UserFormData) => {
     const avatarUrl = data.avatarUrl ?? 'https://via.placeholder.com/80';
@@ -181,6 +196,41 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const handleEditUser = async (data: UserFormData) => {
+    if (!defaultValues?.id) return;
+
+    const editUser: UserData = {
+      id: defaultValues.id,
+      fullName: data.fullName,
+      earnings: defaultValues.earnings,
+      email: data.email,
+      avatarUrl: data.avatarUrl || "https://via.placeholder.com/80",
+      registered: defaultValues.registered,
+      lastUpdated: getRegisteredDate(),
+    };
+
+    try {
+
+      // Send user update request
+      const updatedUser = await apiRequest<UserData, UserData>(
+        "PUT",
+        `http://localhost:3001/users/${defaultValues.id}`,
+        editUser
+      );
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === defaultValues.id
+            ? updatedUser
+            : user
+        )
+      );
+
+      setModalOpen(false);
+    } catch (error) {
+      console.error("Failed to edit user:", error);
+    }
+  };
 
   const renderTaskDashboard = () => {
     return (
@@ -208,6 +258,7 @@ const Dashboard: React.FC = () => {
           onUserSelected={handleUserRowSelected}
           sourceComponent={sourceComponent}
           registerGridApi={registerGridApi}
+          onUserDoubleClicked={handleUserDoubleClicked} 
         />
       </div>
     )
@@ -222,10 +273,8 @@ const Dashboard: React.FC = () => {
   };
 
   const renderUserProfileForm = () => {
-    const defaultValues = isEditUser
-      ? { name: "", email: "", avatarUrl: "" }
-      : undefined;
     const title = isEditUser ? "Edit User" : "Add User";
+    const buttonLabel = isEditUser ? "Save" : "Add";
 
     return (
       <Modal
@@ -236,8 +285,9 @@ const Dashboard: React.FC = () => {
             defaultValues={defaultValues}
             isEditUser={isEditUser}
             onClose={() => setModalOpen(false)}
-            onSubmit={handleAddNewUser}
+            onSubmit={handleOnSubmit}
             users={users}
+            buttonLabel={buttonLabel}
           />
         }
       />

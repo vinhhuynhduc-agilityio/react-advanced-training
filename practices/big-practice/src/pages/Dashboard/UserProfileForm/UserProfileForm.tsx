@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaUpload } from "react-icons/fa";
 
@@ -7,14 +7,14 @@ import {
   UserData,
   UserFormData
 } from "@/types/table";
-import { UserProfileDefaultValues } from "@/types/userProfileTypes";
 
 interface UserProfileFormProps {
-  defaultValues?: UserProfileDefaultValues | undefined;
+  defaultValues: UserData;
   isEditUser: boolean;
   onClose: () => void;
   onSubmit: (data: UserFormData) => void;
   users: UserData[];
+  buttonLabel: string
 };
 
 const UserProfileForm: React.FC<UserProfileFormProps> = ({
@@ -22,9 +22,10 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
   isEditUser,
   onClose,
   onSubmit,
-  users
+  users,
+  buttonLabel
 }) => {
-  const [avatarUrl, setAvatarPreview] = useState<string | null>(null);
+  const [avatarUrl, setAvatarPreview] = useState<string>("https://via.placeholder.com/80");
 
   const {
     register,
@@ -34,21 +35,28 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
     defaultValues,
   });
 
+  useEffect(() => {
+    if (isEditUser && defaultValues?.avatarUrl) {
+      setAvatarPreview(defaultValues.avatarUrl);
+    }
+
+  }, [isEditUser, defaultValues]);
+
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-  
+
     if (file) {
       const reader = new FileReader();
-      
+
       // Start reading the file
       reader.readAsDataURL(file);
-  
+
       // Set a handler function when the file reading process is complete
       reader.onloadend = () => {
 
         // base64 string, can be displayed directly in an <img>
         const avatarUrl = reader.result as string;
-        
+
         setAvatarPreview(avatarUrl);
       };
     }
@@ -57,12 +65,15 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
   const onSubmitWithPreview = (data: UserFormData) => {
     onSubmit({
       ...data,
-      avatarUrl,
+      avatarUrl: avatarUrl,
     });
   };
 
   const isEmailDuplicate = (email: string, users: UserData[]) => {
-    return users.some(user => user.email === email);
+    return users.some(
+      user => user.email === email
+        && user.email !== defaultValues?.email
+    );
   };
 
   const renderError = (content: string | undefined) => {
@@ -121,22 +132,14 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
 
       {/* Avatar */}
       <div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center">
           <label className="w-24 text-gray-700 font-semibold">Avatar</label>
           <div className="flex items-center space-x-4">
-            {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt="Avatar Preview"
-                className="w-24 h-24 rounded-full object-cover"
-              />
-            ) : (
-              <img
-                src="https://via.placeholder.com/80"
-                alt="Avatar"
-                className="w-24 h-24 rounded-full object-cover"
-              />
-            )}
+            <img
+              src={avatarUrl}
+              alt="Avatar Preview"
+              className="w-24 h-24 rounded-full object-cover"
+            />
             <input
               type="file"
               accept="image/*"
@@ -159,7 +162,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
       {isEditUser && (
         <div className="flex items-center">
           <label className="w-24 text-gray-700 font-semibold">Registered</label>
-          <p className="text-gray-600">May 21, 2020 17:02:06</p>
+          <p className="text-gray-600">{defaultValues.registered}</p>
         </div>
       )}
 
@@ -167,7 +170,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
       {isEditUser && (
         <div className="flex items-center">
           <label className="w-24 text-gray-700 font-semibold">Last visited</label>
-          <p className="text-gray-600">May 21, 2020 17:02:06</p>
+          <p className="text-gray-600">{defaultValues.lastUpdated}</p>
         </div>
       )}
 
@@ -184,7 +187,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
           className="bg-slate-200 text-blue-600 font-bold active:bg-slate-400"
           type="submit"
         >
-          {isEditUser ? "Save" : "Add"}
+          {buttonLabel}
         </button>
       </div>
     </form>

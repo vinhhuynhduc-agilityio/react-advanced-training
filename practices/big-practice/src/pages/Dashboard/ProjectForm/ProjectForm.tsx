@@ -27,7 +27,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   } = useForm<ProjectFormData>();
 
   const isProjectDuplicate = (name: string) => {
-    return projects.some(project => project.projectName === name);
+    return projects.some(project => project.projectName.toUpperCase() === name.toUpperCase());
   };
 
   const onSubmitForm = (data: ProjectFormData) => {

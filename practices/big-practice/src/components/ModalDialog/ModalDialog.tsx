@@ -7,7 +7,7 @@ interface ModalProps {
   content: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({
+const ModalDialog: React.FC<ModalProps> = ({
   title,
   onClose,
   content,
@@ -21,12 +21,12 @@ const Modal: React.FC<ModalProps> = ({
         className="bg-white w-full max-w-lg rounded-lg shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Header */}
+        {/* ModalDialog Header */}
         <div className="bg-blue-600 text-white p-4 rounded-t-lg">
           <h2 className="text-lg font-semibold">{title}</h2>
         </div>
 
-        {/* Modal Body */}
+        {/* ModalDialog Body */}
         <div className="p-4">{content}</div>
       </div>
     </div>, 
@@ -34,4 +34,4 @@ const Modal: React.FC<ModalProps> = ({
   );
 };
 
-export default Modal;
+export default ModalDialog;

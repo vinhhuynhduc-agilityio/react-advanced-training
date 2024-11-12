@@ -11,8 +11,9 @@ import Header from "@/components/Header/Header";
 import UserListDrawer from "./UserListDrawer/UserListDrawer";
 import TaskDashboard from "./TaskDashboard/TaskDashboard";
 import Footer from "@/components/Footer/Footer";
-import Modal from "@/components/ModalDialog/ModalDialog";
+import ModalDialog from "@/components/ModalDialog/ModalDialog";
 import UserProfileForm from "./UserProfileForm/UserProfileForm";
+import ProjectForm from "./ProjectForm/ProjectForm";
 
 // types
 import {
@@ -45,6 +46,7 @@ const Dashboard: React.FC = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [isEditUser, setEditUser] = React.useState(false);
   const [defaultValues, setDefaultValues] = useState<UserData>(initialDefaultValues);
+  const [isProjectModalOpen, setProjectModalOpen] = useState(false);
 
   // Fetch all users
   const fetchData = async () => {
@@ -142,15 +144,22 @@ const Dashboard: React.FC = () => {
       });
 
       // Update earnings to backend
-      await apiRequest<UserData, UserData>("PUT", `http://localhost:3001/users/${userId}`, {
-        ...rowNode.data,
-        earnings: `$${adjustedEarnings}`,
-      });
+      await apiRequest<UserData, UserData>(
+        "PUT",
+        `http://localhost:3001/users/${userId}`,
+        {
+          ...rowNode.data,
+          earnings: `$${adjustedEarnings}`,
+        });
     }
   };
 
   const registerGridApi = (api: GridApi) => {
     userListGridApi.current = api
+  };
+
+  const handleToggleProjectForm = () => {
+    setProjectModalOpen(true);
   };
 
   const handleToggleUserProfileForm = () => {
@@ -185,7 +194,11 @@ const Dashboard: React.FC = () => {
     };
 
     try {
-      const addedUser = await apiRequest<UserData, UserData>('POST', 'http://localhost:3001/users', newUser);
+      const addedUser = await apiRequest<UserData, UserData>(
+        'POST',
+        'http://localhost:3001/users',
+        newUser
+      );
 
       // Update state users to add new users
       setUsers((prevUsers) => [...prevUsers, addedUser]);
@@ -268,16 +281,51 @@ const Dashboard: React.FC = () => {
     return (
       <Header
         onAddUser={handleToggleUserProfileForm}
+        onAddProject={handleToggleProjectForm}
       />
     )
   };
+
+  const handleAddProject = async (newProjectName: string) => {
+    const newProject = {
+      id: uuidv4(),
+      projectName: newProjectName
+    };
+
+    try {
+      const addedProject = await apiRequest<ProjectsData, ProjectsData>(
+        'POST',
+        'http://localhost:3001/projects',
+        newProject
+      );
+
+      setProjects((prevProjects) => [...prevProjects, addedProject]);
+      setProjectModalOpen(false);
+    } catch (error) {
+      console.error("Failed to add new project:", error);
+    }
+  };
+
+  const renderProjectForm = () => (
+    <ModalDialog
+      title="Add Project"
+      onClose={() => setProjectModalOpen(false)}
+      content={
+        <ProjectForm
+          projects={projects}
+          onClose={() => setProjectModalOpen(false)}
+          onSubmit={handleAddProject}
+        />
+      }
+    />
+  );
 
   const renderUserProfileForm = () => {
     const title = isEditUser ? "Edit User" : "Add User";
     const buttonLabel = isEditUser ? "Save" : "Add";
 
     return (
-      <Modal
+      <ModalDialog
         title={title}
         onClose={() => setModalOpen(false)}
         content={
@@ -331,6 +379,7 @@ const Dashboard: React.FC = () => {
         <Footer />
       </div>
       {isModalOpen && renderUserProfileForm()}
+      {isProjectModalOpen && renderProjectForm()}
     </>
   );
 };

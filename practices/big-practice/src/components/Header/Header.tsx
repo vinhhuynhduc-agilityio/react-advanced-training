@@ -6,15 +6,14 @@ import Button from "../Button/Button";
 interface HeaderProps {
   onAddUser: () => void;
   onAddProject: () => void;
+  onAddTask: () => void;
 };
 
 const Header: React.FC<HeaderProps> = ({
   onAddUser,
-  onAddProject
+  onAddProject,
+  onAddTask
 }) => {
-  const handleAddTask = () => {
-    console.log("Add a task clicked!");
-  };
 
   return (
     <header className=" bg-white flex flex-row py-2 px-3 items-center border-2 border-customBorder">
@@ -25,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
         </h1>
       </div>
       <Button label="Add a user" onClick={onAddUser} />
-      <Button label="Add a task" onClick={handleAddTask} />
+      <Button label="Add a task" onClick={onAddTask} />
       <Button label="Add a project" onClick={onAddProject} />
     </header>
   );

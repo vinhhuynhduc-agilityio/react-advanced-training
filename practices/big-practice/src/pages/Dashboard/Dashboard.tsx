@@ -14,6 +14,7 @@ import Footer from "@/components/Footer/Footer";
 import ModalDialog from "@/components/ModalDialog/ModalDialog";
 import UserProfileForm from "./UserProfileForm/UserProfileForm";
 import ProjectForm from "./ProjectForm/ProjectForm";
+import TaskForm from "./TaskForm/TaskForm";
 
 // types
 import {
@@ -22,6 +23,7 @@ import {
   TaskData,
   UserData
 } from "@/types/table";
+import { TaskFormData } from "@/types/TaskForm";
 
 // utils
 import { apiRequest } from "@/utils/apiRequest";
@@ -31,7 +33,12 @@ import { initialDefaultValues } from "./constant/Dashboard";
 
 // ag-grid
 import { GridApi } from "ag-grid-community";
-import { getRegisteredDate } from "./helpers/Dashboard";
+
+// helpers
+import {
+  formatStartDate,
+  getRegisteredDate
+} from "./helpers/Dashboard";
 
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
@@ -47,6 +54,7 @@ const Dashboard: React.FC = () => {
   const [isEditUser, setEditUser] = React.useState(false);
   const [defaultValues, setDefaultValues] = useState<UserData>(initialDefaultValues);
   const [isProjectModalOpen, setProjectModalOpen] = useState(false);
+  const [isTaskModalOpen, setTaskModalOpen] = useState(false);
 
   // Fetch all users
   const fetchData = async () => {
@@ -244,6 +252,44 @@ const Dashboard: React.FC = () => {
       console.error("Failed to edit user:", error);
     }
   };
+    
+  const handleAddNewTask = async (data: TaskFormData) => {
+    const {
+      currency,
+      project,
+      taskName,
+      user
+    } = data;
+    const currencyValue = typeof currency === 'string'
+      ? parseInt(currency, 10)
+      : currency;
+
+    const newTask = {
+      id: uuidv4(),
+      userId: user.id,
+      projectId: project.id,
+      taskName: taskName,
+      startDate: formatStartDate(new Date()),
+      completedDate: 'incomplete',
+      currency: currencyValue,
+      status: false,
+      projectName: project.value,
+      fullName: user.value
+    };
+
+    try {
+      const addedTask = await apiRequest<TaskData, TaskData>(
+        "POST",
+        "http://localhost:3001/tasks",
+        newTask
+      );
+
+      setTasks((prevTasks) => [...prevTasks, addedTask]);
+      setTaskModalOpen(false);
+    } catch (error) {
+      console.error("Failed to add new task:", error);
+    }
+  };
 
   const renderTaskDashboard = () => {
     return (
@@ -271,7 +317,7 @@ const Dashboard: React.FC = () => {
           onUserSelected={handleUserRowSelected}
           sourceComponent={sourceComponent}
           registerGridApi={registerGridApi}
-          onUserDoubleClicked={handleUserDoubleClicked} 
+          onUserDoubleClicked={handleUserDoubleClicked}
         />
       </div>
     )
@@ -282,6 +328,7 @@ const Dashboard: React.FC = () => {
       <Header
         onAddUser={handleToggleUserProfileForm}
         onAddProject={handleToggleProjectForm}
+        onAddTask={() => setTaskModalOpen(true)}
       />
     )
   };
@@ -315,6 +362,22 @@ const Dashboard: React.FC = () => {
           projects={projects}
           onClose={() => setProjectModalOpen(false)}
           onSubmit={handleAddProject}
+        />
+      }
+    />
+  );
+
+  const renderTaskForm = () => (
+    <ModalDialog
+      title="Add Task"
+      onClose={() => setTaskModalOpen(false)}
+      content={
+        <TaskForm
+          onClose={() => setTaskModalOpen(false)}
+          onSubmit={handleAddNewTask}
+          tasks={tasks}
+          projects={projects}
+          users={users}
         />
       }
     />
@@ -380,6 +443,7 @@ const Dashboard: React.FC = () => {
       </div>
       {isModalOpen && renderUserProfileForm()}
       {isProjectModalOpen && renderProjectForm()}
+      {isTaskModalOpen && renderTaskForm()}
     </>
   );
 };

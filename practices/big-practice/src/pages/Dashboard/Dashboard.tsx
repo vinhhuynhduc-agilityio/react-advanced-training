@@ -97,9 +97,10 @@ const Dashboard: React.FC = () => {
   const updateEarningsForUsers = async (
     oldUserId: string,
     newUserId: string,
-    currency: number
+    currency: number,
+    status: boolean
   ) => {
-    if (!userListGridApi.current) return;
+    if (!userListGridApi.current || !status) return;
 
     const updates: Promise<UserData>[] = [];
 

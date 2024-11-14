@@ -47,7 +47,7 @@ interface TaskDataProps {
   projects: ProjectsData[];
   sourceComponent: string | null;
   users: UserData[];
-  updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number) => void;
+  updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number, status: boolean) => void;
   updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
   registerGridApiTaskDashboard: (api: GridApi) => void;
 };
@@ -173,14 +173,24 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         break;
 
       case FieldType.USER: {
-        const oldUserId = row.userId;
+        const {
+          userId,
+          currency,
+          status
+        } = row;
+        const oldUserId = userId;
         const newUserId = (value as UserData).id;
         currentValue = getCurrentValueByColumn[FieldType.USER](row);
         newValue = getNewValueByColumn[FieldType.USER](value as UserData);
         customValue = value;
 
         if (oldUserId !== newUserId) {
-          updateEarningsForUsers(oldUserId, newUserId, row.currency);
+          updateEarningsForUsers(
+            oldUserId,
+            newUserId,
+            currency,
+            status
+          );
         }
 
         break;

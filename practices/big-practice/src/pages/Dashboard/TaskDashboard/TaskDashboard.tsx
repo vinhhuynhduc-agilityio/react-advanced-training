@@ -49,6 +49,7 @@ interface TaskDataProps {
   users: UserData[];
   updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number) => void;
   updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
+  registerGridApiTaskDashboard: (api: GridApi) => void;
 };
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
@@ -59,7 +60,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   users,
   onTaskRowSelected,
   updateEarningsForUsers,
-  updateEarningsOnStatusChange
+  updateEarningsOnStatusChange,
+  registerGridApiTaskDashboard
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
@@ -67,6 +69,9 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
+    
+    // Pass GridApi to Dashboard via registerGridApi
+    registerGridApiTaskDashboard(params.api);
   }
 
   useEffect(() => {

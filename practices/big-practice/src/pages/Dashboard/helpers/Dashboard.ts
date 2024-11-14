@@ -1,3 +1,5 @@
+import { GridApi } from "ag-grid-community";
+
 // Returns the current date and time as a formatted string in the format "Nov 10, 2024 20:54:10".
 const getRegisteredDate = () =>
   `${new Date().toLocaleDateString("en-US", {
@@ -20,7 +22,28 @@ const formatStartDate = (date: Date): string => {
   });
 };
 
+/**
+ * Handles scrolling to new user or task
+ * Use setTimeOut to ensure `getRowNode` is called
+ * after the table has re-rendered and refreshed the data
+ */
+const handlesScrollingToNewUserOrTask = (
+  id: string,
+  gridApi: GridApi
+) => {
+  setTimeout(() => {
+    if (gridApi) {
+      const rowNode = gridApi.getRowNode(id);
+
+      if (rowNode) {
+        gridApi.ensureNodeVisible(rowNode, 'middle');
+      }
+    }
+  }, 100);
+};
+
 export {
   getRegisteredDate,
-  formatStartDate
+  formatStartDate,
+  handlesScrollingToNewUserOrTask
 };

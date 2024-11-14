@@ -37,11 +37,13 @@ import { GridApi } from "ag-grid-community";
 // helpers
 import {
   formatStartDate,
-  getRegisteredDate
+  getRegisteredDate,
+  handlesScrollingToNewUserOrTask
 } from "./helpers/Dashboard";
 
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
+  const taskDashboardGridApi = useRef<GridApi | null>(null);
 
   const [users, setUsers] = useState<UserData[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>([]);
@@ -75,6 +77,10 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const registerGridApiTaskDashboard = (api: GridApi) => {
+    taskDashboardGridApi.current = api
+  };
 
   // Function to handle when row in TaskDashboard is selected
   const handleTaskRowSelected = (userId: string | null) => {
@@ -252,7 +258,7 @@ const Dashboard: React.FC = () => {
       console.error("Failed to edit user:", error);
     }
   };
-    
+
   const handleAddNewTask = async (data: TaskFormData) => {
     const {
       currency,
@@ -286,6 +292,14 @@ const Dashboard: React.FC = () => {
 
       setTasks((prevTasks) => [...prevTasks, addedTask]);
       setTaskModalOpen(false);
+
+      // Handles scrolling to new user
+      if (taskDashboardGridApi.current) {
+        handlesScrollingToNewUserOrTask(newTask.id, taskDashboardGridApi.current)
+      }
+
+      // handle selected for new task
+      handleTaskRowSelected(newTask.userId);
     } catch (error) {
       console.error("Failed to add new task:", error);
     }
@@ -303,6 +317,7 @@ const Dashboard: React.FC = () => {
           sourceComponent={sourceComponent}
           updateEarningsForUsers={updateEarningsForUsers}
           updateEarningsOnStatusChange={updateEarningsOnStatusChange}
+          registerGridApiTaskDashboard={registerGridApiTaskDashboard}
         />
       </div>
     )

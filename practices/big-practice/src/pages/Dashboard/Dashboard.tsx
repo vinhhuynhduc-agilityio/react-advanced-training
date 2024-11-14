@@ -219,6 +219,14 @@ const Dashboard: React.FC = () => {
       setUsers((prevUsers) => [...prevUsers, addedUser]);
 
       setModalOpen(false);
+
+      // Handles scrolling to new user
+      if (userListGridApi.current) {
+        handlesScrollingToNewUserOrTask(newUser.id, userListGridApi.current)
+      }
+
+      // handle selected for new user
+      handleUserRowSelected(newUser.id);
     } catch (error) {
       console.error("Failed to add new user:", error);
     }

@@ -85,9 +85,10 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       && selectedUserId
       && gridApi.current
     ) {
-      const idTask = tasksRef.current.find(
-        item => item.userId === selectedUserId
-      )?.id;
+      const idTask = tasksRef.current
+        .slice()
+        .reverse()
+        .find(item => item.userId === selectedUserId)?.id;
 
       if (idTask) {
         const rowNode = gridApi.current.getRowNode(idTask);

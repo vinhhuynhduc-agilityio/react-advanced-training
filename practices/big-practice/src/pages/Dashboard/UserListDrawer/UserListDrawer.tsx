@@ -47,7 +47,7 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
 
-    // Pass GridApi to App via registerGridApi
+    // Pass GridApi to Dashboard via registerGridApi
     registerGridApi(params.api);
   }
 

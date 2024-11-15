@@ -16,6 +16,7 @@ import UserProfileForm from "./UserProfileForm/UserProfileForm";
 import ProjectForm from "./ProjectForm/ProjectForm";
 import TaskForm from "./TaskForm/TaskForm";
 import ChartTotalTasksCompleted from "./ChartTotalTasksCompleted/ChartTotalTasksCompleted";
+import ChartTotalTasksByProjects from "./ChartTotalTasksByProjects/ChartTotalTasksByProjects";
 
 // types
 import {
@@ -434,19 +435,17 @@ const Dashboard: React.FC = () => {
   const renderChartAndTaskContent = () => {
     return (
       <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
-        <div className="bg-white border border-customBorder h-[300px]">
-          <ChartTotalTasksCompleted
-            tasks={tasks}
-          />
-        </div>
-
-        <div className="flex flex-row bg-slate-100 mt-4 h-80">
+        <ChartTotalTasksCompleted
+          tasks={tasks}
+        />
+        <div className="flex flex-row bg-slate-100 mt-4 h-[300px]">
           <div className="flex-1 mr-4 bg-white border border-customBorder">
             <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 1</h2>
           </div>
-          <div className="flex-1 bg-white border border-customBorder">
-            <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 2</h2>
-          </div>
+          <ChartTotalTasksByProjects
+            tasks={tasks}
+            projects={projects}
+          />
         </div>
         {renderTaskDashboard()}
       </div>

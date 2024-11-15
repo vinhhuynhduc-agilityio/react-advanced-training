@@ -11,55 +11,60 @@ import {
 } from "ag-charts-community";
 
 // types
-import { TaskData } from "@/types/table";
+import { ProjectsData, TaskData } from "@/types/table";
 
 // helpers
-import { formatDataForChartTotalTasks } from "../helpers/ChartTasks";
+import {
+  formatDataForChartTotalTasksByProjects
+} from "../helpers/ChartTasks";
 
-interface ChartTotalTasksCompletedProps {
+interface ChartTotalTasksByProjectsProps {
   tasks: TaskData[];
+  projects: ProjectsData[];
 };
 
-const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({ tasks }) => {
+const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = ({
+  tasks,
+  projects
+}) => {
   const formattedData = useMemo(
-    () => formatDataForChartTotalTasks(tasks),
-    [tasks]
+    () => formatDataForChartTotalTasksByProjects(tasks, projects),
+    [tasks, projects]
   );
 
   const renderTooltipChart = (params: AgBarSeriesTooltipRendererParams): AgTooltipRendererResult => {
-    const month = params.datum[params.xKey];
     const tasksCompleted = params.datum[params.yKey];
 
     return {
-      title: `<div style="text-align: center; line-height: 1.5">
-                <div>${month}</div>
-                <div>${tasksCompleted} tasks completed</div>
-              </div>`,
+      title: tasksCompleted,
       content: '',
-      backgroundColor: '#181d1f'
+      backgroundColor: '#181d1f',
     };
   };
 
+  // Configure chart with bar series
   const [options, setOptions] = useState<AgChartOptions>({
     title: {
-      text: "Total tasks completed",
+      text: "Total tasks by projects",
     },
     data: formattedData,
     series: [
       {
-        type: "line",
-        xKey: "month",
+        type: "bar",
+        xKey: "projectName",
         yKey: "2023",
         yName: "2023",
+        direction: "horizontal",
         tooltip: {
           renderer: renderTooltipChart
         },
       },
       {
-        type: "line",
-        xKey: "month",
+        type: "bar",
+        xKey: "projectName",
         yKey: "2024",
         yName: "2024",
+        direction: "horizontal",
         tooltip: {
           renderer: renderTooltipChart
         },
@@ -79,6 +84,7 @@ const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({ tas
     },
   });
 
+  // Update chart data when formattedData changes
   useEffect(() => {
     setOptions((prevOptions) => ({
       ...prevOptions,
@@ -87,10 +93,10 @@ const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({ tas
   }, [formattedData]);
 
   return (
-    <div className="bg-white border border-customBorder h-[300px]">
+    <div className="flex-1 bg-white border border-customBorder">
       <AgCharts options={options} />
     </div>
-  )
+  );
 };
 
-export default ChartTotalTasksCompleted;
+export default ChartTotalTasksByProjects;

@@ -1,5 +1,11 @@
-import { FormattedMonthData } from "@/types/chartTypes";
-import { TaskData } from "@/types/table";
+import {
+  FormattedMonthData,
+  FormattedProjectData
+} from "@/types/chartTypes";
+import {
+  ProjectsData,
+  TaskData
+} from "@/types/table";
 
 /**
  * @returns {FormattedMonthData[]} Array containing task completion data by month,
@@ -37,6 +43,42 @@ const formatDataForChartTotalTasks = (tasks: TaskData[]): FormattedMonthData[] =
   return Object.values(months);
 };
 
+const formatDataForChartTotalTasksByProjects = (
+  tasks: TaskData[],
+  projects: ProjectsData[]
+): FormattedProjectData[] => {
+
+  // Initialize the result with all projects from the `projects` parameter, and set 0 for both 2023 and 2024
+  const result = projects.reduce((acc, project) => {
+    acc[project.projectName] = {
+      projectName: project.projectName,
+      2023: 0,
+      2024: 0
+    };
+
+    return acc;
+  }, {} as { [key: string]: FormattedProjectData });
+
+  // Update the number of tasks per year for projects
+  tasks.forEach(task => {
+    const {
+      projectName,
+      startDate
+    } = task;
+    const year = parseInt(`20${startDate.split(" ")[2]}`, 10);
+
+    if (
+      result[projectName] &&
+      (year === 2023 || year === 2024)
+    ) {
+      result[projectName][year]++;
+    }
+  });
+
+  return Object.values(result);
+};
+
 export {
-  formatDataForChartTotalTasks
+  formatDataForChartTotalTasks,
+  formatDataForChartTotalTasksByProjects
 };

@@ -13,12 +13,12 @@ const getRegisteredDate = () =>
     hour12: false,
   })}`;
 
-//  Format a given Date object into a string with the format "24 Jan 2023".
+//  Format a given Date object into a string with the format "24 Jan 23".
 const formatStartDate = (date: Date): string => {
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
-    year: "numeric",
+    year: "2-digit",
   });
 };
 

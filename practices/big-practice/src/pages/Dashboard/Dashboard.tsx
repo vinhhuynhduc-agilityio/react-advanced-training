@@ -15,6 +15,7 @@ import ModalDialog from "@/components/ModalDialog/ModalDialog";
 import UserProfileForm from "./UserProfileForm/UserProfileForm";
 import ProjectForm from "./ProjectForm/ProjectForm";
 import TaskForm from "./TaskForm/TaskForm";
+import ChartTotalTasksCompleted from "./ChartTotalTasksCompleted/ChartTotalTasksCompleted";
 
 // types
 import {
@@ -327,6 +328,7 @@ const Dashboard: React.FC = () => {
           updateEarningsForUsers={updateEarningsForUsers}
           updateEarningsOnStatusChange={updateEarningsOnStatusChange}
           registerGridApiTaskDashboard={registerGridApiTaskDashboard}
+          setTasks={setTasks}
         />
       </div>
     )
@@ -432,8 +434,10 @@ const Dashboard: React.FC = () => {
   const renderChartAndTaskContent = () => {
     return (
       <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
-        <div className="bg-white border border-customBorder h-96">
-          <h2 className="text-gray-600 text-xl font-semibold">Row 1: Column 1</h2>
+        <div className="bg-white border border-customBorder h-[300px]">
+          <ChartTotalTasksCompleted
+            tasks={tasks}
+          />
         </div>
 
         <div className="flex flex-row bg-slate-100 mt-4 h-80">

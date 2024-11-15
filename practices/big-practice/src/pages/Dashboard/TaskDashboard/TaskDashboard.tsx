@@ -50,6 +50,7 @@ interface TaskDataProps {
   updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number, status: boolean) => void;
   updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
   registerGridApiTaskDashboard: (api: GridApi) => void;
+  setTasks: React.Dispatch<React.SetStateAction<TaskData[]>>;
 };
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
@@ -61,7 +62,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   onTaskRowSelected,
   updateEarningsForUsers,
   updateEarningsOnStatusChange,
-  registerGridApiTaskDashboard
+  registerGridApiTaskDashboard,
+  setTasks
 }) => {
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
@@ -213,6 +215,19 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         customValue = newValue;
 
         updateEarningsOnStatusChange(userId, currency, status);
+
+        // Update tasks state in Dashboard
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === row.id
+              ? {
+                ...task,
+                status,
+                completedDate
+              }
+              : task
+          )
+        );
         break;
       }
 

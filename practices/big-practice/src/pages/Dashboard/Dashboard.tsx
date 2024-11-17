@@ -17,6 +17,7 @@ import ProjectForm from "./ProjectForm/ProjectForm";
 import TaskForm from "./TaskForm/TaskForm";
 import ChartTotalTasksCompleted from "./ChartTotalTasksCompleted/ChartTotalTasksCompleted";
 import ChartTotalTasksByProjects from "./ChartTotalTasksByProjects/ChartTotalTasksByProjects";
+import ChartIndividualEmployeeProgress from "./ChartIndividualEmployeeProgress/ChartIndividualEmployeeProgress";
 
 // types
 import {
@@ -316,6 +317,26 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const handleAddProject = async (newProjectName: string) => {
+    const newProject = {
+      id: uuidv4(),
+      projectName: newProjectName
+    };
+
+    try {
+      const addedProject = await apiRequest<ProjectsData, ProjectsData>(
+        'POST',
+        'http://localhost:3001/projects',
+        newProject
+      );
+
+      setProjects((prevProjects) => [...prevProjects, addedProject]);
+      setProjectModalOpen(false);
+    } catch (error) {
+      console.error("Failed to add new project:", error);
+    }
+  };
+
   const renderTaskDashboard = () => {
     return (
       <div className="bg-white mt-4 h-96 border-customBorder">
@@ -358,26 +379,6 @@ const Dashboard: React.FC = () => {
         onAddTask={() => setTaskModalOpen(true)}
       />
     )
-  };
-
-  const handleAddProject = async (newProjectName: string) => {
-    const newProject = {
-      id: uuidv4(),
-      projectName: newProjectName
-    };
-
-    try {
-      const addedProject = await apiRequest<ProjectsData, ProjectsData>(
-        'POST',
-        'http://localhost:3001/projects',
-        newProject
-      );
-
-      setProjects((prevProjects) => [...prevProjects, addedProject]);
-      setProjectModalOpen(false);
-    } catch (error) {
-      console.error("Failed to add new project:", error);
-    }
   };
 
   const renderProjectForm = () => (
@@ -438,10 +439,12 @@ const Dashboard: React.FC = () => {
         <ChartTotalTasksCompleted
           tasks={tasks}
         />
-        <div className="flex flex-row bg-slate-100 mt-4 h-[300px]">
-          <div className="flex-1 mr-4 bg-white border border-customBorder">
-            <h2 className="text-gray-600 text-xl font-semibold">Row 2: Column 1</h2>
-          </div>
+        <div className="flex flex-row bg-slate-100 mt-4 h-[302px]">
+          <ChartIndividualEmployeeProgress
+            tasks={tasks}
+            users={users}
+            selectedUserId={selectedUserId}
+          />
           <ChartTotalTasksByProjects
             tasks={tasks}
             projects={projects}

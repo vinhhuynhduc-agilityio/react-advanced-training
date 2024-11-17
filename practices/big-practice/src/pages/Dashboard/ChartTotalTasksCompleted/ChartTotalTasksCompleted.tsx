@@ -87,7 +87,7 @@ const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({ tas
   }, [formattedData]);
 
   return (
-    <div className="bg-white border border-customBorder h-[300px]">
+    <div className="flex-1 bg-white border border-customBorder h-[302px]">
       <AgCharts options={options} />
     </div>
   )

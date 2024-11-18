@@ -469,7 +469,9 @@ const Dashboard: React.FC = () => {
       <div className="flex flex-col h-screen w-screen">
         {renderHeader()}
         {renderContent()}
-        <Footer />
+        <Footer
+          content='Team Progress App'
+        />
       </div>
       {isModalOpen && renderUserProfileForm()}
       {isProjectModalOpen && renderProjectForm()}

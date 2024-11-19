@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 
 interface ModalProps {
   title: string;
@@ -12,14 +12,16 @@ const ModalDialog: React.FC<ModalProps> = ({
   onClose,
   content,
 }) => {
-  return ReactDOM.createPortal(
+  return createPortal(
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       onClick={onClose}
+      data-testid="modal-overlay"
     >
       <div
         className="bg-white w-full max-w-lg rounded-lg shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
+        data-testid="modal-content"
       >
         {/* ModalDialog Header */}
         <div className="bg-blue-600 text-white p-4 rounded-t-lg">
@@ -29,7 +31,7 @@ const ModalDialog: React.FC<ModalProps> = ({
         {/* ModalDialog Body */}
         <div className="p-4">{content}</div>
       </div>
-    </div>, 
+    </div>,
     document.body
   );
 };

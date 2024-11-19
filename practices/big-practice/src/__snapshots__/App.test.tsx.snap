@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Component matches snapshot 1`] = `<div />`;
+
+exports[`App Component matches snapshot for App 1`] = `
+<div>
+  <div
+    data-testid="dashboard-component"
+  >
+    Mocked Dashboard
+  </div>
+</div>
+`;

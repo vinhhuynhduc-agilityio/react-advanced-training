@@ -2,8 +2,18 @@ import { render, screen } from '@testing-library/react';
 import Footer from './Footer';
 
 describe('Footer Component', () => {
+  // Helper function to render the Footer component
+  const renderFooter = (props = { content: 'Footer content' }) => {
+    return render(<Footer {...props} />);
+  };
+
+  it('matches snapshot for default state', () => {
+    const { container } = renderFooter();
+    expect(container).toMatchSnapshot();
+  });
+
   it('should render the footer element', () => {
-    render(<Footer />); // Render the Footer component
+    renderFooter(); // Render the Footer component
 
     // Find the footer element in the DOM
     const footerElement = screen.getByRole('contentinfo');
@@ -13,7 +23,7 @@ describe('Footer Component', () => {
   });
 
   it('should have the correct class names for background and height', () => {
-    render(<Footer />);
+    renderFooter();
 
     // Get the footer element
     const footerElement = screen.getByRole('contentinfo');

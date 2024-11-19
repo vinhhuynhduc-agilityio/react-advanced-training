@@ -6,7 +6,7 @@ import UserListDrawer from './UserListDrawer'; // Import the component to test
 const users = [
   {
     "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
-    "fullName": "John Doe",
+    "fullName": "Joe Bloggs",
     "earnings": "$5000",
     "email": "john@example.com",
     "avatarUrl": "https://i.pravatar.cc/150?img=1",
@@ -25,10 +25,21 @@ const users = [
 ];
 
 describe('UserListDrawer component', () => {
+  it('matches snapshot for default state', () => {
+    const { container } = render(
+      <UserListDrawer
+        users={users}
+        selectedUserId={null}
+        onUserSelected={jest.fn()}
+        sourceComponent=''
+        registerGridApi={jest.fn()}
+        onUserDoubleClicked={jest.fn()}
+      />
+    );
+    expect(container).toMatchSnapshot();
+  });
 
-  // Test 1: Check if the user data is rendered correctly in the grid
   it('renders user data correctly', () => {
-    // Render the UserListDrawer component with the mock users data
     render(
       <UserListDrawer
         users={users}
@@ -36,11 +47,12 @@ describe('UserListDrawer component', () => {
         onUserSelected={jest.fn()}
         sourceComponent=''
         registerGridApi={jest.fn()}
+        onUserDoubleClicked={jest.fn()}
       />
     );
 
     // Check if the user names are rendered inside the ag-grid
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Joe Bloggs')).toBeInTheDocument();
     expect(screen.getByText('Jane Smith')).toBeInTheDocument();
   });
 });

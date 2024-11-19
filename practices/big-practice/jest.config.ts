@@ -14,6 +14,7 @@ const jestConfig: JestConfigWithTsJest = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '^ag-grid-community/styles': '<rootDir>/__mocks__/styleMock.ts',
+    "^clsx$": "<rootDir>/__mocks__/clsx.ts",
   },
   transformIgnorePatterns: [
     'node_modules/(?!ag-grid-community)',

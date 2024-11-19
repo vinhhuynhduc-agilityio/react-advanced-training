@@ -23,6 +23,11 @@ describe("IconRenderer Component", () => {
     jest.clearAllMocks();
   });
 
+  it('matches snapshot for default state', () => {
+    const { container } = renderComponent();
+    expect(container).toMatchSnapshot();
+  });
+
   it("should render FaClock icon when isComplete is false", () => {
     renderComponent();
     const iconElement = screen.getByTestId("icon-clock");

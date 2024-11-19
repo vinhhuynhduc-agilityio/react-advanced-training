@@ -21,6 +21,11 @@ const mockProps: DataGridProps<UserData> = {
 };
 
 describe('DataGrid Component', () => {
+  it('matches snapshot for default state', () => {
+    const { container } = render(<DataGrid {...mockProps} />);
+    expect(container).toMatchSnapshot();
+  });
+
   it('should render AgGridReact component', () => {
     render(<DataGrid {...mockProps} />);
 

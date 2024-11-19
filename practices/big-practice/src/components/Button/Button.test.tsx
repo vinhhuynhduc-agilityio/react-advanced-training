@@ -4,6 +4,15 @@ import '@testing-library/jest-dom'; // Import Jest DOM matchers
 import Button from './Button';
 
 describe('Button component', () => {
+  it('matches snapshot for default state', () => {
+    const { container } = render(
+      <Button
+        label="Click me"
+        onClick={() => { }} />
+    );
+    expect(container).toMatchSnapshot();
+  });
+
   it('renders the correct label', () => {
     // Render the Button component with a label "Click me"
     render(<Button label="Click me" onClick={() => { }} />);

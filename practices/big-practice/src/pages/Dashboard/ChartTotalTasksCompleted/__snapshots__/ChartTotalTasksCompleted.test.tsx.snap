@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartTotalTasksCompleted Component matches snapshot for mocked chart 1`] = `
+<div>
+  <div
+    class="flex-1 bg-white border border-customBorder h-[302px]"
+  >
+    <div
+      data-testid="mocked-chart"
+    />
+  </div>
+</div>
+`;
+
+exports[`ChartTotalTasksCompleted Component matches snapshot for rendered chart 1`] = `
+<div>
+  <div
+    class="flex-1 bg-white border border-customBorder h-[302px]"
+    data-testid="total-tasks-chart"
+  >
+    <div>
+      <div
+        class="ag-charts-wrapper ag-charts-styles"
+        data-ag-charts=""
+        data-animating="false"
+        role="presentation"
+        style="width: 300px; height: 300px;"
+      >
+        <div
+          class="ag-charts-canvas-center"
+          role="presentation"
+        >
+          <div
+            class="ag-charts-canvas-container"
+            role="presentation"
+          >
+            <div
+              aria-hidden="true"
+              class="ag-charts-canvas"
+              role="presentation"
+            >
+              <canvas
+                height="300"
+                style="width: 600px; height: 300px;"
+                width="600"
+              />
+            </div>
+            <div
+              class="ag-charts-canvas-proxy"
+              role="figure"
+            >
+              <div
+                aria-labelledby="SeriesAreaManager-2-aria-label"
+                class="ag-charts-series-area"
+                role="img"
+                tabindex="-1"
+              >
+                <div
+                  class="ag-charts-focus-indicator"
+                >
+                  <svg>
+                    <path />
+                  </svg>
+                </div>
+                <div
+                  id="SeriesAreaManager-2-aria-label"
+                  style="display: none;"
+                />
+              </div>
+            </div>
+            <div
+              class="ag-charts-canvas-overlay"
+              role="presentation"
+            >
+              <div
+                class="ag-chart-tooltip"
+              />
+              <div
+                class="ag-chart-overlay"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

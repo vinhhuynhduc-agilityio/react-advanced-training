@@ -5,7 +5,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 // Mock Data
 const mockUserData = {
   "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
-  "fullName": "John Doe",
+  "fullName": "Joe Bloggs",
   "earnings": "$11500",
   "email": "john@example.com",
   "avatarUrl": "https://i.pravatar.cc/150?img=1",

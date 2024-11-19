@@ -9,7 +9,7 @@ import TaskForm from '@/pages/Dashboard/TaskForm/TaskForm';
 const mockUsers = [
   {
     id: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-    fullName: 'John Doe',
+    fullName: 'Joe Bloggs',
     earnings: '$11500',
     email: 'john@example.com',
     avatarUrl: 'https://i.pravatar.cc/150?img=1',
@@ -43,7 +43,7 @@ const mockTasks = [
     currency: 2000,
     status: true,
     projectName: 'Failure Testing',
-    fullName: 'John Doe',
+    fullName: 'Joe Bloggs',
   },
   {
     id: '0f9fd8b0-8f5c-4a25-b301-eebc6d5700d5',

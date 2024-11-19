@@ -15,8 +15,8 @@ export const PersonRenderer = (params: ICellRendererParams<UserData>) => {
         className="w-14 h-14 rounded-full mr-4"
       />
       <div className="flex flex-col">
-        <div className="text-base font-medium">{fullName}</div>
-        <div className="text-base font-normal">{earnings}</div>
+        <div className="text-base font-medium text-[#313131]">{fullName}</div>
+        <div className="text-base font-normal text-[#475466]">{earnings}</div>
       </div>
     </div>
   );

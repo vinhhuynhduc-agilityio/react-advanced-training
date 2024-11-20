@@ -90,8 +90,13 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
       {/* Full Name */}
       <div>
         <div className="flex items-center">
-          <label className="w-24 text-gray-700 font-semibold">Full Name</label>
+          <label
+            htmlFor="fullNameUserProfileForm"
+            className="w-24 text-gray-700 font-semibold">
+            Full Name
+          </label>
           <input
+            id="fullNameUserProfileForm"
             className="flex-1 p-2 border border-gray-300 rounded-md bg-white text-black"
             type="text"
             {...register("fullName", {
@@ -110,8 +115,14 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
       {/* Email */}
       <div>
         <div className="flex items-center">
-          <label className="w-24 text-gray-700 font-semibold">Email</label>
+          <label
+            className="w-24 text-gray-700 font-semibold"
+            htmlFor="emailUserProfileForm"
+          >
+            Email
+          </label>
           <input
+            id="emailUserProfileForm"
             className="flex-1 p-2 border border-gray-300 rounded-md bg-white text-black"
             type="email"
             {...register("email", {
@@ -133,7 +144,12 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
       {/* Avatar */}
       <div>
         <div className="flex items-center">
-          <label className="w-24 text-gray-700 font-semibold">Avatar</label>
+          <label
+            className="w-24 text-gray-700 font-semibold"
+            htmlFor="avatar-upload"
+          >
+            Avatar
+          </label>
           <div className="flex items-center space-x-4">
             <img
               src={avatarUrl}
@@ -149,7 +165,10 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
               className="hidden"
               id="avatar-upload"
             />
-            <label htmlFor="avatar-upload" className="cursor-pointer text-blue-500 flex items-center space-x-1">
+            <label
+              htmlFor="avatar-upload"
+              className="cursor-pointer text-blue-500 flex items-center space-x-1"
+            >
               <FaUpload />
               <span>Upload new photo</span>
             </label>

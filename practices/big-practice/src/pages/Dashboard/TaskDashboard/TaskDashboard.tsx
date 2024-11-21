@@ -71,7 +71,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
-    
+
     // Pass GridApi to Dashboard via registerGridApi
     registerGridApiTaskDashboard(params.api);
   }
@@ -173,6 +173,19 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         currentValue = getCurrentValueByColumn[FieldType.PROJECT](row);
         newValue = getNewValueByColumn[FieldType.PROJECT](value as ProjectsData);
         customValue = value;
+
+        // Update tasks state in Dashboard
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === row.id
+              ? {
+                ...task,
+                projectId: getNewValueByColumn[FieldType.TASK_NAME](value as string),
+                projectName: (value as ProjectsData).projectName,
+              }
+              : task
+          )
+        );
         break;
 
       case FieldType.USER: {
@@ -196,6 +209,18 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
           );
         }
 
+        // Update tasks state in Dashboard
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === row.id
+              ? {
+                ...task,
+                userId: newUserId,
+                fullName: (value as UserData).fullName,
+              }
+              : task
+          )
+        );
         break;
       }
 

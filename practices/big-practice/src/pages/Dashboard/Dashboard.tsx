@@ -68,9 +68,9 @@ const Dashboard: React.FC = () => {
       tasksData,
       projects
     ] = await Promise.all([
-      apiRequest<UserData[], UserData[]>('GET', 'http://localhost:3001/users'),
-      apiRequest<TaskData[], TaskData[]>('GET', 'http://localhost:3001/tasks'),
-      apiRequest<ProjectsData[], ProjectsData[]>('GET', 'http://localhost:3001/projects'),
+      apiRequest<UserData[], UserData[]>('GET', `${import.meta.env.VITE_BASE_API_URL}/users`),
+      apiRequest<TaskData[], TaskData[]>('GET', `${import.meta.env.VITE_BASE_API_URL}/tasks`),
+      apiRequest<ProjectsData[], ProjectsData[]>('GET', `${import.meta.env.VITE_BASE_API_URL}/projects`),
     ]);
     setUsers(usersData);
     setTasks(tasksData);
@@ -122,7 +122,7 @@ const Dashboard: React.FC = () => {
         });
 
         updates.push(
-          apiRequest<UserData, UserData>("PUT", `http://localhost:3001/users/${userId}`, {
+          apiRequest<UserData, UserData>("PUT", `${import.meta.env.VITE_BASE_API_URL}/users/${userId}`, {
             ...rowNode.data,
             earnings: `$${adjustedEarnings}`,
           })
@@ -164,7 +164,7 @@ const Dashboard: React.FC = () => {
       // Update earnings to backend
       await apiRequest<UserData, UserData>(
         "PUT",
-        `http://localhost:3001/users/${userId}`,
+        `${import.meta.env.VITE_BASE_API_URL}/users/${userId}`,
         {
           ...rowNode.data,
           earnings: `$${adjustedEarnings}`,
@@ -214,7 +214,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedUser = await apiRequest<UserData, UserData>(
         'POST',
-        'http://localhost:3001/users',
+        `${import.meta.env.VITE_BASE_API_URL}/users`,
         newUser
       );
 
@@ -253,7 +253,7 @@ const Dashboard: React.FC = () => {
       // Send user update request
       const updatedUser = await apiRequest<UserData, UserData>(
         "PUT",
-        `http://localhost:3001/users/${defaultValues.id}`,
+        `${import.meta.env.VITE_BASE_API_URL}/users/${defaultValues.id}`,
         editUser
       );
 
@@ -298,7 +298,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedTask = await apiRequest<TaskData, TaskData>(
         "POST",
-        "http://localhost:3001/tasks",
+        `${import.meta.env.VITE_BASE_API_URL}/tasks`,
         newTask
       );
 
@@ -326,7 +326,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedProject = await apiRequest<ProjectsData, ProjectsData>(
         'POST',
-        'http://localhost:3001/projects',
+        `${import.meta.env.VITE_BASE_API_URL}/projects`,
         newProject
       );
 

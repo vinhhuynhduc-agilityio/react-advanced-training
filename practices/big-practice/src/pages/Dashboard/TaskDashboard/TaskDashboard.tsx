@@ -126,7 +126,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     // Call API to update row in the backend
     await apiRequest<TaskData, TaskData>(
       'PUT',
-      `http://localhost:3001/tasks/${row.id}`,
+      `${import.meta.env.VITE_BASE_API_URL}/tasks/${row.id}`,
       updatedRow
     );
 

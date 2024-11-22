@@ -44,6 +44,8 @@ import {
   handlesScrollingToNewUserOrTask
 } from "./helpers/Dashboard";
 
+const API_BASE_URL = import.meta.env.VITE_BASE_API_URL;
+
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
   const taskDashboardGridApi = useRef<GridApi | null>(null);
@@ -68,9 +70,9 @@ const Dashboard: React.FC = () => {
       tasksData,
       projects
     ] = await Promise.all([
-      apiRequest<UserData[], UserData[]>('GET', `${import.meta.env.VITE_BASE_API_URL}/users`),
-      apiRequest<TaskData[], TaskData[]>('GET', `${import.meta.env.VITE_BASE_API_URL}/tasks`),
-      apiRequest<ProjectsData[], ProjectsData[]>('GET', `${import.meta.env.VITE_BASE_API_URL}/projects`),
+      apiRequest<UserData[], UserData[]>('GET', `${API_BASE_URL}/users`),
+      apiRequest<TaskData[], TaskData[]>('GET', `${API_BASE_URL}/tasks`),
+      apiRequest<ProjectsData[], ProjectsData[]>('GET', `${API_BASE_URL}/projects`),
     ]);
     setUsers(usersData);
     setTasks(tasksData);
@@ -122,7 +124,7 @@ const Dashboard: React.FC = () => {
         });
 
         updates.push(
-          apiRequest<UserData, UserData>("PUT", `${import.meta.env.VITE_BASE_API_URL}/users/${userId}`, {
+          apiRequest<UserData, UserData>("PUT", `${API_BASE_URL}/users/${userId}`, {
             ...rowNode.data,
             earnings: `$${adjustedEarnings}`,
           })
@@ -164,7 +166,7 @@ const Dashboard: React.FC = () => {
       // Update earnings to backend
       await apiRequest<UserData, UserData>(
         "PUT",
-        `${import.meta.env.VITE_BASE_API_URL}/users/${userId}`,
+        `${API_BASE_URL}/users/${userId}`,
         {
           ...rowNode.data,
           earnings: `$${adjustedEarnings}`,
@@ -214,7 +216,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedUser = await apiRequest<UserData, UserData>(
         'POST',
-        `${import.meta.env.VITE_BASE_API_URL}/users`,
+        `${API_BASE_URL}/users`,
         newUser
       );
 
@@ -253,7 +255,7 @@ const Dashboard: React.FC = () => {
       // Send user update request
       const updatedUser = await apiRequest<UserData, UserData>(
         "PUT",
-        `${import.meta.env.VITE_BASE_API_URL}/users/${defaultValues.id}`,
+        `${API_BASE_URL}/users/${defaultValues.id}`,
         editUser
       );
 
@@ -298,7 +300,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedTask = await apiRequest<TaskData, TaskData>(
         "POST",
-        `${import.meta.env.VITE_BASE_API_URL}/tasks`,
+        `${API_BASE_URL}/tasks`,
         newTask
       );
 
@@ -326,7 +328,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedProject = await apiRequest<ProjectsData, ProjectsData>(
         'POST',
-        `${import.meta.env.VITE_BASE_API_URL}/projects`,
+        `${API_BASE_URL}/projects`,
         newProject
       );
 

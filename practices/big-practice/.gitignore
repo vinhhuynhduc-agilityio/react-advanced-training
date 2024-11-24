@@ -22,10 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-# db.json
+db.json
 *storybook.log
 coverage/
 
 # environment variables
 .env.local
 .env.production
+storybook-static/

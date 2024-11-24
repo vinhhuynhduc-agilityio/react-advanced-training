@@ -1,5 +1,6 @@
 import React,
 {
+  useCallback,
   useEffect,
   useRef,
   useState
@@ -178,15 +179,19 @@ const Dashboard: React.FC = () => {
     userListGridApi.current = api
   };
 
-  const handleToggleProjectForm = () => {
+  const handleToggleProjectForm = useCallback(() => {
     setProjectModalOpen(true);
-  };
+  }, []);
 
-  const handleToggleUserProfileForm = () => {
-    setDefaultValues(initialDefaultValues)
+  const handleToggleTaskForm = useCallback(() => {
+    setTaskModalOpen(true);
+  }, []);
+
+  const handleToggleUserProfileForm = useCallback(() => {
+    setDefaultValues(initialDefaultValues);
     setModalOpen(true);
     setEditUser(false);
-  };
+  }, []);
 
   const handleUserDoubleClicked = (userData: UserData) => {
     setDefaultValues(userData);
@@ -378,7 +383,7 @@ const Dashboard: React.FC = () => {
       <Header
         onAddUser={handleToggleUserProfileForm}
         onAddProject={handleToggleProjectForm}
-        onAddTask={() => setTaskModalOpen(true)}
+        onAddTask={handleToggleTaskForm}
       />
     )
   };

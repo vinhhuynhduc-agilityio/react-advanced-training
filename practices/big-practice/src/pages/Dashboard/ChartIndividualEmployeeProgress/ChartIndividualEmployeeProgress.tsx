@@ -20,16 +20,21 @@ import {
   initOptions
 } from "../helpers/ChartTasks";
 
+// component
+import Spinner from "@/components/Spinner/Spinner";
+
 interface ChartIndividualEmployeeProgressProps {
   tasks: TaskData[];
   users: UserData[];
   selectedUserId: string | null;
+  isLoading: boolean;
 };
 
 const ChartIndividualEmployeeProgress: React.FC<ChartIndividualEmployeeProgressProps> = ({
   tasks,
   users,
   selectedUserId,
+  isLoading
 }) => {
   const [options, setOptions] = useState<AgChartOptions>(initOptions);
 
@@ -55,6 +60,14 @@ const ChartIndividualEmployeeProgress: React.FC<ChartIndividualEmployeeProgressP
       ],
     }) as AgChartOptions);
   }, [selectedUser, tasks]);
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 mr-4 bg-white border border-customBorder">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 mr-4 bg-white border border-customBorder">

@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
 
   // State to track loading
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -391,6 +391,7 @@ const Dashboard: React.FC = () => {
           updateEarningsOnStatusChange={updateEarningsOnStatusChange}
           registerGridApiTaskDashboard={registerGridApiTaskDashboard}
           setTasks={setTasks}
+          isLoading={isLoading}
         />
       </div>
     )
@@ -479,16 +480,19 @@ const Dashboard: React.FC = () => {
       <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
         <ChartTotalTasksCompleted
           tasks={tasks}
+          isLoading={isLoading}
         />
         <div className="flex flex-row bg-slate-100 mt-4 h-[302px]">
           <ChartIndividualEmployeeProgress
             tasks={tasks}
             users={users}
             selectedUserId={selectedUserId}
+            isLoading={isLoading}
           />
           <ChartTotalTasksByProjects
             tasks={tasks}
             projects={projects}
+            isLoading={isLoading}
           />
         </div>
         {renderTaskDashboard()}

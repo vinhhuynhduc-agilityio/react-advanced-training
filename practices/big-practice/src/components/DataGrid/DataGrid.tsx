@@ -29,6 +29,7 @@ export interface DataGridProps<T> {
   enableBrowserTooltips?: boolean;
   onRowDoubleClicked?: (event: RowDoubleClickedEvent) => void;
   loading?: boolean;
+  loadingOverlayComponent?: React.ComponentType;
 };
 
 const DataGrid = <T,>(props: DataGridProps<T>) => {

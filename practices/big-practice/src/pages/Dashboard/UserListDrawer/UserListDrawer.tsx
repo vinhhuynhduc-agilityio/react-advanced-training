@@ -24,6 +24,7 @@ import DataGrid from "@/components/DataGrid/DataGrid";
 import { UserData } from "@/types/table";
 
 import '../../../style.css'
+import Spinner from "@/components/Spinner/Spinner";
 
 interface UserListDrawerProps {
   users: UserData[];
@@ -113,6 +114,7 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
       onGridReady={onGridReady}
       getRowId={getRowId}
       onRowDoubleClicked={onRowDoubleClicked}
+      loadingOverlayComponent={Spinner}
       loading={isLoading}
     />
   );

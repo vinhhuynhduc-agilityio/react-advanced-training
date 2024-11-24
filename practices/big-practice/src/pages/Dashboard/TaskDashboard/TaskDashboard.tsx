@@ -40,6 +40,9 @@ import {
 // types
 import { FieldType } from "@/types/fieldEnums";
 
+// component
+import Spinner from "@/components/Spinner/Spinner";
+
 interface TaskDataProps {
   tasks: TaskData[];
   selectedUserId: string | null;
@@ -51,6 +54,7 @@ interface TaskDataProps {
   updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
   registerGridApiTaskDashboard: (api: GridApi) => void;
   setTasks: React.Dispatch<React.SetStateAction<TaskData[]>>;
+  isLoading: boolean;
 };
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
@@ -59,6 +63,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   projects,
   sourceComponent,
   users,
+  isLoading,
   onTaskRowSelected,
   updateEarningsForUsers,
   updateEarningsOnStatusChange,
@@ -400,6 +405,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         onCellEditingStopped={handleOnCellEditingStopped}
         tooltipShowDelay={0}
         enableBrowserTooltips={true}
+        loadingOverlayComponent={Spinner}
+        loading={isLoading}
       />
     </div>
   )

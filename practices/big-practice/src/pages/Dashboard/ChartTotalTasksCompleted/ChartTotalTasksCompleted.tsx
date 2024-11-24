@@ -16,11 +16,18 @@ import { TaskData } from "@/types/table";
 // helpers
 import { formatDataForChartTotalTasks } from "../helpers/ChartTasks";
 
+// component
+import Spinner from "@/components/Spinner/Spinner";
+
 interface ChartTotalTasksCompletedProps {
   tasks: TaskData[];
+  isLoading: boolean;
 };
 
-const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({ tasks }) => {
+const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({
+  tasks,
+  isLoading
+}) => {
   const formattedData = useMemo(
     () => formatDataForChartTotalTasks(tasks),
     [tasks]
@@ -85,6 +92,14 @@ const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({ tas
       data: formattedData,
     }));
   }, [formattedData]);
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 bg-white border border-customBorder h-[302px]">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 bg-white border border-customBorder h-[302px]">

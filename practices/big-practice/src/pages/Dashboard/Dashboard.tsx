@@ -64,25 +64,35 @@ const Dashboard: React.FC = () => {
   const [isProjectModalOpen, setProjectModalOpen] = useState(false);
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
 
-  // Fetch all users
-  const fetchData = async () => {
-    const [
-      usersData,
-      tasksData,
-      projects
-    ] = await Promise.all([
-      apiRequest<UserData[], UserData[]>('GET', `${API_BASE_URL}/users`),
-      apiRequest<TaskData[], TaskData[]>('GET', `${API_BASE_URL}/tasks`),
-      apiRequest<ProjectsData[], ProjectsData[]>('GET', `${API_BASE_URL}/projects`),
-    ]);
-    setUsers(usersData);
-    setTasks(tasksData);
-    setProjects(projects);
-  };
+  // State to track loading
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [
+          usersData,
+          tasksData,
+          projectsData
+        ] = await Promise.all([
+          apiRequest<UserData[], UserData[]>('GET', `${API_BASE_URL}/users`),
+          apiRequest<TaskData[], TaskData[]>('GET', `${API_BASE_URL}/tasks`),
+          apiRequest<ProjectsData[], ProjectsData[]>('GET', `${API_BASE_URL}/projects`),
+        ]);
+        setUsers(usersData);
+        setTasks(tasksData);
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, []);
+
 
   const registerGridApiTaskDashboard = (api: GridApi) => {
     taskDashboardGridApi.current = api
@@ -108,6 +118,7 @@ const Dashboard: React.FC = () => {
   ) => {
     if (!userListGridApi.current || !status) return;
 
+    setLoading(true);
     const updates: Promise<UserData>[] = [];
 
     [oldUserId, newUserId].forEach(userId => {
@@ -139,6 +150,8 @@ const Dashboard: React.FC = () => {
       await Promise.all(updates);
     } catch (error) {
       console.error("Failed to update earnings:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,6 +161,7 @@ const Dashboard: React.FC = () => {
     status: boolean
   ) => {
     if (!userListGridApi.current) return;
+    setLoading(true);
 
     // Retrieve `rowNode` by `userId` to update the specific row
     const rowNode = userListGridApi.current.getRowNode(userId);
@@ -165,16 +179,22 @@ const Dashboard: React.FC = () => {
       });
 
       // Update earnings to backend
-      await apiRequest<UserData, UserData>(
-        "PUT",
-        `${API_BASE_URL}/users/${userId}`,
-        {
-          ...rowNode.data,
-          earnings: `$${adjustedEarnings}`,
-        });
-    }
+      try {
+        await apiRequest<UserData, UserData>(
+          "PUT",
+          `${API_BASE_URL}/users/${userId}`,
+          {
+            ...rowNode.data,
+            earnings: `$${adjustedEarnings}`,
+          }
+        );
+      } catch (error) {
+        console.error("Failed to update earnings:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
   };
-
   const registerGridApi = (api: GridApi) => {
     userListGridApi.current = api
   };
@@ -208,6 +228,7 @@ const Dashboard: React.FC = () => {
     const avatarUrl = data.avatarUrl ?? 'https://via.placeholder.com/80';
     const registeredDate = getRegisteredDate();
 
+    setLoading(true);
     const newUser = {
       id: uuidv4(),
       fullName: data.fullName,
@@ -239,11 +260,14 @@ const Dashboard: React.FC = () => {
       handleUserRowSelected(newUser.id);
     } catch (error) {
       console.error("Failed to add new user:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleEditUser = async (data: UserFormData) => {
     if (!defaultValues?.id) return;
+    setLoading(true);
 
     const editUser: UserData = {
       id: defaultValues.id,
@@ -275,6 +299,8 @@ const Dashboard: React.FC = () => {
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to edit user:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -288,6 +314,8 @@ const Dashboard: React.FC = () => {
     const currencyValue = typeof currency === 'string'
       ? parseInt(currency, 10)
       : currency;
+
+    setLoading(true);
 
     const newTask = {
       id: uuidv4(),
@@ -321,6 +349,8 @@ const Dashboard: React.FC = () => {
       handleTaskRowSelected(newTask.userId);
     } catch (error) {
       console.error("Failed to add new task:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -329,6 +359,7 @@ const Dashboard: React.FC = () => {
       id: uuidv4(),
       projectName: newProjectName
     };
+    setLoading(true);
 
     try {
       const addedProject = await apiRequest<ProjectsData, ProjectsData>(
@@ -341,6 +372,8 @@ const Dashboard: React.FC = () => {
       setProjectModalOpen(false);
     } catch (error) {
       console.error("Failed to add new project:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -373,6 +406,7 @@ const Dashboard: React.FC = () => {
           sourceComponent={sourceComponent}
           registerGridApi={registerGridApi}
           onUserDoubleClicked={handleUserDoubleClicked}
+          isLoading={isLoading}
         />
       </div>
     )

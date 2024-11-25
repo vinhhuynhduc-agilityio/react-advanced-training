@@ -8,6 +8,10 @@ jest.mock("./pages/Dashboard/Dashboard", () => ({
   default: () => <div data-testid="dashboard-component">Mocked Dashboard</div>,
 }));
 
+jest.mock('@/config', () => ({
+  API_BASE_URL: 'http://localhost:3001',
+}));
+
 describe("App Component", () => {
   it("matches snapshot for App", () => {
     const { container } = render(<App />);

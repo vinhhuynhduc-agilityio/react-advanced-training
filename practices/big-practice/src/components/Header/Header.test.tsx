@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Header from './Header'; // Import Header component
+import Header from './Header';
 
 describe('Header Component', () => {
   const mockOnAddUser = jest.fn();
@@ -27,7 +27,7 @@ describe('Header Component', () => {
     );
     const logoElement = screen.getByAltText('Logo');
     expect(logoElement).toBeInTheDocument();
-    expect(logoElement).toHaveAttribute('src', '/src/assets/logo.png');
+    expect(logoElement).toHaveAttribute('src', '/assets/logo.png');
 
     const titleElement = screen.getByText('Team Progress');
     expect(titleElement).toBeInTheDocument();

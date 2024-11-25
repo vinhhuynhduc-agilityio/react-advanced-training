@@ -9,6 +9,7 @@ import {
   TaskData,
   UserData
 } from "@/types/table";
+import { API_BASE_URL } from '@/config';
 
 // ag-grid
 import {
@@ -131,7 +132,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     // Call API to update row in the backend
     await apiRequest<TaskData, TaskData>(
       'PUT',
-      `${import.meta.env.VITE_BASE_API_URL}/tasks/${row.id}`,
+      `${API_BASE_URL}/tasks/${row.id}`,
       updatedRow
     );
 

@@ -44,8 +44,7 @@ import {
   getRegisteredDate,
   handlesScrollingToNewUserOrTask
 } from "./helpers/Dashboard";
-
-const API_BASE_URL = import.meta.env.VITE_BASE_API_URL;
+import { API_BASE_URL } from "@/config";
 
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
@@ -58,8 +57,8 @@ const Dashboard: React.FC = () => {
   const [sourceComponent, setSourceComponent] = useState<string | null>(null);
 
   // State variables related to opening modal dialog
-  const [isModalOpen, setModalOpen] = React.useState(false);
-  const [isEditUser, setEditUser] = React.useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isEditUser, setEditUser] = useState(false);
   const [defaultValues, setDefaultValues] = useState<UserData>(initialDefaultValues);
   const [isProjectModalOpen, setProjectModalOpen] = useState(false);
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);

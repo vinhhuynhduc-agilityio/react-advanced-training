@@ -19,6 +19,7 @@ const mockRegisterGridApiTaskDashboard = jest.fn();
 const mockSetTasks = jest.fn();
 
 const defaultProps = {
+  isLoading: false,
   tasks: mockTasks,
   selectedUserId: null,
   projects: mockProject,
@@ -30,6 +31,11 @@ const defaultProps = {
   registerGridApiTaskDashboard: mockRegisterGridApiTaskDashboard,
   setTasks: mockSetTasks,
 };
+
+jest.mock('@/config', () => ({
+  API_BASE_URL: 'http://localhost:3001',
+}));
+
 
 const setup = (props = {}) => {
   const setupProps = { ...defaultProps, ...props };

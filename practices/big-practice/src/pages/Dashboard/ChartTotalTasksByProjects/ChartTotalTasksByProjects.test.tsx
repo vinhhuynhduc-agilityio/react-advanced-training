@@ -66,7 +66,11 @@ describe("ChartTotalTasksByProjects Component", () => {
 
   it("renders the chart component", () => {
     const { container } = render(
-      <ChartTotalTasksByProjects tasks={mockTasks} projects={mockProjects} />
+      <ChartTotalTasksByProjects
+        tasks={mockTasks}
+        projects={mockProjects}
+        isLoading={false}
+      />
     );
     expect(screen.getByTestId("total-tasks-chart")).toBeInTheDocument();
     expect(container).toMatchSnapshot();
@@ -74,7 +78,11 @@ describe("ChartTotalTasksByProjects Component", () => {
 
   it("calls formatDataForChartTotalTasksByProjects with correct data", () => {
     render(
-      <ChartTotalTasksByProjects tasks={mockTasks} projects={mockProjects} />
+      <ChartTotalTasksByProjects
+        tasks={mockTasks}
+        projects={mockProjects}
+        isLoading={false}
+      />
     );
     expect(formatDataForChartTotalTasksByProjects).toHaveBeenCalledWith(
       mockTasks,
@@ -84,7 +92,11 @@ describe("ChartTotalTasksByProjects Component", () => {
 
   it("does not crash if there are no tasks or projects", () => {
     const { container } = render(
-      <ChartTotalTasksByProjects tasks={[]} projects={[]} />
+      <ChartTotalTasksByProjects
+        tasks={[]}
+        projects={[]}
+        isLoading={false}
+      />
     );
 
     expect(screen.getByTestId("total-tasks-chart")).toBeInTheDocument();

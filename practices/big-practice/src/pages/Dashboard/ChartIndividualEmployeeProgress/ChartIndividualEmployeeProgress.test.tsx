@@ -75,6 +75,7 @@ describe("ChartIndividualEmployeeProgress Component", () => {
         tasks={mockTasks}
         users={mockUsers}
         selectedUserId={null}
+        isLoading={false}
       />
     );
 
@@ -91,6 +92,7 @@ describe("ChartIndividualEmployeeProgress Component", () => {
         tasks={mockTasks}
         users={mockUsers}
         selectedUserId="d290f1ee-6c54-4b01-90e6-d701748f0851"
+        isLoading={false}
       />
     );
 
@@ -108,6 +110,7 @@ describe("ChartIndividualEmployeeProgress Component", () => {
         tasks={mockTasks}
         users={mockUsers}
         selectedUserId="f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        isLoading={false}
       />
     );
 
@@ -121,6 +124,7 @@ describe("ChartIndividualEmployeeProgress Component", () => {
   it("does not crash if there are no users", () => {
     const { container } = render(
       <ChartIndividualEmployeeProgress
+        isLoading={false}
         tasks={mockTasks}
         users={[]}
         selectedUserId={null}

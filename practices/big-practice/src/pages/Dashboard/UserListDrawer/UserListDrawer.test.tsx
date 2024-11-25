@@ -34,6 +34,7 @@ describe('UserListDrawer component', () => {
         sourceComponent=''
         registerGridApi={jest.fn()}
         onUserDoubleClicked={jest.fn()}
+        isLoading={false}
       />
     );
     expect(container).toMatchSnapshot();
@@ -42,6 +43,7 @@ describe('UserListDrawer component', () => {
   it('renders user data correctly', () => {
     render(
       <UserListDrawer
+        isLoading={false}
         users={users}
         selectedUserId={null}
         onUserSelected={jest.fn()}

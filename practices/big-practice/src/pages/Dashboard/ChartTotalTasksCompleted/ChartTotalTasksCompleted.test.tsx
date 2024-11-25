@@ -36,13 +36,23 @@ describe("ChartTotalTasksCompleted Component", () => {
   ];
 
   it("renders the mocked chart", () => {
-    render(<ChartTotalTasksCompleted tasks={mockTasks} />);
+    render(
+      <ChartTotalTasksCompleted
+        tasks={mockTasks}
+        isLoading={false}
+      />
+    );
     const mockedChart = screen.getByTestId("mocked-chart");
     expect(mockedChart).toBeInTheDocument();
   });
 
   it("matches snapshot for mocked chart", () => {
-    const { container } = render(<ChartTotalTasksCompleted tasks={mockTasks} />);
+    const { container } = render(
+      <ChartTotalTasksCompleted
+        tasks={mockTasks}
+        isLoading={false}
+      />
+    );
     expect(container).toMatchSnapshot();
   });
 });

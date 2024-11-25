@@ -91,7 +91,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                         aria-hidden="true"
                         class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                         data-ref="eLabel"
-                        id="ag-5-label"
+                        id="ag-4-label"
                         role="presentation"
                       />
                       
@@ -107,7 +107,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                           aria-label="Press Space to toggle all rows selection (unchecked)"
                           class="ag-input-field-input ag-checkbox-input"
                           data-ref="eInput"
-                          id="ag-5-input"
+                          id="ag-4-input"
                           tabindex="-1"
                           type="checkbox"
                         />
@@ -616,7 +616,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
       <div
         aria-hidden="true"
         class="ag-paging-panel ag-unselectable ag-focus-managed ag-hidden"
-        id="ag-6"
+        id="ag-5"
       >
         <div
           class="ag-tab-guard ag-tab-guard-top"
@@ -640,12 +640,12 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
           <span
             class="ag-paging-row-summary-panel-number"
             data-ref="lbFirstRowOnPage"
-            id="ag-6-first-row"
+            id="ag-5-first-row"
           />
           
                     
           <span
-            id="ag-6-to"
+            id="ag-5-to"
           >
             to
           </span>
@@ -654,12 +654,12 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
           <span
             class="ag-paging-row-summary-panel-number"
             data-ref="lbLastRowOnPage"
-            id="ag-6-last-row"
+            id="ag-5-last-row"
           />
           
                     
           <span
-            id="ag-6-of"
+            id="ag-5-of"
           >
             of
           </span>
@@ -668,7 +668,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
           <span
             class="ag-paging-row-summary-panel-number"
             data-ref="lbRecordCount"
-            id="ag-6-row-count"
+            id="ag-5-row-count"
           />
           
                 
@@ -717,7 +717,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
             
                         
             <span
-              id="ag-6-start-page"
+              id="ag-5-start-page"
             >
               Page
             </span>
@@ -726,12 +726,12 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
             <span
               class="ag-paging-number"
               data-ref="lbCurrent"
-              id="ag-6-start-page-number"
+              id="ag-5-start-page-number"
             />
             
                         
             <span
-              id="ag-6-of-page"
+              id="ag-5-of-page"
             >
               of
             </span>
@@ -740,7 +740,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
             <span
               class="ag-paging-number"
               data-ref="lbTotal"
-              id="ag-6-of-page-number"
+              id="ag-5-of-page-number"
             />
             
                     

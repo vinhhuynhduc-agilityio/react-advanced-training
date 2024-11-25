@@ -136,4 +136,23 @@ describe("ChartIndividualEmployeeProgress Component", () => {
     expect(formatDataForChartIndividualEmployee).not.toHaveBeenCalled();
     expect(container).toMatchSnapshot();
   });
+
+  it("renders a spinner when isLoading is true", () => {
+    const { container } = render(
+      <ChartIndividualEmployeeProgress
+        tasks={mockTasks}
+        isLoading={true}
+        selectedUserId={null}
+        users={[]}
+      />
+    );
+
+    const spinner = container.querySelector(
+      ".w-12.h-12.border-4.border-gray-300.border-t-blue-500.rounded-full.animate-spin"
+    );
+    expect(spinner).toBeInTheDocument();
+
+    const mockedChart = screen.queryByTestId("mocked-chart");
+    expect(mockedChart).not.toBeInTheDocument();
+  });
 });

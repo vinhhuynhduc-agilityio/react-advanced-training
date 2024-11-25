@@ -6,9 +6,7 @@ import {
 } from "react";
 import { AgCharts } from "ag-charts-react";
 import {
-  AgBarSeriesTooltipRendererParams,
   AgChartOptions,
-  AgTooltipRendererResult
 } from "ag-charts-community";
 
 // types
@@ -16,7 +14,8 @@ import { ProjectsData, TaskData } from "@/types/table";
 
 // helpers
 import {
-  formatDataForChartTotalTasksByProjects
+  formatDataForChartTotalTasksByProjects,
+  renderTooltipProjectChart
 } from "../helpers/ChartTasks";
 
 // component
@@ -38,16 +37,6 @@ const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = ({
     [tasks, projects]
   );
 
-  const renderTooltipChart = (params: AgBarSeriesTooltipRendererParams): AgTooltipRendererResult => {
-    const tasksCompleted = params.datum[params.yKey];
-
-    return {
-      title: tasksCompleted,
-      content: '',
-      backgroundColor: '#181d1f',
-    };
-  };
-
   // Configure chart with bar series
   const [options, setOptions] = useState<AgChartOptions>({
     title: {
@@ -62,7 +51,7 @@ const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = ({
         yName: "2023",
         direction: "horizontal",
         tooltip: {
-          renderer: renderTooltipChart
+          renderer: renderTooltipProjectChart
         },
       },
       {
@@ -72,7 +61,7 @@ const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = ({
         yName: "2024",
         direction: "horizontal",
         tooltip: {
-          renderer: renderTooltipChart
+          renderer: renderTooltipProjectChart
         },
       },
     ],

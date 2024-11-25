@@ -6,16 +6,17 @@ import {
 } from "react";
 import { AgCharts } from "ag-charts-react";
 import {
-  AgBarSeriesTooltipRendererParams,
   AgChartOptions,
-  AgTooltipRendererResult
 } from "ag-charts-community";
 
 // types
 import { TaskData } from "@/types/table";
 
 // helpers
-import { formatDataForChartTotalTasks } from "../helpers/ChartTasks";
+import {
+  formatDataForChartTotalTasks,
+  renderTooltipChart
+} from "../helpers/ChartTasks";
 
 // component
 import Spinner from "@/components/Spinner/Spinner";
@@ -33,20 +34,6 @@ const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({
     () => formatDataForChartTotalTasks(tasks),
     [tasks]
   );
-
-  const renderTooltipChart = (params: AgBarSeriesTooltipRendererParams): AgTooltipRendererResult => {
-    const month = params.datum[params.xKey];
-    const tasksCompleted = params.datum[params.yKey];
-
-    return {
-      title: `<div style="text-align: center; line-height: 1.5">
-                <div>${month}</div>
-                <div>${tasksCompleted} tasks completed</div>
-              </div>`,
-      content: '',
-      backgroundColor: '#181d1f'
-    };
-  };
 
   const [options, setOptions] = useState<AgChartOptions>({
     title: {

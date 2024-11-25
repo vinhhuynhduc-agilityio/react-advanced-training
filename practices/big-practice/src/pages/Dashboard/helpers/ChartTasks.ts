@@ -12,14 +12,16 @@ import {
   AgAreaSeriesOptions,
   AgBarSeriesTooltipRendererParams,
   AgChartOptions,
-  AgTooltipRendererResult
+  AgTooltipRendererResult,
 } from "ag-charts-community";
 
 /**
  * @returns {FormattedMonthData[]} Array containing task completion data by month,
  * each object contains: `month` (month name), `2023` and `2024` (number of completed tasks)
  */
-const formatDataForChartTotalTasks = (tasks: TaskData[]): FormattedMonthData[] => {
+const formatDataForChartTotalTasks = (
+  tasks: TaskData[]
+): FormattedMonthData[] => {
   const months = {
     Jan: { month: "Jan", 2023: 0, 2024: 0 },
     Feb: { month: "Feb", 2023: 0, 2024: 0 },
@@ -55,20 +57,19 @@ const formatDataForChartTotalTasksByProjects = (
   tasks: TaskData[],
   projects: ProjectsData[]
 ): FormattedProjectData[] => {
-
   // Initialize the result with all projects from the `projects` parameter, and set 0 for both 2023 and 2024
   const result = projects.reduce((acc, project) => {
     acc[project.projectName] = {
       projectName: project.projectName,
       2023: 0,
-      2024: 0
+      2024: 0,
     };
 
     return acc;
   }, {} as { [key: string]: FormattedProjectData });
 
   // Update the number of tasks per year for projects
-  tasks.forEach(task => {
+  tasks.forEach((task) => {
     const {
       projectName,
       startDate
@@ -118,7 +119,9 @@ const formatDataForChartIndividualEmployee = (
   return Object.values(months);
 };
 
-const renderTooltipChart = (params: AgBarSeriesTooltipRendererParams): AgTooltipRendererResult => {
+const renderTooltipChart = (
+  params: AgBarSeriesTooltipRendererParams
+): AgTooltipRendererResult => {
   const month = params.datum[params.xKey];
   const tasksCompleted = params.datum[params.yKey];
 
@@ -127,8 +130,8 @@ const renderTooltipChart = (params: AgBarSeriesTooltipRendererParams): AgTooltip
               <div>${month}</div>
               <div>${tasksCompleted} tasks completed</div>
             </div>`,
-    content: '',
-    backgroundColor: '#181d1f',
+    content: "",
+    backgroundColor: "#181d1f",
   };
 };
 
@@ -160,9 +163,23 @@ const initOptions: AgChartOptions = {
   },
 };
 
+const renderTooltipProjectChart = (
+  params: AgBarSeriesTooltipRendererParams
+): AgTooltipRendererResult => {
+  const tasksCompleted = params.datum[params.yKey];
+
+  return {
+    title: tasksCompleted,
+    content: "",
+    backgroundColor: "#181d1f",
+  };
+};
+
 export {
   formatDataForChartTotalTasks,
   formatDataForChartTotalTasksByProjects,
   formatDataForChartIndividualEmployee,
-  initOptions
+  initOptions,
+  renderTooltipChart,
+  renderTooltipProjectChart,
 };

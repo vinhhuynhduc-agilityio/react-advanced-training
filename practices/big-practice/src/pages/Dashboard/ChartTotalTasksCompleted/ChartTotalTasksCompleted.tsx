@@ -1,7 +1,8 @@
 import {
   useState,
   useEffect,
-  useMemo
+  useMemo,
+  memo
 } from "react";
 import { AgCharts } from "ag-charts-react";
 import {
@@ -108,4 +109,4 @@ const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = ({
   )
 };
 
-export default ChartTotalTasksCompleted;
+export default memo(ChartTotalTasksCompleted);

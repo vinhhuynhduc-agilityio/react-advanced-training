@@ -1,7 +1,8 @@
 import {
   useState,
   useEffect,
-  useMemo
+  useMemo,
+  memo
 } from "react";
 import { AgCharts } from "ag-charts-react";
 import {
@@ -112,4 +113,4 @@ const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = ({
   );
 };
 
-export default ChartTotalTasksByProjects;
+export default memo(ChartTotalTasksByProjects);

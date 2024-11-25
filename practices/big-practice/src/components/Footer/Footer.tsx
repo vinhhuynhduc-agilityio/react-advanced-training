@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 interface FooterProps {
   content: string;
 };
@@ -8,4 +10,4 @@ const Footer = ({ content }: FooterProps) => (
   </footer>
 );
 
-export default Footer;
+export default memo(Footer);

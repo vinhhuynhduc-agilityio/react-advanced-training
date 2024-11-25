@@ -1,4 +1,5 @@
 import {
+  memo,
   useEffect,
   useMemo,
   useState
@@ -76,4 +77,4 @@ const ChartIndividualEmployeeProgress: React.FC<ChartIndividualEmployeeProgressP
   );
 };
 
-export default ChartIndividualEmployeeProgress;
+export default memo(ChartIndividualEmployeeProgress);

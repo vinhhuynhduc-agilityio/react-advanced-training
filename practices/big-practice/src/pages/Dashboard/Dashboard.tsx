@@ -116,6 +116,8 @@ const Dashboard: React.FC = () => {
     currency: number,
     status: boolean
   ) => {
+    handleTaskRowSelected(newUserId);
+
     if (!userListGridApi.current || !status) return;
 
     setLoading(true);
@@ -143,8 +145,6 @@ const Dashboard: React.FC = () => {
         );
       }
     });
-
-    handleTaskRowSelected(newUserId);
 
     try {
       await Promise.all(updates);

@@ -24,7 +24,7 @@ import DataGrid from "@/components/DataGrid/DataGrid";
 import { UserData } from "@/types/table";
 
 import '../../../style.css'
-import Spinner from "@/components/Spinner/Spinner";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 interface UserListDrawerProps {
   users: UserData[];

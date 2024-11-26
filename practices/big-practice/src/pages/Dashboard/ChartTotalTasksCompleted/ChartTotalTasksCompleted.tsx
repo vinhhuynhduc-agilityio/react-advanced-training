@@ -19,7 +19,7 @@ import {
 } from "@/helpers/chartTasks";
 
 // component
-import Spinner from "@/components/Spinner/Spinner";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 interface ChartTotalTasksCompletedProps {
   tasks: TaskData[];

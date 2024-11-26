@@ -17,7 +17,7 @@ import {
 import { TaskFormData } from "@/types/taskForm";
 
 // component
-import Dropdown from "../../../components/Dropdown/Dropdown";
+import Dropdown from "@/components/common/Dropdown/Dropdown";
 
 interface TaskFormProps {
   onClose: () => void;

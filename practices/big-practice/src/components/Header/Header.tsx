@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 
 // component
-import Button from "../Button/Button";
+import Button from "@/components/common/Button/Button";
 
 interface HeaderProps {
   onAddUser: () => void;

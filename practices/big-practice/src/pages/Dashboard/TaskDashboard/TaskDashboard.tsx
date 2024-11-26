@@ -42,7 +42,7 @@ import {
 import { FieldType } from "@/types/fieldEnums";
 
 // component
-import Spinner from "@/components/Spinner/Spinner";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 // constants
 import { API_ROUTES } from "@/constant/api";

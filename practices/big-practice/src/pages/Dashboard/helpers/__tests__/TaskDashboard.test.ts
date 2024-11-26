@@ -1,7 +1,7 @@
 import {
   getUpdatedRow,
   getDateColumnSortComparator
-} from "../TaskDashboard";
+} from "../taskDashboard";
 import { FieldType } from "@/types/fieldEnums";
 import {
   mockTasks,

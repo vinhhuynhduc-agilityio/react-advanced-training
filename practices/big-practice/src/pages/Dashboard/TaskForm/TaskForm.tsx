@@ -14,7 +14,7 @@ import {
   TaskData,
   UserData
 } from "@/types/table";
-import { TaskFormData } from "@/types/TaskForm";
+import { TaskFormData } from "@/types/taskForm";
 
 // component
 import Dropdown from "../../../components/Dropdown/Dropdown";

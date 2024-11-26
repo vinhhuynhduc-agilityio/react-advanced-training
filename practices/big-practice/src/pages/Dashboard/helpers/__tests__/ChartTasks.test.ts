@@ -2,7 +2,7 @@ import {
   formatDataForChartTotalTasks,
   formatDataForChartTotalTasksByProjects,
   formatDataForChartIndividualEmployee,
-} from "../ChartTasks";
+} from "../chartTasks";
 import { mockTasks, mockProject } from "../../mocks/data";
 
 describe("formatDataForChartTotalTasks", () => {

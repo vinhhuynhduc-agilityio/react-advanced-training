@@ -3,7 +3,7 @@ import {
   getRegisteredDate,
   formatStartDate,
   handlesScrollingToNewUserOrTask,
-} from "../Dashboard";
+} from "../dashboard";
 
 // Use fake timers for `setTimeout`
 jest.useFakeTimers();

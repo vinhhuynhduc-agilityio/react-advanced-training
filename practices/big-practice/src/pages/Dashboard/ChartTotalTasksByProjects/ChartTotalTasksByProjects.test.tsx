@@ -5,7 +5,7 @@ import "@testing-library/jest-dom";
 import { TaskData, ProjectsData } from "@/types/table";
 
 // helpers
-import { formatDataForChartTotalTasksByProjects } from "../helpers/ChartTasks";
+import { formatDataForChartTotalTasksByProjects } from "../helpers/chartTasks";
 
 // component
 import ChartTotalTasksByProjects from "./ChartTotalTasksByProjects";

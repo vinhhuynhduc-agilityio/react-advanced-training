@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ChartIndividualEmployeeProgress from "./ChartIndividualEmployeeProgress";
 import { TaskData, UserData } from "@/types/table";
-import { formatDataForChartIndividualEmployee } from "../helpers/ChartTasks";
+import { formatDataForChartIndividualEmployee } from "../helpers/chartTasks";
 
 // Mock AgCharts component to simulate its rendering
 jest.mock("ag-charts-react", () => ({

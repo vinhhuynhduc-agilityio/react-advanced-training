@@ -16,7 +16,7 @@ import { TaskData } from "@/types/table";
 import {
   formatDataForChartTotalTasks,
   renderTooltipChart
-} from "../helpers/ChartTasks";
+} from "../helpers/chartTasks";
 
 // component
 import Spinner from "@/components/Spinner/Spinner";

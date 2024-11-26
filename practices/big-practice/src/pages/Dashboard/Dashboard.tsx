@@ -27,13 +27,13 @@ import {
   TaskData,
   UserData
 } from "@/types/table";
-import { TaskFormData } from "@/types/TaskForm";
+import { TaskFormData } from "@/types/taskForm";
 
 // utils
 import { apiRequest } from "@/utils/apiRequest";
 
 // constant
-import { initialDefaultValues } from "./constant/Dashboard";
+import { initialDefaultValues } from "./constant/dashboard";
 
 // ag-grid
 import { GridApi } from "ag-grid-community";
@@ -43,7 +43,7 @@ import {
   formatStartDate,
   getRegisteredDate,
   handlesScrollingToNewUserOrTask
-} from "./helpers/Dashboard";
+} from "./helpers/dashboard";
 import { API_BASE_URL } from "@/config";
 
 const Dashboard: React.FC = () => {

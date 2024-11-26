@@ -9,16 +9,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 // components
 import Header from "@/components/Header/Header";
-import UserListDrawer from "./UserListDrawer/UserListDrawer";
-import TaskDashboard from "./TaskDashboard/TaskDashboard";
+import UserListDrawer from "@/components/UserListDrawer/UserListDrawer";
+import TaskDashboard from "@/components/TaskDashboard/TaskDashboard";
 import Footer from "@/components/Footer/Footer";
 import ModalDialog from "@/components/ModalDialog/ModalDialog";
-import UserProfileForm from "./UserProfileForm/UserProfileForm";
-import ProjectForm from "./ProjectForm/ProjectForm";
-import TaskForm from "./TaskForm/TaskForm";
-import ChartTotalTasksCompleted from "./ChartTotalTasksCompleted/ChartTotalTasksCompleted";
-import ChartTotalTasksByProjects from "./ChartTotalTasksByProjects/ChartTotalTasksByProjects";
-import ChartIndividualEmployeeProgress from "./ChartIndividualEmployeeProgress/ChartIndividualEmployeeProgress";
+import UserProfileForm from "@/components/UserProfileForm/UserProfileForm";
+import ProjectForm from "@/components/ProjectForm/ProjectForm";
+import TaskForm from "@/components/TaskForm/TaskForm";
+import ChartTotalTasksCompleted from "@/components/ChartTotalTasksCompleted/ChartTotalTasksCompleted";
+import ChartTotalTasksByProjects from "@/components/ChartTotalTasksByProjects/ChartTotalTasksByProjects";
+import ChartIndividualEmployeeProgress from "@/components/ChartIndividualEmployeeProgress/ChartIndividualEmployeeProgress";
 
 // types
 import {

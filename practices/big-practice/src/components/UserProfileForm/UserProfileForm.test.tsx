@@ -5,7 +5,7 @@ import {
   waitFor
 } from "@testing-library/react";
 import UserProfileForm from "./UserProfileForm";
-import { mockUsers } from "../mocks/data";
+import { mockUsers } from "@/mocks/data";
 
 // Mock the onSubmit and onClose functions
 const mockOnSubmit = jest.fn();

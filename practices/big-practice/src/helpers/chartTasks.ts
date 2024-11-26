@@ -1,11 +1,9 @@
 import {
   FormattedMonthData,
-  FormattedProjectData
-} from "@/types/chartTypes";
-import {
+  FormattedProjectData,
   ProjectsData,
   TaskData
-} from "@/types/table";
+} from '@/types';
 
 // ag-grid
 import {
@@ -13,7 +11,7 @@ import {
   AgBarSeriesTooltipRendererParams,
   AgChartOptions,
   AgTooltipRendererResult,
-} from "ag-charts-community";
+} from 'ag-charts-community';
 
 /**
  * @returns {FormattedMonthData[]} Array containing task completion data by month,
@@ -23,26 +21,26 @@ const formatDataForChartTotalTasks = (
   tasks: TaskData[]
 ): FormattedMonthData[] => {
   const months = {
-    Jan: { month: "Jan", 2023: 0, 2024: 0 },
-    Feb: { month: "Feb", 2023: 0, 2024: 0 },
-    Mar: { month: "Mar", 2023: 0, 2024: 0 },
-    Apr: { month: "Apr", 2023: 0, 2024: 0 },
-    May: { month: "May", 2023: 0, 2024: 0 },
-    Jun: { month: "Jun", 2023: 0, 2024: 0 },
-    Jul: { month: "Jul", 2023: 0, 2024: 0 },
-    Aug: { month: "Aug", 2023: 0, 2024: 0 },
-    Sep: { month: "Sep", 2023: 0, 2024: 0 },
-    Oct: { month: "Oct", 2023: 0, 2024: 0 },
-    Nov: { month: "Nov", 2023: 0, 2024: 0 },
-    Dec: { month: "Dec", 2023: 0, 2024: 0 },
+    Jan: { month: 'Jan', 2023: 0, 2024: 0 },
+    Feb: { month: 'Feb', 2023: 0, 2024: 0 },
+    Mar: { month: 'Mar', 2023: 0, 2024: 0 },
+    Apr: { month: 'Apr', 2023: 0, 2024: 0 },
+    May: { month: 'May', 2023: 0, 2024: 0 },
+    Jun: { month: 'Jun', 2023: 0, 2024: 0 },
+    Jul: { month: 'Jul', 2023: 0, 2024: 0 },
+    Aug: { month: 'Aug', 2023: 0, 2024: 0 },
+    Sep: { month: 'Sep', 2023: 0, 2024: 0 },
+    Oct: { month: 'Oct', 2023: 0, 2024: 0 },
+    Nov: { month: 'Nov', 2023: 0, 2024: 0 },
+    Dec: { month: 'Dec', 2023: 0, 2024: 0 },
   };
 
   tasks.forEach((task) => {
     const completedDate = task.completedDate;
 
-    if (completedDate !== "incomplete") {
-      const [, monthStr, yearStr] = completedDate.split(" ");
-      const year = parseInt("20" + yearStr);
+    if (completedDate !== 'incomplete') {
+      const [, monthStr, yearStr] = completedDate.split(' ');
+      const year = parseInt('20' + yearStr);
 
       if (year === 2023 || year === 2024) {
         months[monthStr as keyof typeof months][year]++;
@@ -74,7 +72,7 @@ const formatDataForChartTotalTasksByProjects = (
       projectName,
       startDate
     } = task;
-    const year = parseInt(`20${startDate.split(" ")[2]}`, 10);
+    const year = parseInt(`20${startDate.split(' ')[2]}`, 10);
 
     if (
       result[projectName] &&
@@ -92,25 +90,25 @@ const formatDataForChartIndividualEmployee = (
   selectedUserId: string
 ) => {
   const months: Record<string, { month: string; totalTasksCompleted: number }> = {
-    Jan: { month: "Jan", totalTasksCompleted: 0 },
-    Feb: { month: "Feb", totalTasksCompleted: 0 },
-    Mar: { month: "Mar", totalTasksCompleted: 0 },
-    Apr: { month: "Apr", totalTasksCompleted: 0 },
-    May: { month: "May", totalTasksCompleted: 0 },
-    Jun: { month: "Jun", totalTasksCompleted: 0 },
-    Jul: { month: "Jul", totalTasksCompleted: 0 },
-    Aug: { month: "Aug", totalTasksCompleted: 0 },
-    Sep: { month: "Sep", totalTasksCompleted: 0 },
-    Oct: { month: "Oct", totalTasksCompleted: 0 },
-    Nov: { month: "Nov", totalTasksCompleted: 0 },
-    Dec: { month: "Dec", totalTasksCompleted: 0 },
+    Jan: { month: 'Jan', totalTasksCompleted: 0 },
+    Feb: { month: 'Feb', totalTasksCompleted: 0 },
+    Mar: { month: 'Mar', totalTasksCompleted: 0 },
+    Apr: { month: 'Apr', totalTasksCompleted: 0 },
+    May: { month: 'May', totalTasksCompleted: 0 },
+    Jun: { month: 'Jun', totalTasksCompleted: 0 },
+    Jul: { month: 'Jul', totalTasksCompleted: 0 },
+    Aug: { month: 'Aug', totalTasksCompleted: 0 },
+    Sep: { month: 'Sep', totalTasksCompleted: 0 },
+    Oct: { month: 'Oct', totalTasksCompleted: 0 },
+    Nov: { month: 'Nov', totalTasksCompleted: 0 },
+    Dec: { month: 'Dec', totalTasksCompleted: 0 },
   };
 
   tasks.forEach((task) => {
     const completedDate = task.completedDate;
 
-    if (task.userId === selectedUserId && completedDate !== "incomplete") {
-      const [, monthStr] = completedDate.split(" ");
+    if (task.userId === selectedUserId && completedDate !== 'incomplete') {
+      const [, monthStr] = completedDate.split(' ');
 
       months[monthStr as keyof typeof months].totalTasksCompleted++;
     }
@@ -126,12 +124,12 @@ const renderTooltipChart = (
   const tasksCompleted = params.datum[params.yKey];
 
   return {
-    title: `<div style="text-align: center; line-height: 1.5">
+    title: `<div style='text-align: center; line-height: 1.5'>
               <div>${month}</div>
               <div>${tasksCompleted} tasks completed</div>
             </div>`,
-    content: "",
-    backgroundColor: "#181d1f",
+    content: '',
+    backgroundColor: '#181d1f',
   };
 };
 
@@ -143,11 +141,11 @@ const initOptions: AgChartOptions = {
   data: [],
   series: [
     {
-      type: "area",
-      xKey: "month",
-      yKey: "totalTasksCompleted",
-      yName: "Loading...",
-      interpolation: { type: "smooth" },
+      type: 'area',
+      xKey: 'month',
+      yKey: 'totalTasksCompleted',
+      yName: 'Loading...',
+      interpolation: { type: 'smooth' },
       tooltip: {
         renderer: renderTooltipChart,
       },
@@ -170,8 +168,8 @@ const renderTooltipProjectChart = (
 
   return {
     title: tasksCompleted,
-    content: "",
-    backgroundColor: "#181d1f",
+    content: '',
+    backgroundColor: '#181d1f',
   };
 };
 

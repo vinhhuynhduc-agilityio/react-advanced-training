@@ -4,21 +4,23 @@ import React,
   useEffect,
   useRef,
   useState
-} from "react";
+} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 // components
-import Header from "@/components/Header/Header";
-import UserListDrawer from "@/components/UserListDrawer/UserListDrawer";
-import TaskDashboard from "@/components/TaskDashboard/TaskDashboard";
-import Footer from "@/components/Footer/Footer";
-import ModalDialog from "@/components/ModalDialog/ModalDialog";
-import UserProfileForm from "@/components/UserProfileForm/UserProfileForm";
-import ProjectForm from "@/components/ProjectForm/ProjectForm";
-import TaskForm from "@/components/TaskForm/TaskForm";
-import ChartTotalTasksCompleted from "@/components/ChartTotalTasksCompleted/ChartTotalTasksCompleted";
-import ChartTotalTasksByProjects from "@/components/ChartTotalTasksByProjects/ChartTotalTasksByProjects";
-import ChartIndividualEmployeeProgress from "@/components/ChartIndividualEmployeeProgress/ChartIndividualEmployeeProgress";
+import {
+  ChartIndividualEmployeeProgress,
+  ChartTotalTasksByProjects,
+  ChartTotalTasksCompleted,
+  ModalDialog,
+  TaskForm,
+  UserProfileForm,
+  ProjectForm,
+  Footer,
+  Header,
+  UserListDrawer,
+  TaskDashboard
+} from '@/components';
 
 // types
 import {
@@ -26,27 +28,27 @@ import {
   ProjectsData,
   TaskData,
   UserData
-} from "@/types/table";
-import { TaskFormData } from "@/types/taskForm";
+} from '@/types/table';
+import { TaskFormData } from '@/types/taskForm';
 
 // utils
-import { apiRequest } from "@/services/apiRequest";
+import { apiRequest } from '@/services/apiRequest';
 
 // constant
-import { initialDefaultValues } from "@/constant/dashboard";
+import { initialDefaultValues } from '@/constant/dashboard';
 
 // ag-grid
-import { GridApi } from "ag-grid-community";
+import { GridApi } from 'ag-grid-community';
 
 // helpers
 import {
   formatStartDate,
   getRegisteredDate,
   handlesScrollingToNewUserOrTask
-} from "../../helpers/dashboard";
-import { API_ROUTES } from "@/constant/api";
+} from '../../helpers/dashboard';
+import { API_ROUTES } from '@/constant/api';
 
-import { API_BASE_URL } from "@/config";
+import { API_BASE_URL } from '@/config';
 
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
@@ -85,7 +87,7 @@ const Dashboard: React.FC = () => {
         setTasks(tasksData);
         setProjects(projectsData);
       } catch (error) {
-        console.error("Failed to fetch data:", error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setLoading(false);
       }
@@ -102,12 +104,12 @@ const Dashboard: React.FC = () => {
   // Function to handle when row in TaskDashboard is selected
   const handleTaskRowSelected = (userId: string | null) => {
     setSelectedUser(userId)
-    setSourceComponent("TaskDashboard");
+    setSourceComponent('TaskDashboard');
   };
 
   // Function to handle when row in UserListDrawer is selected
   const handleUserRowSelected = (userId: string | null) => {
-    setSourceComponent("UserListDrawer");
+    setSourceComponent('UserListDrawer');
     setSelectedUser(userId)
   };
 
@@ -139,7 +141,7 @@ const Dashboard: React.FC = () => {
         });
 
         updates.push(
-          apiRequest<UserData, UserData>("PUT", `${API_BASE_URL}${API_ROUTES.USERS}/${userId}`, {
+          apiRequest<UserData, UserData>('PUT', `${API_BASE_URL}${API_ROUTES.USERS}/${userId}`, {
             ...rowNode.data,
             earnings: `$${adjustedEarnings}`,
           })
@@ -150,7 +152,7 @@ const Dashboard: React.FC = () => {
     try {
       await Promise.all(updates);
     } catch (error) {
-      console.error("Failed to update earnings:", error);
+      console.error('Failed to update earnings:', error);
     } finally {
       setLoading(false);
     }
@@ -182,7 +184,7 @@ const Dashboard: React.FC = () => {
       // Update earnings to backend
       try {
         await apiRequest<UserData, UserData>(
-          "PUT",
+          'PUT',
           `${API_BASE_URL}${API_ROUTES.USERS}/${userId}`,
           {
             ...rowNode.data,
@@ -190,7 +192,7 @@ const Dashboard: React.FC = () => {
           }
         );
       } catch (error) {
-        console.error("Failed to update earnings:", error);
+        console.error('Failed to update earnings:', error);
       } finally {
         setLoading(false);
       }
@@ -233,7 +235,7 @@ const Dashboard: React.FC = () => {
     const newUser = {
       id: uuidv4(),
       fullName: data.fullName,
-      earnings: "$0",
+      earnings: '$0',
       email: data.email,
       avatarUrl: avatarUrl,
       registered: registeredDate,
@@ -260,7 +262,7 @@ const Dashboard: React.FC = () => {
       // handle selected for new user
       handleUserRowSelected(newUser.id);
     } catch (error) {
-      console.error("Failed to add new user:", error);
+      console.error('Failed to add new user:', error);
     } finally {
       setLoading(false);
     }
@@ -275,7 +277,7 @@ const Dashboard: React.FC = () => {
       fullName: data.fullName,
       earnings: defaultValues.earnings,
       email: data.email,
-      avatarUrl: data.avatarUrl || "https://via.placeholder.com/80",
+      avatarUrl: data.avatarUrl || 'https://via.placeholder.com/80',
       registered: defaultValues.registered,
       lastUpdated: getRegisteredDate(),
     };
@@ -284,7 +286,7 @@ const Dashboard: React.FC = () => {
 
       // Send user update request
       const updatedUser = await apiRequest<UserData, UserData>(
-        "PUT",
+        'PUT',
         `${API_BASE_URL}${API_ROUTES.USERS}/${defaultValues.id}`,
         editUser
       );
@@ -299,7 +301,7 @@ const Dashboard: React.FC = () => {
 
       setModalOpen(false);
     } catch (error) {
-      console.error("Failed to edit user:", error);
+      console.error('Failed to edit user:', error);
     } finally {
       setLoading(false);
     }
@@ -333,7 +335,7 @@ const Dashboard: React.FC = () => {
 
     try {
       const addedTask = await apiRequest<TaskData, TaskData>(
-        "POST",
+        'POST',
         `${API_BASE_URL}${API_ROUTES.TASKS}`,
         newTask
       );
@@ -349,7 +351,7 @@ const Dashboard: React.FC = () => {
       // handle selected for new task
       handleTaskRowSelected(newTask.userId);
     } catch (error) {
-      console.error("Failed to add new task:", error);
+      console.error('Failed to add new task:', error);
     } finally {
       setLoading(false);
     }
@@ -372,7 +374,7 @@ const Dashboard: React.FC = () => {
       setProjects((prevProjects) => [...prevProjects, addedProject]);
       setProjectModalOpen(false);
     } catch (error) {
-      console.error("Failed to add new project:", error);
+      console.error('Failed to add new project', error);
     } finally {
       setLoading(false);
     }
@@ -426,7 +428,7 @@ const Dashboard: React.FC = () => {
 
   const renderProjectForm = () => (
     <ModalDialog
-      title="Add Project"
+      title='Add Project'
       onClose={() => setProjectModalOpen(false)}
       content={
         <ProjectForm
@@ -440,7 +442,7 @@ const Dashboard: React.FC = () => {
 
   const renderTaskForm = () => (
     <ModalDialog
-      title="Add Task"
+      title='Add Task'
       onClose={() => setTaskModalOpen(false)}
       content={
         <TaskForm
@@ -455,8 +457,8 @@ const Dashboard: React.FC = () => {
   );
 
   const renderUserProfileForm = () => {
-    const title = isEditUser ? "Edit User" : "Add User";
-    const buttonLabel = isEditUser ? "Save" : "Add";
+    const title = isEditUser ? 'Edit User' : 'Add User';
+    const buttonLabel = isEditUser ? 'Save' : 'Add';
 
     return (
       <ModalDialog

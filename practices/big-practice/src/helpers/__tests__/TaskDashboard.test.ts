@@ -2,13 +2,15 @@ import {
   getUpdatedRow,
   getDateColumnSortComparator
 } from "../taskDashboard";
-import { FieldType } from "@/types/fieldEnums";
 import {
   mockTasks,
   mockUsers,
   mockProject
 } from "../../mocks/data";
-import { FieldValue } from "@/types/table";
+import {
+  FieldType,
+  FieldValue
+} from "@/types";
 
 describe("Utility Functions", () => {
   describe("getUpdatedRow", () => {

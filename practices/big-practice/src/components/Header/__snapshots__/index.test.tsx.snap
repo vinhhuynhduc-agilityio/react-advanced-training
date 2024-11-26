@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Component matches snapshot for default state 1`] = `
+<div>
+  <header
+    class=" bg-white flex flex-row py-2 px-3 items-center border border-customBorder"
+  >
+    <div
+      class="flex flex-row items-center w-[16.5rem]"
+    >
+      <img
+        alt="Logo"
+        class="h-12 w-12 mr-2"
+        src="/assets/logo.png"
+      />
+      <h1
+        class=" text-xl font-medium text-[#475466]"
+      >
+        Team Progress
+      </h1>
+    </div>
+    <button
+      class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300"
+    >
+      Add a user
+    </button>
+    <button
+      class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300"
+    >
+      Add a task
+    </button>
+    <button
+      class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300"
+    >
+      Add a project
+    </button>
+  </header>
+</div>
+`;

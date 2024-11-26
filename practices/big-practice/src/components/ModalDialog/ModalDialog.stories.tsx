@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
 // components
-import ModalDialog from './ModalDialog';
-import TaskForm from '@/pages/Dashboard/TaskForm/TaskForm';
+import { ModalDialog } from '@/components/ModalDialog';
+import { TaskForm } from '@/components/TaskForm';
 
 // Mock Data
 const mockUsers = [

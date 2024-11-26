@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartTotalTasksCompleted Component matches snapshot for mocked chart 1`] = `
+<div>
+  <div
+    class="flex-1 bg-white border border-customBorder h-[302px]"
+  >
+    <div
+      data-testid="mocked-chart"
+    />
+  </div>
+</div>
+`;

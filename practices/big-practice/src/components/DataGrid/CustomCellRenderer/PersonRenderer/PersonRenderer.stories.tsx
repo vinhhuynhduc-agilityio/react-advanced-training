@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PersonRenderer } from './PersonRenderer'; 
+import { PersonRenderer } from '.'; 
 import { ICellRendererParams } from 'ag-grid-community';
 
 // Mock Data

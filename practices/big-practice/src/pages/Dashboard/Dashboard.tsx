@@ -44,6 +44,8 @@ import {
   getRegisteredDate,
   handlesScrollingToNewUserOrTask
 } from "../../helpers/dashboard";
+import { API_ROUTES } from "@/constant/api";
+
 import { API_BASE_URL } from "@/config";
 
 const Dashboard: React.FC = () => {
@@ -75,9 +77,9 @@ const Dashboard: React.FC = () => {
           tasksData,
           projectsData
         ] = await Promise.all([
-          apiRequest<UserData[], UserData[]>('GET', `${API_BASE_URL}/users`),
-          apiRequest<TaskData[], TaskData[]>('GET', `${API_BASE_URL}/tasks`),
-          apiRequest<ProjectsData[], ProjectsData[]>('GET', `${API_BASE_URL}/projects`),
+          apiRequest<UserData[], UserData[]>('GET', `${API_BASE_URL}${API_ROUTES.USERS}`),
+          apiRequest<TaskData[], TaskData[]>('GET', `${API_BASE_URL}${API_ROUTES.TASKS}`),
+          apiRequest<ProjectsData[], ProjectsData[]>('GET', `${API_BASE_URL}${API_ROUTES.PROJECTS}`),
         ]);
         setUsers(usersData);
         setTasks(tasksData);
@@ -137,7 +139,7 @@ const Dashboard: React.FC = () => {
         });
 
         updates.push(
-          apiRequest<UserData, UserData>("PUT", `${API_BASE_URL}/users/${userId}`, {
+          apiRequest<UserData, UserData>("PUT", `${API_BASE_URL}${API_ROUTES.USERS}/${userId}`, {
             ...rowNode.data,
             earnings: `$${adjustedEarnings}`,
           })
@@ -181,7 +183,7 @@ const Dashboard: React.FC = () => {
       try {
         await apiRequest<UserData, UserData>(
           "PUT",
-          `${API_BASE_URL}/users/${userId}`,
+          `${API_BASE_URL}${API_ROUTES.USERS}/${userId}`,
           {
             ...rowNode.data,
             earnings: `$${adjustedEarnings}`,
@@ -241,7 +243,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedUser = await apiRequest<UserData, UserData>(
         'POST',
-        `${API_BASE_URL}/users`,
+        `${API_BASE_URL}${API_ROUTES.USERS}`,
         newUser
       );
 
@@ -283,7 +285,7 @@ const Dashboard: React.FC = () => {
       // Send user update request
       const updatedUser = await apiRequest<UserData, UserData>(
         "PUT",
-        `${API_BASE_URL}/users/${defaultValues.id}`,
+        `${API_BASE_URL}${API_ROUTES.USERS}/${defaultValues.id}`,
         editUser
       );
 
@@ -332,7 +334,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedTask = await apiRequest<TaskData, TaskData>(
         "POST",
-        `${API_BASE_URL}/tasks`,
+        `${API_BASE_URL}${API_ROUTES.TASKS}`,
         newTask
       );
 
@@ -363,7 +365,7 @@ const Dashboard: React.FC = () => {
     try {
       const addedProject = await apiRequest<ProjectsData, ProjectsData>(
         'POST',
-        `${API_BASE_URL}/projects`,
+        `${API_BASE_URL}${API_ROUTES.PROJECTS}`,
         newProject
       );
 

@@ -44,6 +44,9 @@ import { FieldType } from "@/types/fieldEnums";
 // component
 import Spinner from "@/components/Spinner/Spinner";
 
+// constants
+import { API_ROUTES } from "@/constant/api";
+
 interface TaskDataProps {
   tasks: TaskData[];
   selectedUserId: string | null;
@@ -132,7 +135,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     // Call API to update row in the backend
     await apiRequest<TaskData, TaskData>(
       'PUT',
-      `${API_BASE_URL}/tasks/${row.id}`,
+      `${API_BASE_URL}${API_ROUTES.TASKS}/${row.id}`,
       updatedRow
     );
 

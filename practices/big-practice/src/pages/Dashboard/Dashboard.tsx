@@ -30,7 +30,7 @@ import {
 import { TaskFormData } from "@/types/taskForm";
 
 // utils
-import { apiRequest } from "@/utils/apiRequest";
+import { apiRequest } from "@/services/apiRequest";
 
 // constant
 import { initialDefaultValues } from "@/constant/dashboard";

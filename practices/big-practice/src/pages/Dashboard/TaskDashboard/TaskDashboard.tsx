@@ -30,7 +30,7 @@ import { DropdownCellEditor } from "@/components/DataGrid/CustomCellRenderer/Dro
 import DataGrid from "@/components/DataGrid/DataGrid";
 
 // utils
-import { apiRequest } from "@/utils/apiRequest";
+import { apiRequest } from "@/services/apiRequest";
 
 // helpers
 import {

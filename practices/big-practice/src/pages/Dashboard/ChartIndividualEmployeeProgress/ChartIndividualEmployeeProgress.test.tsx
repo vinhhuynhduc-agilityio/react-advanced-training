@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ChartIndividualEmployeeProgress from "./ChartIndividualEmployeeProgress";
 import { TaskData, UserData } from "@/types/table";
-import { formatDataForChartIndividualEmployee } from "../helpers/chartTasks";
+import { formatDataForChartIndividualEmployee } from "@/helpers/chartTasks";
 
 // Mock AgCharts component to simulate its rendering
 jest.mock("ag-charts-react", () => ({
@@ -11,8 +11,8 @@ jest.mock("ag-charts-react", () => ({
 }));
 
 // Mock helper functions
-jest.mock("../helpers/ChartTasks", () => ({
-  ...jest.requireActual("../helpers/ChartTasks"),
+jest.mock("@/helpers/ChartTasks", () => ({
+  ...jest.requireActual("@/helpers/ChartTasks"),
   formatDataForChartIndividualEmployee: jest.fn(),
 }));
 

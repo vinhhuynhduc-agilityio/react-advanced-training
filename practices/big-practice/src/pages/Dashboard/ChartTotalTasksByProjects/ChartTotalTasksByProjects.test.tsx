@@ -5,7 +5,7 @@ import "@testing-library/jest-dom";
 import { TaskData, ProjectsData } from "@/types/table";
 
 // helpers
-import { formatDataForChartTotalTasksByProjects } from "../helpers/chartTasks";
+import { formatDataForChartTotalTasksByProjects } from "@/helpers/chartTasks";
 
 // component
 import ChartTotalTasksByProjects from "./ChartTotalTasksByProjects";
@@ -16,8 +16,8 @@ jest.mock("ag-charts-react", () => ({
 }));
 
 // Mock helper functions
-jest.mock("../helpers/ChartTasks", () => ({
-  ...jest.requireActual("../helpers/ChartTasks"),
+jest.mock("@/helpers/ChartTasks", () => ({
+  ...jest.requireActual("@/helpers/ChartTasks"),
   formatDataForChartTotalTasksByProjects: jest.fn(),
 }));
 

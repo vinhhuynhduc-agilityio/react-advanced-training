@@ -6,7 +6,7 @@ import {
 } from "react-hook-form";
 
 // helpers
-import { formatDropdownOptions } from "../helpers/helpers";
+import { formatDropdownOptions } from "@/helpers/helpers";
 
 // types
 import {

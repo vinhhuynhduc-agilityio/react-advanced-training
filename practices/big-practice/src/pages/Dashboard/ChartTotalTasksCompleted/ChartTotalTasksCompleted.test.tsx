@@ -11,8 +11,8 @@ jest.mock("ag-charts-react", () => ({
 }));
 
 // Mock helpers
-jest.mock("../helpers/ChartTasks", () => ({
-  ...jest.requireActual("../helpers/ChartTasks"),
+jest.mock("@/helpers/ChartTasks", () => ({
+  ...jest.requireActual("@/helpers/ChartTasks"),
   formatDataForChartTotalTasks: jest.fn(() => [
     { month: "January", "2023": 5, "2024": 10 },
     { month: "February", "2023": 3, "2024": 7 },

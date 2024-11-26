@@ -10,7 +10,7 @@ import {
   mockUsers,
   mockTasks,
   mockProject
-} from '../mocks/data';
+} from '@/mocks/data';
 
 const mockOnTaskRowSelected = jest.fn();
 const mockUpdateEarningsForUsers = jest.fn();

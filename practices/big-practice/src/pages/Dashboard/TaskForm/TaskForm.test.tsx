@@ -9,7 +9,7 @@ import {
   mockProject,
   mockUsers
 }
-  from "../mocks/data";
+  from "@/mocks/data";
 
 describe("TaskForm", () => {
   const mockOnClose = jest.fn();

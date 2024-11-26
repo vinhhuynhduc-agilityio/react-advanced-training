@@ -33,7 +33,7 @@ import { TaskFormData } from "@/types/taskForm";
 import { apiRequest } from "@/utils/apiRequest";
 
 // constant
-import { initialDefaultValues } from "./constant/dashboard";
+import { initialDefaultValues } from "@/constant/dashboard";
 
 // ag-grid
 import { GridApi } from "ag-grid-community";
@@ -43,7 +43,7 @@ import {
   formatStartDate,
   getRegisteredDate,
   handlesScrollingToNewUserOrTask
-} from "./helpers/dashboard";
+} from "../../helpers/dashboard";
 import { API_BASE_URL } from "@/config";
 
 const Dashboard: React.FC = () => {

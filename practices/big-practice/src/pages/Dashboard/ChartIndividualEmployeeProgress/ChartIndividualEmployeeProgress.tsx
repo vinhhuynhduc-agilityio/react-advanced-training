@@ -19,7 +19,7 @@ import {
 import {
   formatDataForChartIndividualEmployee,
   initOptions
-} from "../helpers/chartTasks";
+} from "@/helpers/chartTasks";
 
 // component
 import Spinner from "@/components/Spinner/Spinner";

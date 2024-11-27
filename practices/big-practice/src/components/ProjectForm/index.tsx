@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 // types
-import { ProjectsData } from '@/types/table';
+import { ProjectsData } from '@/types';
 
 interface ProjectFormProps {
   projects: ProjectsData[];

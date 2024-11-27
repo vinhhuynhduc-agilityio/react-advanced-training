@@ -3,6 +3,9 @@ import React, {
   useRef,
 } from 'react';
 
+// styles
+import '../../style.css';
+
 // ag-grid
 import {
   ColDef,
@@ -17,15 +20,12 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 // types
-import { UserData } from '@/types/table';
-
-// styles
-import '../../style.css';
+import { UserData } from '@/types';
 
 // component
 import { Spinner } from '@/components/common';
-import { PersonRenderer } from '@/components/DataGrid/CustomCellRenderer';
 import { DataGrid } from '@/components';
+import { PersonRenderer } from '@/components/DataGrid';
 
 interface UserListDrawerProps {
   users: UserData[];

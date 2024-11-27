@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { mockProject } from '@/mocks/data';
 import { ProjectsData } from '@/types';
-import { ProjectForm } from '@/components/ProjectForm';
+import { ProjectForm } from '.';
 
 describe('ProjectForm', () => {
   const mockOnClose = jest.fn();

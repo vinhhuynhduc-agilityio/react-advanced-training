@@ -27,15 +27,15 @@ import {
   UserFormData,
   ProjectsData,
   TaskData,
-  UserData
-} from '@/types/table';
-import { TaskFormData } from '@/types/taskForm';
+  UserData,
+  TaskFormData
+} from '@/types';
 
 // utils
-import { apiRequest } from '@/services/apiRequest';
+import { apiRequest } from '@/services';
 
 // constant
-import { initialDefaultValues } from '@/constant/dashboard';
+import { API_ROUTES, initialDefaultValues } from '@/constant';
 
 // ag-grid
 import { GridApi } from 'ag-grid-community';
@@ -45,8 +45,7 @@ import {
   formatStartDate,
   getRegisteredDate,
   handlesScrollingToNewUserOrTask
-} from '../../helpers/dashboard';
-import { API_ROUTES } from '@/constant/api';
+} from '@/helpers';
 
 import { API_BASE_URL } from '@/config';
 

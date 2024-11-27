@@ -7,7 +7,7 @@ export * from './TaskForm';
 export * from './UserProfileForm';
 export * from './Header';
 export * from './Footer';
-export * from './DataGrid';
+export * from './DataGrid/AgGrid';
 
 export { default as TaskDashboard } from './TaskDashboard';
 export { default as UserListDrawer } from './UserListDrawer';

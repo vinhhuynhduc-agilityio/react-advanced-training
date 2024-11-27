@@ -12,9 +12,9 @@ import { formatDropdownOptions } from '@/helpers';
 import {
   ProjectsData,
   TaskData,
+  TaskFormData,
   UserData
 } from '@/types';
-import { TaskFormData } from '@/types';
 
 // component
 import { Dropdown } from '@/components/common';

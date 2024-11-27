@@ -10,7 +10,7 @@ import {
   mockTasks,
   mockProject
 } from '@/mocks/data';
-import TaskDashboard from '@/components/TaskDashboard';
+import TaskDashboard from '.';
 
 const mockOnTaskRowSelected = jest.fn();
 const mockUpdateEarningsForUsers = jest.fn();

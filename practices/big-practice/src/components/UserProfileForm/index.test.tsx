@@ -4,8 +4,12 @@ import {
   fireEvent,
   waitFor
 } from '@testing-library/react';
-import { mockUsers } from '@/mocks/data';
-import { UserProfileForm } from '@/components/UserProfileForm';
+import { mockUsers } from '@/mocks';
+import { UserProfileForm } from '@/components';
+
+jest.mock('@/config', () => ({
+  API_BASE_URL: 'http://localhost:3001',
+}));
 
 // Mock the onSubmit and onClose functions
 const mockOnSubmit = jest.fn();

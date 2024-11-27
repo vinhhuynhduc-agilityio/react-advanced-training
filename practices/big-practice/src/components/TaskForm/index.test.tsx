@@ -3,7 +3,7 @@ import {
   screen,
   fireEvent
 } from '@testing-library/react';
-import { TaskForm } from '.';
+import TaskForm from '.';
 import { DashboardContext } from '@/context';
 import { mockContextValue } from '@/mocks';
 

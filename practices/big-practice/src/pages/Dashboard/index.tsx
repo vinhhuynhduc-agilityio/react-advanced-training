@@ -1,5 +1,7 @@
 import React,
 {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
@@ -7,20 +9,23 @@ import React,
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+// lazy
+const UserProfileForm = lazy(() => import('@/components/UserProfileForm'));
+const TaskForm = lazy(() => import('@/components/TaskForm'));
+const ProjectForm = lazy(() => import('@/components/ProjectForm'));
+
 // components
 import {
   ChartIndividualEmployeeProgress,
   ChartTotalTasksByProjects,
   ChartTotalTasksCompleted,
   ModalDialog,
-  TaskForm,
-  UserProfileForm,
-  ProjectForm,
   Footer,
   Header,
   UserListDrawer,
   TaskDashboard
 } from '@/components';
+import { Spinner } from '@/components/common';
 
 // types
 import {
@@ -428,10 +433,12 @@ const Dashboard: React.FC = () => {
       title='Add Project'
       onClose={() => setProjectModalOpen(false)}
       content={
-        <ProjectForm
-          onClose={() => setProjectModalOpen(false)}
-          onSubmit={handleAddProject}
-        />
+        <Suspense fallback={<Spinner />}>
+          <ProjectForm
+            onClose={() => setProjectModalOpen(false)}
+            onSubmit={handleAddProject}
+          />
+        </Suspense>
       }
     />
   );
@@ -441,10 +448,12 @@ const Dashboard: React.FC = () => {
       title='Add Task'
       onClose={() => setTaskModalOpen(false)}
       content={
-        <TaskForm
-          onClose={() => setTaskModalOpen(false)}
-          onSubmit={handleAddNewTask}
-        />
+        <Suspense fallback={<Spinner />}>
+          <TaskForm
+            onClose={() => setTaskModalOpen(false)}
+            onSubmit={handleAddNewTask}
+          />
+        </Suspense>
       }
     />
   );
@@ -458,13 +467,15 @@ const Dashboard: React.FC = () => {
         title={title}
         onClose={() => setModalOpen(false)}
         content={
-          <UserProfileForm
-            defaultValues={defaultValues}
-            isEditUser={isEditUser}
-            onClose={() => setModalOpen(false)}
-            onSubmit={handleOnSubmit}
-            buttonLabel={buttonLabel}
-          />
+          <Suspense fallback={<Spinner />}>
+            <UserProfileForm
+              defaultValues={defaultValues}
+              isEditUser={isEditUser}
+              onClose={() => setModalOpen(false)}
+              onSubmit={handleOnSubmit}
+              buttonLabel={buttonLabel}
+            />
+          </Suspense>
         }
       />
     );

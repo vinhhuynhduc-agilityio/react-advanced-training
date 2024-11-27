@@ -13,7 +13,7 @@ interface ProjectFormData {
   projectName: string;
 };
 
-export const ProjectForm: React.FC<ProjectFormProps> = ({
+const ProjectForm: React.FC<ProjectFormProps> = ({
   onClose,
   onSubmit
 }) => {
@@ -80,3 +80,5 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
     </form>
   );
 };
+
+export default ProjectForm;

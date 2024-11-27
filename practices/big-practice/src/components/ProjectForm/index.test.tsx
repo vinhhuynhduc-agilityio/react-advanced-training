@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { mockContextValue } from '@/mocks/data';
-import { ProjectForm } from '.';
+import ProjectForm from '.';
 import { DashboardContext } from '@/context';
 
 describe('ProjectForm', () => {

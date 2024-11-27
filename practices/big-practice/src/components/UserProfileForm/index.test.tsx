@@ -5,8 +5,8 @@ import {
   waitFor
 } from '@testing-library/react';
 import { mockContextValue, mockUsers } from '@/mocks';
-import { UserProfileForm } from '@/components';
 import { DashboardContext } from '@/context';
+import UserProfileForm from '.';
 
 jest.mock('@/config', () => ({
   API_BASE_URL: 'http://localhost:3001',

@@ -24,7 +24,7 @@ interface TaskFormProps {
   onSubmit: (data: TaskFormData) => void;
 };
 
-export const TaskForm: React.FC<TaskFormProps> = ({
+const TaskForm: React.FC<TaskFormProps> = ({
   onClose,
   onSubmit,
 }) => {
@@ -167,3 +167,5 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     </form>
   );
 };
+
+export default TaskForm;

@@ -16,7 +16,7 @@ interface UserProfileFormProps {
   buttonLabel: string
 };
 
-export const UserProfileForm: React.FC<UserProfileFormProps> = ({
+const UserProfileForm: React.FC<UserProfileFormProps> = ({
   defaultValues,
   isEditUser,
   onClose,
@@ -211,3 +211,5 @@ export const UserProfileForm: React.FC<UserProfileFormProps> = ({
     </form>
   );
 };
+
+export default UserProfileForm;

@@ -26,6 +26,7 @@ describe('ChartTotalTasksCompleted Component', () => {
       <DashboardContext.Provider value={mockContextValue}>
         <ChartTotalTasksCompleted
           isLoading={false}
+          isSavingTask={false}
         />
       </DashboardContext.Provider>
     );
@@ -38,6 +39,7 @@ describe('ChartTotalTasksCompleted Component', () => {
       <DashboardContext.Provider value={mockContextValue}>
         <ChartTotalTasksCompleted
           isLoading={false}
+          isSavingTask={false}
         />
       </DashboardContext.Provider>
     );
@@ -49,6 +51,7 @@ describe('ChartTotalTasksCompleted Component', () => {
       <DashboardContext.Provider value={mockContextValue}>
         <ChartTotalTasksCompleted
           isLoading={true}
+          isSavingTask={false}
         />
       </DashboardContext.Provider>
     );

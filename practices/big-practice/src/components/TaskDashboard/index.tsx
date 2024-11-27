@@ -58,16 +58,24 @@ interface TaskDataProps {
   updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
   registerGridApiTaskDashboard: (api: GridApi) => void;
   isLoading: boolean;
+  isSavingTask: boolean;
+  isSavingProject: boolean;
+  isSavingUser: boolean;
+  setSavingTask: (value: boolean) => void;
 };
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
   selectedUserId,
   sourceComponent,
   isLoading,
+  isSavingTask,
+  isSavingProject,
+  isSavingUser,
   onTaskRowSelected,
   updateEarningsForUsers,
   updateEarningsOnStatusChange,
   registerGridApiTaskDashboard,
+  setSavingTask
 }) => {
   const {
     tasks,
@@ -131,14 +139,21 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     value: FieldValue,
     row: TaskData
   ) => {
+    setSavingTask(true)
     const updatedRow = getUpdatedRow(type, value, row);
 
     // Call API to update row in the backend
-    await apiRequest<TaskData, TaskData>(
-      'PUT',
-      `${API_BASE_URL}${API_ROUTES.TASKS}/${row.id}`,
-      updatedRow
-    );
+    try {
+      await apiRequest<TaskData, TaskData>(
+        'PUT',
+        `${API_BASE_URL}${API_ROUTES.TASKS}/${row.id}`,
+        updatedRow
+      );
+    } catch (error) {
+      console.error('Failed to update task', error);
+    } finally {
+      setSavingTask(false);
+    }
 
     if (gridApi.current) {
       const rowNode = gridApi.current.getRowNode(row.id);
@@ -411,7 +426,12 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         tooltipShowDelay={0}
         enableBrowserTooltips={true}
         loadingOverlayComponent={Spinner}
-        loading={isLoading}
+        loading={
+          isLoading
+          || isSavingTask
+          || isSavingProject
+          || isSavingUser
+        }
       />
     </div>
   )

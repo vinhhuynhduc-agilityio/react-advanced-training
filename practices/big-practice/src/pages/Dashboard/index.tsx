@@ -4,6 +4,7 @@ import React,
   Suspense,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -76,6 +77,9 @@ const Dashboard: React.FC = () => {
 
   // State to track loading
   const [isLoading, setLoading] = useState(true);
+  const [isSavingUser, setSavingUser] = useState(false);
+  const [isSavingTask, setSavingTask] = useState(false);
+  const [isSavingProject, setSavingProject] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,7 +134,7 @@ const Dashboard: React.FC = () => {
 
     if (!userListGridApi.current || !status) return;
 
-    setLoading(true);
+    setSavingUser(true);
     const updates: Promise<UserData>[] = [];
 
     [oldUserId, newUserId].forEach(userId => {
@@ -161,7 +165,7 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       console.error('Failed to update earnings:', error);
     } finally {
-      setLoading(false);
+      setSavingUser(false);
     }
   };
 
@@ -171,7 +175,7 @@ const Dashboard: React.FC = () => {
     status: boolean
   ) => {
     if (!userListGridApi.current) return;
-    setLoading(true);
+    setSavingUser(true);
 
     // Retrieve `rowNode` by `userId` to update the specific row
     const rowNode = userListGridApi.current.getRowNode(userId);
@@ -201,7 +205,7 @@ const Dashboard: React.FC = () => {
       } catch (error) {
         console.error('Failed to update earnings:', error);
       } finally {
-        setLoading(false);
+        setSavingUser(false);
       }
     };
   };
@@ -238,7 +242,7 @@ const Dashboard: React.FC = () => {
     const avatarUrl = data.avatarUrl ?? 'https://via.placeholder.com/80';
     const registeredDate = getRegisteredDate();
 
-    setLoading(true);
+    setSavingUser(true);
     const newUser = {
       id: uuidv4(),
       fullName: data.fullName,
@@ -271,13 +275,13 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       console.error('Failed to add new user:', error);
     } finally {
-      setLoading(false);
+      setSavingUser(false);
     }
   };
 
   const handleEditUser = async (data: UserFormData) => {
     if (!defaultValues?.id) return;
-    setLoading(true);
+    setSavingUser(true);
 
     const editUser: UserData = {
       id: defaultValues.id,
@@ -310,7 +314,7 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       console.error('Failed to edit user:', error);
     } finally {
-      setLoading(false);
+      setSavingUser(false);
     }
   };
 
@@ -325,7 +329,7 @@ const Dashboard: React.FC = () => {
       ? parseInt(currency, 10)
       : currency;
 
-    setLoading(true);
+    setSavingTask(true);
 
     const newTask = {
       id: uuidv4(),
@@ -360,7 +364,7 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       console.error('Failed to add new task:', error);
     } finally {
-      setLoading(false);
+      setSavingTask(false);
     }
   };
 
@@ -369,7 +373,7 @@ const Dashboard: React.FC = () => {
       id: uuidv4(),
       projectName: newProjectName
     };
-    setLoading(true);
+    setSavingProject(true);
 
     try {
       const addedProject = await apiRequest<ProjectsData, ProjectsData>(
@@ -383,7 +387,7 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       console.error('Failed to add new project', error);
     } finally {
-      setLoading(false);
+      setSavingProject(false);
     }
   };
 
@@ -398,6 +402,10 @@ const Dashboard: React.FC = () => {
           updateEarningsOnStatusChange={updateEarningsOnStatusChange}
           registerGridApiTaskDashboard={registerGridApiTaskDashboard}
           isLoading={isLoading}
+          isSavingTask={isSavingTask}
+          isSavingProject={isSavingProject}
+          isSavingUser={isSavingUser}
+          setSavingTask={setSavingTask}
         />
       </div>
     )
@@ -413,6 +421,7 @@ const Dashboard: React.FC = () => {
           registerGridApi={registerGridApi}
           onUserDoubleClicked={handleUserDoubleClicked}
           isLoading={isLoading}
+          isSavingUser={isSavingUser}
         />
       </div>
     )
@@ -486,14 +495,19 @@ const Dashboard: React.FC = () => {
       <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
         <ChartTotalTasksCompleted
           isLoading={isLoading}
+          isSavingTask={isSavingTask}
         />
         <div className="flex flex-row bg-slate-100 mt-4 h-[302px]">
           <ChartIndividualEmployeeProgress
             selectedUserId={selectedUserId}
             isLoading={isLoading}
+            isSavingTask={isSavingTask}
+            isSavingUser={isSavingUser}
           />
           <ChartTotalTasksByProjects
             isLoading={isLoading}
+            isSavingTask={isSavingTask}
+            isSavingProject={isSavingProject}
           />
         </div>
         {renderTaskDashboard()}
@@ -510,14 +524,14 @@ const Dashboard: React.FC = () => {
     )
   };
 
-  const contextValue = {
+  const contextValue = useMemo(() => ({
     users,
     tasks,
     projects,
     setUsers,
     setTasks,
     setProjects
-  };
+  }), [users, tasks, projects]);
 
   return (
     <DashboardContext.Provider value={contextValue}>

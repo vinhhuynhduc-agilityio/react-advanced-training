@@ -37,6 +37,7 @@ interface UserListDrawerProps {
   registerGridApi: (api: GridApi) => void;
   onUserDoubleClicked: (data: UserData) => void;
   isLoading: boolean;
+  isSavingUser: boolean;
 }
 
 const UserListDrawer: React.FC<UserListDrawerProps> = ({
@@ -45,7 +46,8 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
   sourceComponent,
   registerGridApi,
   onUserDoubleClicked,
-  isLoading
+  isLoading,
+  isSavingUser
 }) => {
   const { users } = useDashboardContext();
   const gridApi = useRef<GridApi | null>(null);
@@ -118,7 +120,7 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
       getRowId={getRowId}
       onRowDoubleClicked={onRowDoubleClicked}
       loadingOverlayComponent={Spinner}
-      loading={isLoading}
+      loading={isLoading || isSavingUser}
     />
   );
 };

@@ -24,12 +24,16 @@ import { useDashboardContext } from '@/hooks';
 interface ChartIndividualEmployeeProgressProps {
   selectedUserId: string | null;
   isLoading: boolean;
+  isSavingUser: boolean;
+  isSavingTask: boolean;
 };
 
 export const ChartIndividualEmployeeProgress: React.FC<ChartIndividualEmployeeProgressProps> = memo(
   ({
     selectedUserId,
-    isLoading
+    isLoading,
+    isSavingTask,
+    isSavingUser
   }) => {
     const { users, tasks } = useDashboardContext();
     const [options, setOptions] = useState<AgChartOptions>(initOptions);
@@ -57,7 +61,7 @@ export const ChartIndividualEmployeeProgress: React.FC<ChartIndividualEmployeePr
       }) as AgChartOptions);
     }, [selectedUser, tasks]);
 
-    if (isLoading) {
+    if (isLoading || isSavingTask || isSavingUser) {
       return (
         <div className="flex-1 mr-4 bg-white border border-customBorder">
           <Spinner />

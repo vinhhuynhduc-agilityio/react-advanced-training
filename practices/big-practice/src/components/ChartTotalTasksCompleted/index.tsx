@@ -9,9 +9,6 @@ import {
   AgChartOptions,
 } from 'ag-charts-community';
 
-// types
-import { TaskData } from '@/types';
-
 // helpers
 import { formatDataForChartTotalTasks, renderTooltipChart } from '@/helpers';
 
@@ -23,10 +20,12 @@ import { useDashboardContext } from '@/hooks';
 
 interface ChartTotalTasksCompletedProps {
   isLoading: boolean;
+  isSavingTask: boolean;
 };
 
 export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = memo(
   ({
+    isSavingTask,
     isLoading
   }) => {
     const { tasks } = useDashboardContext();
@@ -82,7 +81,7 @@ export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> =
       }));
     }, [formattedData]);
 
-    if (isLoading) {
+    if (isLoading || isSavingTask) {
       return (
         <div className="flex-1 bg-white border border-customBorder h-[302px]">
           <Spinner />

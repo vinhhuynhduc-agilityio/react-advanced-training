@@ -49,6 +49,7 @@ describe('UserListDrawer component', () => {
           registerGridApi={jest.fn()}
           onUserDoubleClicked={jest.fn()}
           isLoading={false}
+          isSavingUser={false}
         />
       </DashboardContext.Provider>
     );
@@ -65,6 +66,7 @@ describe('UserListDrawer component', () => {
           sourceComponent=""
           registerGridApi={jest.fn()}
           onUserDoubleClicked={jest.fn()}
+          isSavingUser={false}
         />
       </DashboardContext.Provider>
     );

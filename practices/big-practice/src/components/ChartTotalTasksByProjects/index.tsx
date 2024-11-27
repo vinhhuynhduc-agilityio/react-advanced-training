@@ -23,11 +23,15 @@ import { useDashboardContext } from '@/hooks';
 
 interface ChartTotalTasksByProjectsProps {
   isLoading: boolean;
+  isSavingProject: boolean;
+  isSavingTask: boolean;
 };
 
 export const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = memo(
   ({
-    isLoading
+    isLoading,
+    isSavingTask,
+    isSavingProject
   }) => {
     const { tasks, projects } = useDashboardContext();
     const formattedData = useMemo(
@@ -85,7 +89,7 @@ export const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps>
       }));
     }, [formattedData]);
 
-    if (isLoading) {
+    if (isLoading || isSavingTask || isSavingProject) {
       return (
         <div className="flex-1 bg-white border border-customBorder">
           <Spinner />

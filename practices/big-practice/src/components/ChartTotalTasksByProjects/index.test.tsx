@@ -33,6 +33,8 @@ describe('ChartTotalTasksByProjects Component', () => {
       <DashboardContext.Provider value={mockContextValue}>
         <ChartTotalTasksByProjects
           isLoading={false}
+          isSavingTask={false}
+          isSavingProject={false}
         />
       </DashboardContext.Provider>
     );
@@ -45,6 +47,8 @@ describe('ChartTotalTasksByProjects Component', () => {
       <DashboardContext.Provider value={mockContextValue}>
         <ChartTotalTasksByProjects
           isLoading={false}
+          isSavingTask={false}
+          isSavingProject={false}
         />
       </DashboardContext.Provider>
     );
@@ -59,6 +63,8 @@ describe('ChartTotalTasksByProjects Component', () => {
       <DashboardContext.Provider value={{ ...mockContextValue, tasks: [], projects: [] }}>
         <ChartTotalTasksByProjects
           isLoading={false}
+          isSavingTask={false}
+          isSavingProject={false}
         />
       </DashboardContext.Provider>
     );
@@ -73,6 +79,8 @@ describe('ChartTotalTasksByProjects Component', () => {
       <DashboardContext.Provider value={mockContextValue}>
         <ChartTotalTasksByProjects
           isLoading={true}
+          isSavingTask={false}
+          isSavingProject={false}
         />
       </DashboardContext.Provider>
     );

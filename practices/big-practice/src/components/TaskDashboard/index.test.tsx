@@ -16,12 +16,16 @@ const mockRegisterGridApiTaskDashboard = jest.fn();
 
 const defaultProps = {
   isLoading: false,
+  isSavingTask: false,
+  isSavingProject: false,
+  isSavingUser: false,
   selectedUserId: null,
   sourceComponent: null,
   onTaskRowSelected: mockOnTaskRowSelected,
   updateEarningsForUsers: mockUpdateEarningsForUsers,
   updateEarningsOnStatusChange: mockUpdateEarningsOnStatusChange,
   registerGridApiTaskDashboard: mockRegisterGridApiTaskDashboard,
+  setSavingTask: jest.fn(),
 };
 
 jest.mock('@/config', () => ({

@@ -113,3 +113,12 @@ export const mockTasks = [
     fullName: "Alice Brown",
   },
 ];
+
+export const mockContextValue = {
+  users: mockUsers,
+  tasks: mockTasks,
+  projects: mockProject,
+  setUsers: jest.fn(),
+  setTasks: jest.fn(),
+  setProjects: jest.fn(),
+};

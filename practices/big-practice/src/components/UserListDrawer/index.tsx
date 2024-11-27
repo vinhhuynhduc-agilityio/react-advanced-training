@@ -27,8 +27,10 @@ import { Spinner } from '@/components/common';
 import { DataGrid } from '@/components';
 import { PersonRenderer } from '@/components/DataGrid';
 
+// hooks
+import { useDashboardContext } from '@/hooks';
+
 interface UserListDrawerProps {
-  users: UserData[];
   selectedUserId: string | null;
   sourceComponent: string | null;
   onUserSelected: (userId: string | null) => void;
@@ -38,7 +40,6 @@ interface UserListDrawerProps {
 }
 
 const UserListDrawer: React.FC<UserListDrawerProps> = ({
-  users,
   selectedUserId,
   onUserSelected,
   sourceComponent,
@@ -46,6 +47,7 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
   onUserDoubleClicked,
   isLoading
 }) => {
+  const { users } = useDashboardContext();
   const gridApi = useRef<GridApi | null>(null);
 
   const onGridReady = (params: GridReadyEvent) => {

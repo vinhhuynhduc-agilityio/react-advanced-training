@@ -4,8 +4,9 @@ import {
   fireEvent,
   waitFor
 } from '@testing-library/react';
-import { mockUsers } from '@/mocks';
+import { mockContextValue, mockUsers } from '@/mocks';
 import { UserProfileForm } from '@/components';
+import { DashboardContext } from '@/context';
 
 jest.mock('@/config', () => ({
   API_BASE_URL: 'http://localhost:3001',
@@ -21,14 +22,15 @@ describe('UserProfileForm', () => {
   // Setup helper function
   const setup = (isEditUser = false, buttonLabel = 'Save') =>
     render(
-      <UserProfileForm
-        defaultValues={defaultValues}
-        isEditUser={isEditUser}
-        onClose={mockOnClose}
-        onSubmit={mockOnSubmit}
-        users={mockUsers}
-        buttonLabel={buttonLabel}
-      />
+      <DashboardContext.Provider value={mockContextValue}>
+        <UserProfileForm
+          defaultValues={defaultValues}
+          isEditUser={isEditUser}
+          onClose={mockOnClose}
+          onSubmit={mockOnSubmit}
+          buttonLabel={buttonLabel}
+        />
+      </DashboardContext.Provider>
     );
 
   it('matches snapshot for default state', () => {

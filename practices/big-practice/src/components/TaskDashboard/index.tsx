@@ -47,33 +47,34 @@ import {
 // constants
 import { API_ROUTES } from '@/constant';
 
+// hooks
+import { useDashboardContext } from '@/hooks';
+
 interface TaskDataProps {
-  tasks: TaskData[];
   selectedUserId: string | null;
   onTaskRowSelected: (userId: string | null) => void;
-  projects: ProjectsData[];
   sourceComponent: string | null;
-  users: UserData[];
   updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number, status: boolean) => void;
   updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
   registerGridApiTaskDashboard: (api: GridApi) => void;
-  setTasks: React.Dispatch<React.SetStateAction<TaskData[]>>;
   isLoading: boolean;
 };
 
 const TaskDashboard: React.FC<TaskDataProps> = ({
-  tasks,
   selectedUserId,
-  projects,
   sourceComponent,
-  users,
   isLoading,
   onTaskRowSelected,
   updateEarningsForUsers,
   updateEarningsOnStatusChange,
   registerGridApiTaskDashboard,
-  setTasks
 }) => {
+  const {
+    tasks,
+    projects,
+    users,
+    setTasks
+  } = useDashboardContext();
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
   const originalTaskNameRef = useRef<string>('');

@@ -9,12 +9,6 @@ import {
 import { AgCharts } from 'ag-charts-react';
 import { AgChartOptions } from 'ag-charts-community';
 
-// types
-import {
-  TaskData,
-  UserData
-} from '@/types';
-
 // helpers
 import {
   formatDataForChartIndividualEmployee,
@@ -24,20 +18,20 @@ import {
 // component
 import { Spinner } from '@/components/common';
 
+// hooks
+import { useDashboardContext } from '@/hooks';
+
 interface ChartIndividualEmployeeProgressProps {
-  tasks: TaskData[];
-  users: UserData[];
   selectedUserId: string | null;
   isLoading: boolean;
 };
 
 export const ChartIndividualEmployeeProgress: React.FC<ChartIndividualEmployeeProgressProps> = memo(
   ({
-    tasks,
-    users,
     selectedUserId,
     isLoading
   }) => {
+    const { users, tasks } = useDashboardContext();
     const [options, setOptions] = useState<AgChartOptions>(initOptions);
 
     const selectedUser = useMemo(() => {

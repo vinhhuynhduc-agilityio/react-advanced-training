@@ -9,9 +9,6 @@ import {
   AgChartOptions,
 } from 'ag-charts-community';
 
-// types
-import { ProjectsData, TaskData } from '@/types';
-
 // helpers
 import {
   formatDataForChartTotalTasksByProjects,
@@ -21,18 +18,18 @@ import {
 // component
 import { Spinner } from '@/components/common';
 
+// hooks
+import { useDashboardContext } from '@/hooks';
+
 interface ChartTotalTasksByProjectsProps {
-  tasks: TaskData[];
-  projects: ProjectsData[];
   isLoading: boolean;
 };
 
 export const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = memo(
   ({
-    tasks,
-    projects,
     isLoading
   }) => {
+    const { tasks, projects } = useDashboardContext();
     const formattedData = useMemo(
       () => formatDataForChartTotalTasksByProjects(tasks, projects),
       [tasks, projects]

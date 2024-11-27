@@ -1,11 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-// types
-import { ProjectsData } from '@/types';
+// hooks
+import { useDashboardContext } from '@/hooks';
 
 interface ProjectFormProps {
-  projects: ProjectsData[];
   onClose: () => void;
   onSubmit: (newProjectName: string) => void;
 };
@@ -15,10 +14,10 @@ interface ProjectFormData {
 };
 
 export const ProjectForm: React.FC<ProjectFormProps> = ({
-  projects,
   onClose,
   onSubmit
 }) => {
+  const { projects } = useDashboardContext();
 
   const {
     register,

@@ -5,12 +5,14 @@ import { FaUpload } from 'react-icons/fa';
 // types
 import { UserData, UserFormData } from '@/types';
 
+// hooks
+import { useDashboardContext } from '@/hooks';
+
 interface UserProfileFormProps {
   defaultValues: UserData;
   isEditUser: boolean;
   onClose: () => void;
   onSubmit: (data: UserFormData) => void;
-  users: UserData[];
   buttonLabel: string
 };
 
@@ -19,9 +21,9 @@ export const UserProfileForm: React.FC<UserProfileFormProps> = ({
   isEditUser,
   onClose,
   onSubmit,
-  users,
   buttonLabel
 }) => {
+  const { users } = useDashboardContext();
   const [avatarUrl, setAvatarPreview] = useState<string>("https://via.placeholder.com/80");
 
   const {

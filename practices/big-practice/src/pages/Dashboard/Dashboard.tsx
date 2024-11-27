@@ -49,6 +49,9 @@ import {
 
 import { API_BASE_URL } from '@/config';
 
+// context
+import { DashboardContext } from '@/context';
+
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
   const taskDashboardGridApi = useRef<GridApi | null>(null);
@@ -383,16 +386,12 @@ const Dashboard: React.FC = () => {
     return (
       <div className="bg-white mt-4 h-96 border-customBorder">
         <TaskDashboard
-          tasks={tasks}
-          projects={projects}
-          users={users}
           selectedUserId={selectedUserId}
           onTaskRowSelected={handleTaskRowSelected}
           sourceComponent={sourceComponent}
           updateEarningsForUsers={updateEarningsForUsers}
           updateEarningsOnStatusChange={updateEarningsOnStatusChange}
           registerGridApiTaskDashboard={registerGridApiTaskDashboard}
-          setTasks={setTasks}
           isLoading={isLoading}
         />
       </div>
@@ -403,7 +402,6 @@ const Dashboard: React.FC = () => {
     return (
       <div className="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto">
         <UserListDrawer
-          users={users}
           selectedUserId={selectedUserId}
           onUserSelected={handleUserRowSelected}
           sourceComponent={sourceComponent}
@@ -431,7 +429,6 @@ const Dashboard: React.FC = () => {
       onClose={() => setProjectModalOpen(false)}
       content={
         <ProjectForm
-          projects={projects}
           onClose={() => setProjectModalOpen(false)}
           onSubmit={handleAddProject}
         />
@@ -447,9 +444,6 @@ const Dashboard: React.FC = () => {
         <TaskForm
           onClose={() => setTaskModalOpen(false)}
           onSubmit={handleAddNewTask}
-          tasks={tasks}
-          projects={projects}
-          users={users}
         />
       }
     />
@@ -469,7 +463,6 @@ const Dashboard: React.FC = () => {
             isEditUser={isEditUser}
             onClose={() => setModalOpen(false)}
             onSubmit={handleOnSubmit}
-            users={users}
             buttonLabel={buttonLabel}
           />
         }
@@ -481,19 +474,14 @@ const Dashboard: React.FC = () => {
     return (
       <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
         <ChartTotalTasksCompleted
-          tasks={tasks}
           isLoading={isLoading}
         />
         <div className="flex flex-row bg-slate-100 mt-4 h-[302px]">
           <ChartIndividualEmployeeProgress
-            tasks={tasks}
-            users={users}
             selectedUserId={selectedUserId}
             isLoading={isLoading}
           />
           <ChartTotalTasksByProjects
-            tasks={tasks}
-            projects={projects}
             isLoading={isLoading}
           />
         </div>
@@ -511,8 +499,17 @@ const Dashboard: React.FC = () => {
     )
   };
 
+  const contextValue = {
+    users,
+    tasks,
+    projects,
+    setUsers,
+    setTasks,
+    setProjects
+  };
+
   return (
-    <>
+    <DashboardContext.Provider value={contextValue}>
       <div className="flex flex-col h-screen w-screen">
         {renderHeader()}
         {renderContent()}
@@ -523,7 +520,7 @@ const Dashboard: React.FC = () => {
       {isModalOpen && renderUserProfileForm()}
       {isProjectModalOpen && renderProjectForm()}
       {isTaskModalOpen && renderTaskForm()}
-    </>
+    </DashboardContext.Provider>
   );
 };
 

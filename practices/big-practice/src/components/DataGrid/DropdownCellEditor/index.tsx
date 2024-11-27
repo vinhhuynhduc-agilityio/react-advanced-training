@@ -2,13 +2,13 @@ import {
   useEffect,
   useRef,
   useState
-} from "react"
+} from 'react'
 import clsx from 'clsx';
 
 // ag-grid
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import { ICellEditorParams } from "ag-grid-community";
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { ICellEditorParams } from 'ag-grid-community';
 
 interface CustomCellEditorParams<T, D> extends ICellEditorParams {
   onSelectOption: (value: T, data: D) => void;
@@ -22,6 +22,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
     node,
     column,
     displayKey,
+    eGridCell,
     stopEditing,
     onSelectOption,
   } = props;
@@ -37,7 +38,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
   useEffect(() => {
 
     // Use eGridCell from props to get the position of the cell being edited
-    const cellElement = props.eGridCell as HTMLElement;
+    const cellElement = eGridCell as HTMLElement;
     const cellRect = cellElement.getBoundingClientRect();
     const dropdownHeight = dropdownRef.current?.offsetHeight || 0;
 
@@ -56,7 +57,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
         left: cellRect.left,
       });
     }
-  }, [props.eGridCell]);
+  }, [eGridCell]);
 
   useEffect(() => {
     const handleAnyClickOrScrollOrResize = (event: Event) => {
@@ -78,15 +79,15 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
     };
 
     // Add event listeners for click, scroll, and resize
-    document.addEventListener("click", handleAnyClickOrScrollOrResize);
-    document.addEventListener("scroll", handleAnyClickOrScrollOrResize, true);
-    window.addEventListener("resize", handleAnyClickOrScrollOrResize);
+    document.addEventListener('click', handleAnyClickOrScrollOrResize);
+    document.addEventListener('scroll', handleAnyClickOrScrollOrResize, true);
+    window.addEventListener('resize', handleAnyClickOrScrollOrResize);
 
     // Cleanup event listeners when component unmounts
     return () => {
-      document.removeEventListener("click", handleAnyClickOrScrollOrResize);
-      document.removeEventListener("scroll", handleAnyClickOrScrollOrResize, true);
-      window.removeEventListener("resize", handleAnyClickOrScrollOrResize);
+      document.removeEventListener('click', handleAnyClickOrScrollOrResize);
+      document.removeEventListener('scroll', handleAnyClickOrScrollOrResize, true);
+      window.removeEventListener('resize', handleAnyClickOrScrollOrResize);
     };
   }, [stopEditing]);
 

@@ -9,6 +9,8 @@ import {
   UserData
 } from '@/types';
 import { ChartIndividualEmployeeProgress } from '.';
+import { DashboardContext } from '@/context';
+import { mockContextValue } from '@/mocks';
 
 // Mock AgCharts component to simulate its rendering
 jest.mock('ag-charts-react', () => ({
@@ -76,12 +78,12 @@ describe('ChartIndividualEmployeeProgress Component', () => {
 
   it('renders the chart component', () => {
     const { container } = render(
-      <ChartIndividualEmployeeProgress
-        tasks={mockTasks}
-        users={mockUsers}
-        selectedUserId={null}
-        isLoading={false}
-      />
+      <DashboardContext.Provider value={{ ...mockContextValue, users: mockUsers, tasks: mockTasks }}>
+        <ChartIndividualEmployeeProgress
+          selectedUserId={null}
+          isLoading={false}
+        />
+      </DashboardContext.Provider>
     );
 
     // Check if AgCharts component is rendered
@@ -93,12 +95,12 @@ describe('ChartIndividualEmployeeProgress Component', () => {
 
   it('calls formatDataForChartIndividualEmployee when selectedUserId changes', () => {
     const { rerender } = render(
-      <ChartIndividualEmployeeProgress
-        tasks={mockTasks}
-        users={mockUsers}
-        selectedUserId='d290f1ee-6c54-4b01-90e6-d701748f0851'
-        isLoading={false}
-      />
+      <DashboardContext.Provider value={{ ...mockContextValue, users: mockUsers, tasks: mockTasks }}>
+        <ChartIndividualEmployeeProgress
+          selectedUserId='d290f1ee-6c54-4b01-90e6-d701748f0851'
+          isLoading={false}
+        />
+      </DashboardContext.Provider>
     );
 
     // Ensure the function is called with initial user ID
@@ -111,12 +113,12 @@ describe('ChartIndividualEmployeeProgress Component', () => {
 
     // Rerender with a new selectedUserId
     rerender(
-      <ChartIndividualEmployeeProgress
-        tasks={mockTasks}
-        users={mockUsers}
-        selectedUserId='f47ac10b-58cc-4372-a567-0e02b2c3d479'
-        isLoading={false}
-      />
+      <DashboardContext.Provider value={{ ...mockContextValue, users: mockUsers, tasks: mockTasks }}>
+        <ChartIndividualEmployeeProgress
+          selectedUserId='f47ac10b-58cc-4372-a567-0e02b2c3d479'
+          isLoading={false}
+        />
+      </DashboardContext.Provider>
     );
 
     // Ensure the function is called with the new user ID
@@ -128,12 +130,12 @@ describe('ChartIndividualEmployeeProgress Component', () => {
 
   it('does not crash if there are no users', () => {
     const { container } = render(
-      <ChartIndividualEmployeeProgress
-        isLoading={false}
-        tasks={mockTasks}
-        users={[]}
-        selectedUserId={null}
-      />
+      <DashboardContext.Provider value={{ ...mockContextValue, users: [] }}>
+        <ChartIndividualEmployeeProgress
+          selectedUserId={null}
+          isLoading={false}
+        />
+      </DashboardContext.Provider>
     );
 
     // Ensure the employee-progress-chart component still renders
@@ -144,12 +146,12 @@ describe('ChartIndividualEmployeeProgress Component', () => {
 
   it('renders a spinner when isLoading is true', () => {
     const { container } = render(
-      <ChartIndividualEmployeeProgress
-        tasks={mockTasks}
-        isLoading={true}
-        selectedUserId={null}
-        users={[]}
-      />
+      <DashboardContext.Provider value={{ ...mockContextValue, users: [], tasks: mockTasks }}>
+        <ChartIndividualEmployeeProgress
+          selectedUserId={null}
+          isLoading={true}
+        />
+      </DashboardContext.Provider>
     );
 
     const spinner = container.querySelector(

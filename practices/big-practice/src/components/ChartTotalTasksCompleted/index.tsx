@@ -18,16 +18,19 @@ import { formatDataForChartTotalTasks, renderTooltipChart } from '@/helpers';
 // component
 import { Spinner } from '@/components/common';
 
+// hooks
+import { useDashboardContext } from '@/hooks';
+
 interface ChartTotalTasksCompletedProps {
-  tasks: TaskData[];
   isLoading: boolean;
 };
 
 export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = memo(
   ({
-    tasks,
     isLoading
   }) => {
+    const { tasks } = useDashboardContext();
+
     const formattedData = useMemo(
       () => formatDataForChartTotalTasks(tasks),
       [tasks]

@@ -1,20 +1,21 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { mockProject } from '@/mocks/data';
-import { ProjectsData } from '@/types';
+import { mockContextValue } from '@/mocks/data';
 import { ProjectForm } from '.';
+import { DashboardContext } from '@/context';
 
 describe('ProjectForm', () => {
   const mockOnClose = jest.fn();
   const mockOnSubmit = jest.fn();
 
 
-  const setup = (projects: ProjectsData[] = mockProject) => {
+  const setup = () => {
     return render(
-      <ProjectForm
-        projects={projects}
-        onClose={mockOnClose}
-        onSubmit={mockOnSubmit}
-      />
+      <DashboardContext.Provider value={mockContextValue}>
+        <ProjectForm
+          onClose={mockOnClose}
+          onSubmit={mockOnSubmit}
+        />
+      </DashboardContext.Provider>
     );
   };
 

@@ -5,31 +5,23 @@ import {
   waitFor
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import {
-  mockUsers,
-  mockTasks,
-  mockProject
-} from '@/mocks/data';
 import TaskDashboard from '.';
+import { DashboardContext } from '@/context';
+import { mockContextValue, mockTasks } from '@/mocks';
 
 const mockOnTaskRowSelected = jest.fn();
 const mockUpdateEarningsForUsers = jest.fn();
 const mockUpdateEarningsOnStatusChange = jest.fn();
 const mockRegisterGridApiTaskDashboard = jest.fn();
-const mockSetTasks = jest.fn();
 
 const defaultProps = {
   isLoading: false,
-  tasks: mockTasks,
   selectedUserId: null,
-  projects: mockProject,
-  users: mockUsers,
   sourceComponent: null,
   onTaskRowSelected: mockOnTaskRowSelected,
   updateEarningsForUsers: mockUpdateEarningsForUsers,
   updateEarningsOnStatusChange: mockUpdateEarningsOnStatusChange,
   registerGridApiTaskDashboard: mockRegisterGridApiTaskDashboard,
-  setTasks: mockSetTasks,
 };
 
 jest.mock('@/config', () => ({
@@ -39,7 +31,11 @@ jest.mock('@/config', () => ({
 
 const setup = (props = {}) => {
   const setupProps = { ...defaultProps, ...props };
-  return render(<TaskDashboard {...setupProps} />);
+  return render(
+    <DashboardContext.Provider value={mockContextValue}>
+      <TaskDashboard {...setupProps} />
+    </DashboardContext.Provider>
+  );
 };
 
 describe('TaskDashboard', () => {

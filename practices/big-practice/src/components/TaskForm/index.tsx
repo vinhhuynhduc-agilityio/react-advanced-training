@@ -10,30 +10,29 @@ import { formatDropdownOptions } from '@/helpers';
 
 // types
 import {
-  ProjectsData,
-  TaskData,
   TaskFormData,
-  UserData
 } from '@/types';
 
 // component
 import { Dropdown } from '@/components/common';
 
+// hooks
+import { useDashboardContext } from '@/hooks';
+
 interface TaskFormProps {
   onClose: () => void;
   onSubmit: (data: TaskFormData) => void;
-  tasks: TaskData[];
-  projects: ProjectsData[];
-  users: UserData[];
 };
 
 export const TaskForm: React.FC<TaskFormProps> = ({
   onClose,
   onSubmit,
-  tasks,
-  projects,
-  users
 }) => {
+  const {
+    users,
+    projects,
+    tasks
+  } = useDashboardContext();
 
   const {
     register,

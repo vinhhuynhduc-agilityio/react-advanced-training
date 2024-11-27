@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import UserListDrawer from '.';
+import { DashboardContext } from '@/context';
 
 // Mock data to use in tests
-const users = [
+const mockUsers = [
   {
     "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
     "fullName": "Joe Bloggs",
@@ -24,6 +25,15 @@ const users = [
   },
 ];
 
+const mockContextValue = {
+  users: mockUsers,
+  tasks: [],
+  projects: [],
+  setUsers: jest.fn(),
+  setTasks: jest.fn(),
+  setProjects: jest.fn(),
+};
+
 jest.mock('@/config', () => ({
   API_BASE_URL: 'http://localhost:3001',
 }));
@@ -31,30 +41,32 @@ jest.mock('@/config', () => ({
 describe('UserListDrawer component', () => {
   it('matches snapshot for default state', () => {
     const { container } = render(
-      <UserListDrawer
-        users={users}
-        selectedUserId={null}
-        onUserSelected={jest.fn()}
-        sourceComponent=''
-        registerGridApi={jest.fn()}
-        onUserDoubleClicked={jest.fn()}
-        isLoading={false}
-      />
+      <DashboardContext.Provider value={mockContextValue}>
+        <UserListDrawer
+          selectedUserId={null}
+          onUserSelected={jest.fn()}
+          sourceComponent=""
+          registerGridApi={jest.fn()}
+          onUserDoubleClicked={jest.fn()}
+          isLoading={false}
+        />
+      </DashboardContext.Provider>
     );
     expect(container).toMatchSnapshot();
   });
 
   it('renders user data correctly', () => {
     render(
-      <UserListDrawer
-        isLoading={false}
-        users={users}
-        selectedUserId={null}
-        onUserSelected={jest.fn()}
-        sourceComponent=''
-        registerGridApi={jest.fn()}
-        onUserDoubleClicked={jest.fn()}
-      />
+      <DashboardContext.Provider value={mockContextValue}>
+        <UserListDrawer
+          isLoading={false}
+          selectedUserId={null}
+          onUserSelected={jest.fn()}
+          sourceComponent=""
+          registerGridApi={jest.fn()}
+          onUserDoubleClicked={jest.fn()}
+        />
+      </DashboardContext.Provider>
     );
 
     // Check if the user names are rendered inside the ag-grid

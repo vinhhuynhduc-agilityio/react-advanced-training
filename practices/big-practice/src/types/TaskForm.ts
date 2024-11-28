@@ -3,7 +3,7 @@ export interface optionDropdown {
   value: string;
 };
 
-export interface TaskFormData {
+export interface TaskFormDataTest {
   currency: string;
   taskName: string;
   project: optionDropdown;

@@ -34,10 +34,6 @@ const mockContextValue = {
   setProjects: jest.fn(),
 };
 
-jest.mock('@/config', () => ({
-  API_BASE_URL: 'http://localhost:3001',
-}));
-
 describe('UserListDrawer component', () => {
   it('matches snapshot for default state', () => {
     const { container } = render(

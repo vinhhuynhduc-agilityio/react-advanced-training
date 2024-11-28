@@ -8,10 +8,6 @@ import { mockContextValue, mockUsers } from '@/mocks';
 import { DashboardContext } from '@/context';
 import UserProfileForm from '.';
 
-jest.mock('@/config', () => ({
-  API_BASE_URL: 'http://localhost:3001',
-}));
-
 // Mock the onSubmit and onClose functions
 const mockOnSubmit = jest.fn();
 const mockOnClose = jest.fn();

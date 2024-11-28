@@ -1,21 +1,11 @@
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
-// Mock Dashboard component
-jest.mock('./pages/Dashboard/Dashboard', () => ({
-  ...jest.requireActual('./pages/Dashboard/Dashboard'),
-  default: () => <div data-testid='dashboard-component'>Mocked Dashboard</div>,
-}));
+test('renders Dashboard component with heading', () => {
+  const { container } = render(<App />);
 
-jest.mock('@/config', () => ({
-  API_BASE_URL: 'http://localhost:3001',
-}));
-
-describe('App Component', () => {
-  it('matches snapshot for App', () => {
-    const { container } = render(<App />);
-
-    expect(container).toMatchSnapshot();
-  });
+  const headingElement = screen.getByRole('heading', { name: 'Team Progress' });
+  expect(headingElement).toBeInTheDocument();
+  expect(container).toMatchSnapshot();
 });

@@ -28,11 +28,6 @@ const defaultProps = {
   setSavingTask: jest.fn(),
 };
 
-jest.mock('@/config', () => ({
-  API_BASE_URL: 'http://localhost:3001',
-}));
-
-
 const setup = (props = {}) => {
   const setupProps = { ...defaultProps, ...props };
   return render(

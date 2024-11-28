@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { FaUpload } from 'react-icons/fa';
 
 // types
 import { UserData, UserFormData } from '@/types';
 
+// constant
+import { defaultAvatarUrl } from '@/constant';
+
 // hooks
-import { useDashboardContext } from '@/hooks';
+import { useEmailValidation, useUserProfileForm } from '@/hooks';
 
 interface UserProfileFormProps {
   defaultValues: UserData;
@@ -23,16 +25,9 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
   onSubmit,
   buttonLabel
 }) => {
-  const { users } = useDashboardContext();
-  const [avatarUrl, setAvatarPreview] = useState<string>("https://via.placeholder.com/80");
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<UserFormData>({
-    defaultValues,
-  });
+  const [avatarUrl, setAvatarPreview] = useState<string>(defaultAvatarUrl);
+  const { isEmailDuplicate } = useEmailValidation(defaultValues?.email);
+  const { register, handleSubmit, errors } = useUserProfileForm(defaultValues);
 
   useEffect(() => {
     if (isEditUser && defaultValues?.avatarUrl) {
@@ -66,13 +61,6 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
       ...data,
       avatarUrl: avatarUrl,
     });
-  };
-
-  const isEmailDuplicate = (email: string, users: UserData[]) => {
-    return users.some(
-      user => user.email === email
-        && user.email !== defaultValues?.email
-    );
   };
 
   const renderError = (content: string | undefined) => {
@@ -131,7 +119,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
                 message: "Invalid email format",
               },
               validate: {
-                duplicate: (value) => !isEmailDuplicate(value, users) || "Email already exists",
+                duplicate: (value) => !isEmailDuplicate(value) || "Email already exists",
               }
             })}
             placeholder="Enter email"

@@ -3,7 +3,6 @@ import React,
   lazy,
   Suspense,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState
@@ -59,15 +58,12 @@ import { API_BASE_URL } from '@/config';
 // context
 import { DashboardContext } from '@/context';
 
+// hooks
+import { useFetchData, useRowSelection } from '@/hooks';
+
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
   const taskDashboardGridApi = useRef<GridApi | null>(null);
-
-  const [users, setUsers] = useState<UserData[]>([]);
-  const [tasks, setTasks] = useState<TaskData[]>([]);
-  const [projects, setProjects] = useState<ProjectsData[]>([]);
-  const [selectedUserId, setSelectedUser] = useState<string | null>(null);
-  const [sourceComponent, setSourceComponent] = useState<string | null>(null);
 
   // State variables related to opening modal dialog
   const [isModalOpen, setModalOpen] = useState(false);
@@ -77,37 +73,12 @@ const Dashboard: React.FC = () => {
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
 
   // State to track loading
-  const [isLoading, setLoading] = useState(true);
   const [isSavingUser, setSavingUser] = useState(false);
   const [isSavingTask, setSavingTask] = useState(false);
   const [isSavingProject, setSavingProject] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const [
-          usersData,
-          tasksData,
-          projectsData
-        ] = await Promise.all([
-          apiRequest<UserData[], UserData[]>('GET', `${API_BASE_URL}${API_ROUTES.USERS}`),
-          apiRequest<TaskData[], TaskData[]>('GET', `${API_BASE_URL}${API_ROUTES.TASKS}`),
-          apiRequest<ProjectsData[], ProjectsData[]>('GET', `${API_BASE_URL}${API_ROUTES.PROJECTS}`),
-        ]);
-        setUsers(usersData);
-        setTasks(tasksData);
-        setProjects(projectsData);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  const { users, tasks, projects, isLoading, setUsers, setTasks, setProjects } = useFetchData();
+  const { selectedUserId, sourceComponent, handleRowSelected } = useRowSelection();
 
   const registerGridApiTaskDashboard = (api: GridApi) => {
     taskDashboardGridApi.current = api
@@ -115,14 +86,12 @@ const Dashboard: React.FC = () => {
 
   // Function to handle when row in TaskDashboard is selected
   const handleTaskRowSelected = (userId: string | null) => {
-    setSelectedUser(userId)
-    setSourceComponent('TaskDashboard');
+    handleRowSelected(userId, 'TaskDashboard');
   };
 
   // Function to handle when row in UserListDrawer is selected
   const handleUserRowSelected = (userId: string | null) => {
-    setSourceComponent('UserListDrawer');
-    setSelectedUser(userId)
+    handleRowSelected(userId, 'UserListDrawer');
   };
 
   const updateEarningsForUsers = async (
@@ -538,7 +507,7 @@ const Dashboard: React.FC = () => {
     setUsers,
     setTasks,
     setProjects
-  }), [users, tasks, projects]);
+  }), [users, tasks, projects, setUsers, setTasks, setProjects]);
 
   return (
     <DashboardContext.Provider value={contextValue}>

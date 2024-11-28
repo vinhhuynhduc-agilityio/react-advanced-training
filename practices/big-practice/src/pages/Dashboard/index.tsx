@@ -24,7 +24,8 @@ import {
   Footer,
   Header,
   UserListDrawer,
-  TaskDashboard
+  TaskDashboard,
+  ErrorBoundary
 } from '@/components';
 import { Spinner } from '@/components/common';
 
@@ -493,22 +494,28 @@ const Dashboard: React.FC = () => {
   const renderChartAndTaskContent = () => {
     return (
       <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
-        <ChartTotalTasksCompleted
-          isLoading={isLoading}
-          isSavingTask={isSavingTask}
-        />
+        <ErrorBoundary>
+          <ChartTotalTasksCompleted
+            isLoading={isLoading}
+            isSavingTask={isSavingTask}
+          />
+        </ErrorBoundary>
         <div className="flex flex-row bg-slate-100 mt-4 h-[302px]">
-          <ChartIndividualEmployeeProgress
-            selectedUserId={selectedUserId}
-            isLoading={isLoading}
-            isSavingTask={isSavingTask}
-            isSavingUser={isSavingUser}
-          />
-          <ChartTotalTasksByProjects
-            isLoading={isLoading}
-            isSavingTask={isSavingTask}
-            isSavingProject={isSavingProject}
-          />
+          <ErrorBoundary>
+            <ChartIndividualEmployeeProgress
+              selectedUserId={selectedUserId}
+              isLoading={isLoading}
+              isSavingTask={isSavingTask}
+              isSavingUser={isSavingUser}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <ChartTotalTasksByProjects
+              isLoading={isLoading}
+              isSavingTask={isSavingTask}
+              isSavingProject={isSavingProject}
+            />
+          </ErrorBoundary>
         </div>
         {renderTaskDashboard()}
       </div>

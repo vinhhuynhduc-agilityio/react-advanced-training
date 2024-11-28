@@ -5,6 +5,7 @@ export * from './ModalDialog';
 export * from './Header';
 export * from './Footer';
 export * from './DataGrid/AgGrid';
+export * from './ErrorBoundary';
 
 export { default as TaskDashboard } from './TaskDashboard';
 export { default as UserListDrawer } from './UserListDrawer';

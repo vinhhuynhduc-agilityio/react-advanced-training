@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 import { IconRenderer } from '.';
 
 const meta: Meta<typeof IconRenderer> = {

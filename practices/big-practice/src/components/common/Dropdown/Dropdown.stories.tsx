@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Dropdown from '.';
+import { Dropdown } from '@/components/common/Dropdown';
 
 // Mock Data
 const mockOptions = [

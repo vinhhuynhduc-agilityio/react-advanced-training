@@ -46,3 +46,15 @@ export interface UserFormData {
   avatar: FileList | null;
   avatarUrl?: string | null;
 };
+
+export interface optionDropdown {
+  id: string;
+  value: string;
+};
+
+export interface TaskFormDataTest {
+  currency: string;
+  taskName: string;
+  project: optionDropdown;
+  user: optionDropdown;
+};

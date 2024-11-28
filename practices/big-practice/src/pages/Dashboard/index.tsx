@@ -34,7 +34,7 @@ import {
   ProjectsData,
   TaskData,
   UserData,
-  TaskFormDataTest
+  TaskFormData
 } from '@/types';
 
 // utils
@@ -318,7 +318,7 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleAddNewTask = async (data: TaskFormDataTest) => {
+  const handleAddNewTask = async (data: TaskFormData) => {
     const {
       currency,
       project,

@@ -36,7 +36,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
         <!-- AG Grid Body -->
         <div
           aria-colcount="1"
-          aria-rowcount="3"
+          aria-rowcount="4"
           class="ag-root ag-unselectable ag-layout-normal ag-body-vertical-content-no-gap ag-body-horizontal-content-no-gap"
           role="treegrid"
         >
@@ -295,18 +295,18 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                 aria-hidden="true"
                 class="ag-pinned-left-cols-container ag-hidden"
                 role="rowgroup"
-                style="height: 150px; width: 0px; max-width: 0px; min-width: 0px;"
+                style="height: 225px; width: 0px; max-width: 0px; min-width: 0px;"
               />
               <!-- AG Row Container center -->
               <div
                 class="ag-center-cols-viewport"
                 role="presentation"
-                style="height: 150px;"
+                style="height: 225px;"
               >
                 <div
                   class="ag-center-cols-container"
                   role="rowgroup"
-                  style="width: 200px; height: 150px;"
+                  style="width: 200px; height: 225px;"
                 >
                   <div
                     aria-rowindex="2"
@@ -344,7 +344,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                           <div
                             class="text-base font-normal text-[#475466]"
                           >
-                            $5000
+                            $11500
                           </div>
                         </div>
                       </div>
@@ -352,7 +352,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                   </div>
                   <div
                     aria-rowindex="3"
-                    class="ag-row-odd ag-row-no-focus ag-row ag-row-level-0 ag-row-position-absolute ag-row-last ag-row-not-inline-editing"
+                    class="ag-row-odd ag-row-no-focus ag-row ag-row-level-0 ag-row-position-absolute ag-row-not-inline-editing"
                     role="row"
                     row-id="f47ac10b-58cc-4372-a567-0e02b2c3d479"
                     row-index="1"
@@ -386,7 +386,49 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                           <div
                             class="text-base font-normal text-[#475466]"
                           >
-                            $6200
+                            $36911
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-rowindex="4"
+                    class="ag-row-even ag-row-no-focus ag-row ag-row-level-0 ag-row-position-absolute ag-row-last ag-row-not-inline-editing"
+                    role="row"
+                    row-id="123e4567-e89b-12d3-a456-426614174000"
+                    row-index="2"
+                    style="transform: translateY(150px); height: 75px;"
+                    tabindex="-1"
+                  >
+                    <div
+                      aria-colindex="1"
+                      class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-column-first ag-column-last ag-cell-value"
+                      col-id="fullName"
+                      role="gridcell"
+                      style="left: 0px; width: 200px;"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="flex items-center py-2"
+                      >
+                        <img
+                          alt="avatar"
+                          class="w-14 h-14 rounded-full mr-4"
+                          src="https://i.pravatar.cc/150?img=3"
+                        />
+                        <div
+                          class="flex flex-col"
+                        >
+                          <div
+                            class="text-base font-medium text-[#313131]"
+                          >
+                            Alice Brown
+                          </div>
+                          <div
+                            class="text-base font-normal text-[#475466]"
+                          >
+                            $7200
                           </div>
                         </div>
                       </div>
@@ -399,13 +441,13 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                 aria-hidden="true"
                 class="ag-pinned-right-cols-container ag-hidden"
                 role="rowgroup"
-                style="height: 150px; width: 0px; max-width: 0px; min-width: 0px;"
+                style="height: 225px; width: 0px; max-width: 0px; min-width: 0px;"
               />
               <!-- AG Row Container fullWidth -->
               <div
                 class="ag-full-width-container"
                 role="rowgroup"
-                style="height: 150px;"
+                style="height: 225px;"
               />
             </div>
             <!-- AG Fake Vertical Scroll -->
@@ -424,7 +466,7 @@ exports[`UserListDrawer component matches snapshot for default state 1`] = `
                 <div
                   class="ag-body-vertical-scroll-container"
                   data-ref="eContainer"
-                  style="height: 150px;"
+                  style="height: 225px;"
                 />
                 
             

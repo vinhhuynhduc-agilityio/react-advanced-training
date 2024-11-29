@@ -2,7 +2,7 @@ import {
   render,
   screen,
   fireEvent,
-  waitFor
+  waitFor,
 } from '@testing-library/react';
 import { mockContextValue, mockUsers } from '@/mocks';
 import { DashboardContext } from '@/context';
@@ -13,7 +13,7 @@ const mockOnSubmit = jest.fn();
 const mockOnClose = jest.fn();
 
 describe('UserProfileForm', () => {
-  const defaultValues = mockUsers[0];
+  const defaultValues = mockUsers[0]; // Make sure mockUsers contains the user with valid data
 
   // Setup helper function
   const setup = (isEditUser = false, buttonLabel = 'Save') =>
@@ -107,5 +107,30 @@ describe('UserProfileForm', () => {
     setup();
     fireEvent.click(screen.getByText('Cancel'));
     expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('should run useEffect when isEditUser is true and defaultValues contain avatarUrl', async () => {
+    const { rerender } = setup(true);
+
+    // Check if the avatar preview is set correctly (based on defaultValues.avatarUrl)
+    const avatarImage = screen.getByAltText('Avatar Preview');
+    expect(avatarImage).toHaveAttribute('src', defaultValues.avatarUrl);
+
+    // If we update the defaultValues, rerender the component and check again
+    const updatedValues = { ...defaultValues, avatarUrl: 'new-avatar-url.png' };
+    rerender(
+      <DashboardContext.Provider value={mockContextValue}>
+        <UserProfileForm
+          defaultValues={updatedValues}
+          isEditUser={true}
+          onClose={mockOnClose}
+          onSubmit={mockOnSubmit}
+          buttonLabel="Save"
+        />
+      </DashboardContext.Provider>
+    );
+
+    // Check if the avatar preview is updated with the new value
+    expect(avatarImage).toHaveAttribute('src', 'new-avatar-url.png');
   });
 });

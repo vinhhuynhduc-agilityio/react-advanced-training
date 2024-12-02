@@ -2,8 +2,12 @@ import {
   formatDataForChartTotalTasks,
   formatDataForChartTotalTasksByProjects,
   formatDataForChartIndividualEmployee,
+  renderTooltipChart,
+  renderTooltipProjectChart,
+  initOptions,
 } from "../chartTasks";
 import { mockTasks, mockProject } from "../../mocks/data";
+import { AgAreaSeriesOptions, AgBarSeriesTooltipRendererParams, AgChartLegendClickEvent } from "ag-charts-community";
 
 describe("formatDataForChartTotalTasks", () => {
   it("should correctly format task completion data for 2023 and 2024", () => {
@@ -68,5 +72,62 @@ describe("formatDataForChartIndividualEmployee", () => {
       { month: "Nov", totalTasksCompleted: 1 },
       { month: "Dec", totalTasksCompleted: 0 },
     ]);
+  });
+
+  describe('Tooltip Rendering Functions', () => {
+    it('should render the tooltip correctly for renderTooltipChart', () => {
+      const params: AgBarSeriesTooltipRendererParams = {
+        seriesId: 'my-series-id',
+        datum: { month: 'Jan', totalTasksCompleted: 5 },
+        xKey: 'month',
+        yKey: 'totalTasksCompleted',
+      };
+
+      const result = renderTooltipChart(params);
+
+      expect(result.title).toContain('Jan');
+      expect(result.title).toContain('5 tasks completed');
+      expect(result.backgroundColor).toBe('#181d1f');
+    });
+
+    it('should render the tooltip correctly for renderTooltipProjectChart', () => {
+      const params: AgBarSeriesTooltipRendererParams = {
+        seriesId: 'my-series-id',
+        datum: { projectName: 'Project X', tasksCompleted: 10 },
+        xKey: 'projectName',
+        yKey: 'tasksCompleted',
+      };
+
+      const result = renderTooltipProjectChart(params);
+
+      expect(result.title).toBe(10);
+      expect(result.backgroundColor).toBe('#181d1f');
+    });
+  });
+
+  describe("initOptions", () => {
+    it("should have correct initial options for the chart", () => {
+      expect(initOptions.title?.text).toBe("Individual employee's progress");
+      expect(initOptions.series?.[0].type).toBe("area");
+      expect((initOptions.series?.[0] as AgAreaSeriesOptions).xKey).toBe("month");
+      expect((initOptions.series?.[0] as AgAreaSeriesOptions).yKey).toBe("totalTasksCompleted");
+      expect((initOptions.series?.[0] as AgAreaSeriesOptions).yName).toBe("Loading...");
+    });
+
+    it("should prevent default action on legend item click", () => {
+      const preventDefault = jest.fn();
+      const event: AgChartLegendClickEvent = {
+        preventDefault,
+        type: 'click',
+        seriesId: 'some-series-id',
+        itemId: 'some-item-id',
+        enabled: true,
+        event: {} as Event,
+      };
+
+      initOptions.legend?.listeners?.legendItemClick?.(event);
+
+      expect(preventDefault).toHaveBeenCalled();
+    });
   });
 });

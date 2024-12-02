@@ -10,7 +10,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ICellEditorParams } from 'ag-grid-community';
 
-interface CustomCellEditorParams<T, D> extends ICellEditorParams {
+export interface CustomCellEditorParams<T, D> extends ICellEditorParams {
   onSelectOption: (value: T, data: D) => void;
   options: T[];
   displayKey: keyof T;
@@ -19,19 +19,18 @@ interface CustomCellEditorParams<T, D> extends ICellEditorParams {
 export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) => {
   const {
     options,
-    node,
+    data,
     column,
     displayKey,
     eGridCell,
     stopEditing,
     onSelectOption,
   } = props;
-
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
   const handleSelect = (value: T) => {
-    onSelectOption(value, node.data);
+    onSelectOption(value, data);
     stopEditing();
   };
 
@@ -91,7 +90,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
     };
   }, [stopEditing]);
 
-  const currentValue = node.data[props.column.getColId()] as string;
+  const currentValue = data[props.column.getColId()] as string;
 
   return (
     <div

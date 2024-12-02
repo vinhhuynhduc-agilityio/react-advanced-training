@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard Component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flex flex-col h-screen w-screen"
+  >
+    <div>
+      <button>
+        Add User
+      </button>
+      <button>
+        Add Task
+      </button>
+      <button>
+        Add Project
+      </button>
+    </div>
+    <div
+      class="flex flex-row flex-grow bg-slate-100 min-h-0"
+    >
+      <div
+        class="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto"
+      >
+        <div>
+          <button>
+            Double-click to select user
+          </button>
+        </div>
+      </div>
+      <div
+        class="flex-grow bg-slate-100 my-4 mr-4 overflow-auto"
+      >
+        <div>
+          <div>
+            ChartTotalTasksCompleted Mock
+          </div>
+        </div>
+        <div
+          class="flex flex-row bg-slate-100 mt-4 h-[302px]"
+        >
+          <div>
+            <div>
+              ChartIndividualEmployeeProgress Mock
+            </div>
+          </div>
+          <div>
+            <div>
+              ChartTotalTasksByProjects Mock
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white mt-4 h-96 border-customBorder"
+        >
+          <div>
+            <button>
+              Row of tasks
+            </button>
+            <p>
+              TaskDashboard Mock
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      Footer Mock
+    </div>
+  </div>
+</DocumentFragment>
+`;

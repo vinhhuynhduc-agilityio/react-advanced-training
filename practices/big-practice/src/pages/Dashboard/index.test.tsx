@@ -1,9 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DashboardContext } from '@/context';
 import Dashboard from '@/pages/Dashboard';
-import { mockContextValue } from '@/mocks';
 import { UserData } from '@/types';
 
 // Mocking lazy-loaded components
@@ -110,18 +108,14 @@ describe('Dashboard Component', () => {
 
   it('matches the snapshot', () => {
     const { asFragment } = render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it('triggers handleTaskRowSelected on task row selection', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
 
     // Find the task button and simulate a click
@@ -131,9 +125,7 @@ describe('Dashboard Component', () => {
 
   it('triggers onUserDoubleClicked on row double-click', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
 
     // Find the UserListDrawer and simulate a double-click on the row
@@ -147,9 +139,7 @@ describe('Dashboard Component', () => {
 
   it('renders the "Add User" button and triggers the action', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     const addUserButton = screen.getByText('Add User');
     expect(addUserButton).toBeInTheDocument();
@@ -170,9 +160,7 @@ describe('Dashboard Component', () => {
 
   it('renders the "Add User" button and triggers the action', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     const addUserButton = screen.getByText('Add User');
     expect(addUserButton).toBeInTheDocument();
@@ -193,9 +181,7 @@ describe('Dashboard Component', () => {
 
   it('renders the "Add Task" button and triggers the action', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     const addTaskButton = screen.getByText('Add Task');
     expect(addTaskButton).toBeInTheDocument();
@@ -216,9 +202,7 @@ describe('Dashboard Component', () => {
 
   it('renders the "Add Task" button and triggers the action', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     const addTaskButton = screen.getByText('Add Task');
     expect(addTaskButton).toBeInTheDocument();
@@ -239,9 +223,7 @@ describe('Dashboard Component', () => {
 
   it('renders the "Add Project" button and triggers the action', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     const addProjectButton = screen.getByText('Add Project');
     expect(addProjectButton).toBeInTheDocument();
@@ -263,9 +245,7 @@ describe('Dashboard Component', () => {
 
   it('renders the "Add Project" button and triggers the action', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     const addProjectButton = screen.getByText('Add Project');
     expect(addProjectButton).toBeInTheDocument();
@@ -285,9 +265,7 @@ describe('Dashboard Component', () => {
 
   it('renders the "Add Project" button and triggers the action', async () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     const addProjectButton = screen.getByText('Add Project');
     expect(addProjectButton).toBeInTheDocument();
@@ -308,9 +286,7 @@ describe('Dashboard Component', () => {
 
   it('renders the charts correctly', () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     expect(screen.getByText('ChartTotalTasksCompleted Mock')).toBeInTheDocument();
     expect(screen.getByText('ChartIndividualEmployeeProgress Mock')).toBeInTheDocument();
@@ -319,9 +295,7 @@ describe('Dashboard Component', () => {
 
   it('renders TaskDashboard and other content correctly', () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <Dashboard />
-      </DashboardContext.Provider>
+      <Dashboard />
     );
     expect(screen.getByText('TaskDashboard Mock')).toBeInTheDocument();
     expect(screen.getByText('Footer Mock')).toBeInTheDocument();

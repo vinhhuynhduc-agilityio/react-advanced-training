@@ -70,4 +70,9 @@ describe('TaskDashboard', () => {
       expect(mockOnTaskRowSelected).toHaveBeenCalledWith("d290f1ee-6c54-4b01-90e6-d701748f0851");
     });
   });
+
+  it('calls stopEditing when window is resized', () => {
+    setup();
+    fireEvent(window, new Event('resize'));
+  });
 });

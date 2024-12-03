@@ -9,15 +9,51 @@ import { UserData } from '@/types';
 // Mocking lazy-loaded components
 jest.mock('@/components/UserProfileForm', () => ({
   __esModule: true,
-  default: () => <div>UserProfileForm Mock</div>,
+  default: (
+    { onSubmit,
+      onClose
+    }: {
+      onSubmit: () => void,
+      onClose: () => void
+    }) => (
+    <div>
+      <div>UserProfileForm Mock</div>
+      <button onClick={onSubmit}>Submit User</button>
+      <button onClick={onClose}>Close User</button>
+    </div>
+  ),
 }));
 jest.mock('@/components/TaskForm', () => ({
   __esModule: true,
-  default: () => <div>TaskForm Mock</div>,
+  default: ({
+    onSubmit,
+    onClose
+  }: {
+    onSubmit: () => void,
+    onClose: () => void
+  }) => (
+    <div>
+      <div>TaskForm Mock</div>
+      <button onClick={onSubmit}>Submit Task</button>
+      <button onClick={onClose}>Close Task</button>
+    </div>
+  ),
 }));
 jest.mock('@/components/ProjectForm', () => ({
   __esModule: true,
-  default: () => <div>ProjectForm Mock</div>,
+  default: ({
+    onSubmit,
+    onClose
+  }: {
+    onSubmit: () => void,
+    onClose: () => void
+  }) => (
+    <div>
+      <div>ProjectForm Mock</div>
+      <button onClick={onSubmit}>Submit Project</button>
+      <button onClick={onClose}>Close Project</button>
+    </div>
+  ),
 }));
 
 jest.mock('@/components', () => ({
@@ -27,7 +63,7 @@ jest.mock('@/components', () => ({
   ModalDialog: ({ title, onClose, content }: { title: string, onClose: () => void, content: React.ReactNode }) => (
     <div>
       <div>{title}</div>
-      <button onClick={onClose}>Close</button>
+      <button onClick={onClose}>Close Modal</button>
       {content}
     </div>
   ),
@@ -68,6 +104,10 @@ jest.mock('@/components/common', () => ({ Spinner: () => <div>Spinner Mock</div>
 
 describe('Dashboard Component', () => {
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('matches the snapshot', () => {
     const { asFragment } = render(
       <DashboardContext.Provider value={mockContextValue}>
@@ -89,7 +129,6 @@ describe('Dashboard Component', () => {
     fireEvent.click(taskButton);
   });
 
-
   it('triggers onUserDoubleClicked on row double-click', async () => {
     render(
       <DashboardContext.Provider value={mockContextValue}>
@@ -105,7 +144,6 @@ describe('Dashboard Component', () => {
     await waitFor(() => screen.getByText('UserProfileForm Mock'));
     expect(screen.getByText('UserProfileForm Mock')).toBeInTheDocument();
   });
-
 
   it('renders the "Add User" button and triggers the action', async () => {
     render(
@@ -124,6 +162,33 @@ describe('Dashboard Component', () => {
 
     // Assert that the UserProfileForm component is rendered
     expect(screen.getByText('UserProfileForm Mock')).toBeInTheDocument();
+
+    const closeButton = screen.getByText('Close Modal');
+    fireEvent.click(closeButton);
+    expect(screen.queryByText("UserProfileForm Mock")).not.toBeInTheDocument();
+  });
+
+  it('renders the "Add User" button and triggers the action', async () => {
+    render(
+      <DashboardContext.Provider value={mockContextValue}>
+        <Dashboard />
+      </DashboardContext.Provider>
+    );
+    const addUserButton = screen.getByText('Add User');
+    expect(addUserButton).toBeInTheDocument();
+
+    // Simulate button click
+    fireEvent.click(addUserButton);
+
+    // Wait for the UserProfileForm component to be loaded
+    await waitFor(() => screen.getByText('UserProfileForm Mock'));
+
+    // Assert that the UserProfileForm component is rendered
+    expect(screen.getByText('UserProfileForm Mock')).toBeInTheDocument();
+
+    const closeButton = screen.getByText('Close User');
+    fireEvent.click(closeButton);
+    expect(screen.queryByText("UserProfileForm Mock")).not.toBeInTheDocument();
   });
 
   it('renders the "Add Task" button and triggers the action', async () => {
@@ -143,6 +208,33 @@ describe('Dashboard Component', () => {
 
     // Assert that the UserProfileForm component is rendered
     expect(screen.getByText('TaskForm Mock')).toBeInTheDocument();
+
+    const closeButton = screen.getByText('Close Modal');
+    fireEvent.click(closeButton);
+    expect(screen.queryByText("TaskForm Mock")).not.toBeInTheDocument();
+  });
+
+  it('renders the "Add Task" button and triggers the action', async () => {
+    render(
+      <DashboardContext.Provider value={mockContextValue}>
+        <Dashboard />
+      </DashboardContext.Provider>
+    );
+    const addTaskButton = screen.getByText('Add Task');
+    expect(addTaskButton).toBeInTheDocument();
+
+    // Simulate button click
+    fireEvent.click(addTaskButton);
+
+    // Wait for the UserProfileForm component to be loaded
+    await waitFor(() => screen.getByText('TaskForm Mock'));
+
+    // Assert that the UserProfileForm component is rendered
+    expect(screen.getByText('TaskForm Mock')).toBeInTheDocument();
+
+    const closeButton = screen.getByText('Close Task');
+    fireEvent.click(closeButton);
+    expect(screen.queryByText("Close Task")).not.toBeInTheDocument();
   });
 
   it('renders the "Add Project" button and triggers the action', async () => {
@@ -162,6 +254,56 @@ describe('Dashboard Component', () => {
 
     // Assert that the UserProfileForm component is rendered
     expect(screen.getByText('ProjectForm Mock')).toBeInTheDocument();
+
+    const closeButton = screen.getByText('Close Modal');
+    fireEvent.click(closeButton);
+
+    expect(screen.queryByText("ProjectForm Mock")).not.toBeInTheDocument();
+  });
+
+  it('renders the "Add Project" button and triggers the action', async () => {
+    render(
+      <DashboardContext.Provider value={mockContextValue}>
+        <Dashboard />
+      </DashboardContext.Provider>
+    );
+    const addProjectButton = screen.getByText('Add Project');
+    expect(addProjectButton).toBeInTheDocument();
+
+    // Simulate button click
+    fireEvent.click(addProjectButton);
+
+    // Wait for the UserProfileForm component to be loaded
+    await waitFor(() => screen.getByText('ProjectForm Mock'));
+
+    // Assert that the UserProfileForm component is rendered
+    expect(screen.getByText('ProjectForm Mock')).toBeInTheDocument();
+
+    const submitProject = screen.getByText('Submit Project');
+    fireEvent.click(submitProject);
+  });
+
+  it('renders the "Add Project" button and triggers the action', async () => {
+    render(
+      <DashboardContext.Provider value={mockContextValue}>
+        <Dashboard />
+      </DashboardContext.Provider>
+    );
+    const addProjectButton = screen.getByText('Add Project');
+    expect(addProjectButton).toBeInTheDocument();
+
+    // Simulate button click
+    fireEvent.click(addProjectButton);
+
+    // Wait for the UserProfileForm component to be loaded
+    await waitFor(() => screen.getByText('ProjectForm Mock'));
+
+    // Assert that the UserProfileForm component is rendered
+    expect(screen.getByText('ProjectForm Mock')).toBeInTheDocument();
+
+    const closeProject = screen.getByText('Close Project');
+    fireEvent.click(closeProject);
+    expect(screen.queryByText("ProjectForm Mock")).not.toBeInTheDocument();
   });
 
   it('renders the charts correctly', () => {

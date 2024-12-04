@@ -60,6 +60,7 @@ import { DashboardContext } from '@/context';
 
 // hooks
 import { useFetchData, useRowSelection } from '@/hooks';
+import { handleRowSelection } from '@/pages';
 
 const Dashboard: React.FC = () => {
   const userListGridApi = useRef<GridApi | null>(null);
@@ -86,12 +87,12 @@ const Dashboard: React.FC = () => {
 
   // Function to handle when row in TaskDashboard is selected
   const handleTaskRowSelected = (userId: string | null) => {
-    handleRowSelected(userId, 'TaskDashboard');
+    handleRowSelection(userId, 'TaskDashboard', handleRowSelected);
   };
 
   // Function to handle when row in UserListDrawer is selected
   const handleUserRowSelected = (userId: string | null) => {
-    handleRowSelected(userId, 'UserListDrawer');
+    handleRowSelection(userId, 'UserListDrawer', handleRowSelected);
   };
 
   const updateEarningsForUsers = async (

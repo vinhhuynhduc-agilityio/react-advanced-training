@@ -1,303 +1,208 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Dashboard from '@/pages/Dashboard';
-import { UserData } from '@/types';
+import { mockContextValue } from '@/mocks';
 
-// Mocking lazy-loaded components
-jest.mock('@/components/UserProfileForm', () => ({
-  __esModule: true,
-  default: (
-    { onSubmit,
-      onClose
-    }: {
-      onSubmit: () => void,
-      onClose: () => void
-    }) => (
-    <div>
-      <div>UserProfileForm Mock</div>
-      <button onClick={onSubmit}>Submit User</button>
-      <button onClick={onClose}>Close User</button>
-    </div>
-  ),
+jest.mock('@/hooks/useDashboardContext', () => ({
+  useDashboardContext: () => ({
+    ...mockContextValue
+  })
 }));
-jest.mock('@/components/TaskForm', () => ({
-  __esModule: true,
-  default: ({
-    onSubmit,
-    onClose
-  }: {
-    onSubmit: () => void,
-    onClose: () => void
-  }) => (
-    <div>
-      <div>TaskForm Mock</div>
-      <button onClick={onSubmit}>Submit Task</button>
-      <button onClick={onClose}>Close Task</button>
-    </div>
-  ),
-}));
-jest.mock('@/components/ProjectForm', () => ({
-  __esModule: true,
-  default: ({
-    onSubmit,
-    onClose
-  }: {
-    onSubmit: () => void,
-    onClose: () => void
-  }) => (
-    <div>
-      <div>ProjectForm Mock</div>
-      <button onClick={onSubmit}>Submit Project</button>
-      <button onClick={onClose}>Close Project</button>
-    </div>
-  ),
-}));
-
-jest.mock('@/components', () => ({
-  ChartIndividualEmployeeProgress: () => <div>ChartIndividualEmployeeProgress Mock</div>,
-  ChartTotalTasksByProjects: () => <div>ChartTotalTasksByProjects Mock</div>,
-  ChartTotalTasksCompleted: () => <div>ChartTotalTasksCompleted Mock</div>,
-  ModalDialog: ({ title, onClose, content }: { title: string, onClose: () => void, content: React.ReactNode }) => (
-    <div>
-      <div>{title}</div>
-      <button onClick={onClose}>Close Modal</button>
-      {content}
-    </div>
-  ),
-  Footer: () => <div>Footer Mock</div>,
-  Header: ({
-    onAddUser,
-    onAddTask,
-    onAddProject,
-  }: {
-    onAddUser: () => void;
-    onAddTask: () => void;
-    onAddProject: () => void;
-  }) => (
-    <div>
-      <button onClick={onAddUser}>Add User</button>
-      <button onClick={onAddTask}>Add Task</button>
-      <button onClick={onAddProject}>Add Project</button>
-    </div>
-  ),
-  UserListDrawer: ({ onUserDoubleClicked }: { onUserDoubleClicked: (user: UserData) => void }) => (
-    <div>
-      <button onDoubleClick={() => onUserDoubleClicked({ id: '1', fullName: 'David Smith', earnings: '5000', email: 'Davidsmith@example.com', avatarUrl: '', registered: '', lastUpdated: '' })}>
-        Double-click to select user
-      </button>
-    </div>
-  ),
-  TaskDashboard: ({ onTaskRowSelected }: { onTaskRowSelected: (task: { id: string; name: string }) => void }) => (
-    <div>
-      <button onClick={() => onTaskRowSelected({ id: '1', name: 'Row of tasks' })}>
-        Row of tasks
-      </button>
-      <p>TaskDashboard Mock</p>
-    </div>
-  ),
-  ErrorBoundary: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-}));
-jest.mock('@/components/common', () => ({ Spinner: () => <div>Spinner Mock</div> }));
 
 describe('Dashboard Component', () => {
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('matches the snapshot', () => {
+  test('matches snapshot', () => {
     const { asFragment } = render(
       <Dashboard />
     );
+
+    // Take a snapshot of the rendered component
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('triggers handleTaskRowSelected on task row selection', async () => {
+  test('renders the "Add User" button and triggers the action ', async () => {
     render(
       <Dashboard />
     );
-
-    // Find the task button and simulate a click
-    const taskButton = screen.getByText('Row of tasks');
-    fireEvent.click(taskButton);
-  });
-
-  it('triggers onUserDoubleClicked on row double-click', async () => {
-    render(
-      <Dashboard />
-    );
-
-    // Find the UserListDrawer and simulate a double-click on the row
-    const doubleClickButton = screen.getByText('Double-click to select user');
-
-    // Simulate the double-click event
-    fireEvent.doubleClick(doubleClickButton);
-    await waitFor(() => screen.getByText('UserProfileForm Mock'));
-    expect(screen.getByText('UserProfileForm Mock')).toBeInTheDocument();
-  });
-
-  it('renders the "Add User" button and triggers the action', async () => {
-    render(
-      <Dashboard />
-    );
-    const addUserButton = screen.getByText('Add User');
+    expect(screen.getByText(/Team Progress App/i)).toBeInTheDocument();
+    const addUserButton = screen.getByText('Add a user');
     expect(addUserButton).toBeInTheDocument();
 
     // Simulate button click
     fireEvent.click(addUserButton);
 
-    // Wait for the UserProfileForm component to be loaded
-    await waitFor(() => screen.getByText('UserProfileForm Mock'));
+    await waitFor(() => screen.getByText('Cancel'));
+    const cancelBtn = screen.getByText('Cancel');
 
-    // Assert that the UserProfileForm component is rendered
-    expect(screen.getByText('UserProfileForm Mock')).toBeInTheDocument();
-
-    const closeButton = screen.getByText('Close Modal');
-    fireEvent.click(closeButton);
-    expect(screen.queryByText("UserProfileForm Mock")).not.toBeInTheDocument();
+    fireEvent.click(cancelBtn);
+    expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
   });
 
-  it('renders the "Add User" button and triggers the action', async () => {
+  test('calls onClose when clicking the modal overlay', async () => {
     render(
       <Dashboard />
     );
-    const addUserButton = screen.getByText('Add User');
+
+    // Trigger the modal to open
+    fireEvent.click(screen.getByText('Add a user'));
+
+    await waitFor(() => screen.getByTestId('modal-overlay'));
+    const modalOverlay = screen.getByTestId('modal-overlay');
+    expect(screen.queryByTestId('modal-overlay')).toBeInTheDocument();
+
+    fireEvent.click(modalOverlay);
+    expect(screen.queryByTestId('modal-overlay')).not.toBeInTheDocument();
+  });
+
+  test('calls onSubmit on User form', async () => {
+    render(
+      <Dashboard />
+    );
+    const addUserButton = screen.getByText('Add a user');
     expect(addUserButton).toBeInTheDocument();
 
     // Simulate button click
     fireEvent.click(addUserButton);
 
-    // Wait for the UserProfileForm component to be loaded
-    await waitFor(() => screen.getByText('UserProfileForm Mock'));
-
-    // Assert that the UserProfileForm component is rendered
-    expect(screen.getByText('UserProfileForm Mock')).toBeInTheDocument();
-
-    const closeButton = screen.getByText('Close User');
-    fireEvent.click(closeButton);
-    expect(screen.queryByText("UserProfileForm Mock")).not.toBeInTheDocument();
+    const inputFullName = screen.getByPlaceholderText('Enter full name');
+    fireEvent.change(inputFullName, { target: { value: 'New full name' } });
+    const inputEmail = screen.getByPlaceholderText('Enter email');
+    fireEvent.change(inputEmail, { target: { value: 'bob11111@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+    expect(screen.queryByTestId('Add')).not.toBeInTheDocument();
   });
 
-  it('renders the "Add Task" button and triggers the action', async () => {
+  test('renders the "Add Project" button and triggers the action', async () => {
     render(
       <Dashboard />
     );
-    const addTaskButton = screen.getByText('Add Task');
+    const addProjectButton = screen.getByText('Add a project');
+    expect(addProjectButton).toBeInTheDocument();
+
+    // Simulate button click
+    fireEvent.click(addProjectButton);
+
+    await waitFor(() => screen.getByText('Cancel'));
+    const cancelBtn = screen.getByText('Cancel');
+    expect(screen.getByText('Add Project')).toBeInTheDocument();
+
+    fireEvent.click(cancelBtn);
+    expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
+  });
+
+  test('calls onClose when clicking the modal overlay', async () => {
+    render(
+      <Dashboard />
+    );
+
+    // Trigger the modal to open
+    fireEvent.click(screen.getByText('Add a project'));
+
+    await waitFor(() => screen.getByTestId('modal-overlay'));
+    const modalOverlay = screen.getByTestId('modal-overlay');
+    expect(screen.queryByTestId('modal-overlay')).toBeInTheDocument();
+
+    fireEvent.click(modalOverlay);
+    expect(screen.queryByTestId('modal-overlay')).not.toBeInTheDocument();
+  });
+
+  test('calls onSubmit on project form', async () => {
+    render(
+      <Dashboard />
+    );
+    const addProjectButton = screen.getByText('Add a project');
+    expect(addProjectButton).toBeInTheDocument();
+
+    // Simulate button click
+    fireEvent.click(addProjectButton);
+
+    const input = screen.getByPlaceholderText('Enter project name');
+    fireEvent.change(input, { target: { value: 'New Project' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+    expect(screen.queryByTestId('Save')).not.toBeInTheDocument();
+  });
+
+  test('renders the "Add Task" button and triggers the action', async () => {
+    render(
+      <Dashboard />
+    );
+    const addTaskButton = screen.getByText('Add a task');
     expect(addTaskButton).toBeInTheDocument();
 
     // Simulate button click
     fireEvent.click(addTaskButton);
 
-    // Wait for the UserProfileForm component to be loaded
-    await waitFor(() => screen.getByText('TaskForm Mock'));
+    await waitFor(() => screen.getByText('Cancel'));
+    const cancelBtn = screen.getByText('Cancel');
+    expect(screen.getByText('Add Task')).toBeInTheDocument();
 
-    // Assert that the UserProfileForm component is rendered
-    expect(screen.getByText('TaskForm Mock')).toBeInTheDocument();
-
-    const closeButton = screen.getByText('Close Modal');
-    fireEvent.click(closeButton);
-    expect(screen.queryByText("TaskForm Mock")).not.toBeInTheDocument();
+    fireEvent.click(cancelBtn);
+    expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
   });
 
-  it('renders the "Add Task" button and triggers the action', async () => {
+  test('calls onSubmit on Task form', async () => {
     render(
       <Dashboard />
     );
-    const addTaskButton = screen.getByText('Add Task');
+    const addTaskButton = screen.getByText('Add a task');
     expect(addTaskButton).toBeInTheDocument();
 
     // Simulate button click
     fireEvent.click(addTaskButton);
 
-    // Wait for the UserProfileForm component to be loaded
-    await waitFor(() => screen.getByText('TaskForm Mock'));
+    const inputTask = screen.getByPlaceholderText('Enter task name');
+    fireEvent.change(inputTask, { target: { value: 'New task' } });
+    const inputCurrency = screen.getByPlaceholderText('Enter currency');
+    fireEvent.change(inputCurrency, { target: { value: 1000 } });
+    const assigneeDropdown = screen.getByPlaceholderText('Select an assignee');
+    fireEvent.click(assigneeDropdown);
+    const assigneeOptions = screen.getByRole('option', { name: 'Alice Brown' });
+    fireEvent.click(assigneeOptions);
+    const dropdown = screen.getByPlaceholderText('Select a project');
+    fireEvent.click(dropdown);
 
-    // Assert that the UserProfileForm component is rendered
-    expect(screen.getByText('TaskForm Mock')).toBeInTheDocument();
+    // Select the 'Support' option
+    const supportOptions = screen.getByRole('option', { name: 'Support' });
+    fireEvent.click(supportOptions);
 
-    const closeButton = screen.getByText('Close Task');
-    fireEvent.click(closeButton);
-    expect(screen.queryByText("Close Task")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+    expect(screen.queryByTestId('Save')).not.toBeInTheDocument();
   });
 
-  it('renders the "Add Project" button and triggers the action', async () => {
+  test('calls onClose when clicking the modal overlay', async () => {
     render(
       <Dashboard />
     );
-    const addProjectButton = screen.getByText('Add Project');
-    expect(addProjectButton).toBeInTheDocument();
+
+    // Trigger the modal to open
+    fireEvent.click(screen.getByText('Add a task'));
+
+    await waitFor(() => screen.getByTestId('modal-overlay'));
+    const modalOverlay = screen.getByTestId('modal-overlay');
+    expect(screen.queryByTestId('modal-overlay')).toBeInTheDocument();
+
+    fireEvent.click(modalOverlay);
+    expect(screen.queryByTestId('modal-overlay')).not.toBeInTheDocument();
+  });
+
+  test('calls selected row on task form', async () => {
+    render(
+      <Dashboard />
+    );
+    const rowSelected = screen.getAllByText('Alice Brown')
 
     // Simulate button click
-    fireEvent.click(addProjectButton);
+    fireEvent.click(rowSelected[0]);
+    fireEvent.doubleClick(rowSelected[0]);
+    await waitFor(() => expect(screen.getByText('Edit User')).toBeInTheDocument());
+    const inputFullName = screen.getByPlaceholderText('Enter full name');
+    fireEvent.change(inputFullName, { target: { value: 'New full name' } });
+    const inputEmail = screen.getByPlaceholderText('Enter email');
+    fireEvent.change(inputEmail, { target: { value: 'bob1122@example.com' } });
 
-    // Wait for the UserProfileForm component to be loaded
-    await waitFor(() => screen.getByText('ProjectForm Mock'));
-
-    // Assert that the UserProfileForm component is rendered
-    expect(screen.getByText('ProjectForm Mock')).toBeInTheDocument();
-
-    const closeButton = screen.getByText('Close Modal');
-    fireEvent.click(closeButton);
-
-    expect(screen.queryByText("ProjectForm Mock")).not.toBeInTheDocument();
-  });
-
-  it('renders the "Add Project" button and triggers the action', async () => {
-    render(
-      <Dashboard />
-    );
-    const addProjectButton = screen.getByText('Add Project');
-    expect(addProjectButton).toBeInTheDocument();
-
-    // Simulate button click
-    fireEvent.click(addProjectButton);
-
-    // Wait for the UserProfileForm component to be loaded
-    await waitFor(() => screen.getByText('ProjectForm Mock'));
-
-    // Assert that the UserProfileForm component is rendered
-    expect(screen.getByText('ProjectForm Mock')).toBeInTheDocument();
-
-    const submitProject = screen.getByText('Submit Project');
-    fireEvent.click(submitProject);
-  });
-
-  it('renders the "Add Project" button and triggers the action', async () => {
-    render(
-      <Dashboard />
-    );
-    const addProjectButton = screen.getByText('Add Project');
-    expect(addProjectButton).toBeInTheDocument();
-
-    // Simulate button click
-    fireEvent.click(addProjectButton);
-
-    // Wait for the UserProfileForm component to be loaded
-    await waitFor(() => screen.getByText('ProjectForm Mock'));
-
-    // Assert that the UserProfileForm component is rendered
-    expect(screen.getByText('ProjectForm Mock')).toBeInTheDocument();
-
-    const closeProject = screen.getByText('Close Project');
-    fireEvent.click(closeProject);
-    expect(screen.queryByText("ProjectForm Mock")).not.toBeInTheDocument();
-  });
-
-  it('renders the charts correctly', () => {
-    render(
-      <Dashboard />
-    );
-    expect(screen.getByText('ChartTotalTasksCompleted Mock')).toBeInTheDocument();
-    expect(screen.getByText('ChartIndividualEmployeeProgress Mock')).toBeInTheDocument();
-    expect(screen.getByText('ChartTotalTasksByProjects Mock')).toBeInTheDocument();
-  });
-
-  it('renders TaskDashboard and other content correctly', () => {
-    render(
-      <Dashboard />
-    );
-    expect(screen.getByText('TaskDashboard Mock')).toBeInTheDocument();
-    expect(screen.getByText('Footer Mock')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+    expect(screen.queryByTestId('Save')).not.toBeInTheDocument();
   });
 });

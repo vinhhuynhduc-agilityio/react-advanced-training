@@ -123,6 +123,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
               }
             })}
             placeholder="Enter email"
+            aria-label='email-user'
           />
         </div>
         {errors.email && renderError(errors.email.message)}
@@ -192,6 +193,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
         <button
           className="bg-slate-200 text-blue-600 font-bold active:bg-slate-400"
           type="submit"
+          aria-label='save-user'
         >
           {buttonLabel}
         </button>

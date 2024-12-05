@@ -1336,6 +1336,7 @@ exports[`TaskDashboard matches snapshot for default state 1`] = `
                         title="Click to complete/uncomplete the task"
                       >
                         <span
+                          aria-label="icon"
                           class="flex justify-center items-center w-full h-full cursor-pointer"
                           data-testid="status-icon"
                         >
@@ -1443,6 +1444,7 @@ exports[`TaskDashboard matches snapshot for default state 1`] = `
                         title="Click to complete/uncomplete the task"
                       >
                         <span
+                          aria-label="icon"
                           class="flex justify-center items-center w-full h-full cursor-pointer"
                           data-testid="status-icon"
                         >
@@ -1550,6 +1552,7 @@ exports[`TaskDashboard matches snapshot for default state 1`] = `
                         title="Click to complete/uncomplete the task"
                       >
                         <span
+                          aria-label="icon"
                           class="flex justify-center items-center w-full h-full cursor-pointer"
                           data-testid="status-icon"
                         >
@@ -1657,6 +1660,7 @@ exports[`TaskDashboard matches snapshot for default state 1`] = `
                         title="Click to complete/uncomplete the task"
                       >
                         <span
+                          aria-label="icon"
                           class="flex justify-center items-center w-full h-full cursor-pointer"
                           data-testid="status-icon"
                         >
@@ -1764,6 +1768,7 @@ exports[`TaskDashboard matches snapshot for default state 1`] = `
                         title="Click to complete/uncomplete the task"
                       >
                         <span
+                          aria-label="icon"
                           class="flex justify-center items-center w-full h-full cursor-pointer"
                           data-testid="status-icon"
                         >

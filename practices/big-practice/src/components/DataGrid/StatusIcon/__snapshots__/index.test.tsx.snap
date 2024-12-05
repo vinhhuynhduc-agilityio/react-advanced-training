@@ -3,6 +3,7 @@
 exports[`IconRenderer Component matches snapshot for default state 1`] = `
 <div>
   <span
+    aria-label="icon"
     class="flex justify-center items-center w-full h-full cursor-pointer"
     data-testid="status-icon"
   >

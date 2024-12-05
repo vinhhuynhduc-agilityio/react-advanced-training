@@ -19,6 +19,7 @@ export const IconRenderer: React.FC<IconRendererProps> = (props) => {
       data-testid="status-icon" // Add data-testid here for testing
       className="flex justify-center items-center w-full h-full cursor-pointer"
       onClick={props.onStatusValueChange}
+      aria-label='icon'
     >
       {isComplete ? (
         <FaCheckCircle data-testid="icon-check" color="#1CA1C1" size={20} />

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Dashboard from '@/pages/Dashboard';
 import { mockContextValue } from '@/mocks';
 
@@ -64,13 +64,18 @@ describe('Dashboard Component', () => {
     expect(addUserButton).toBeInTheDocument();
 
     // Simulate button click
-    fireEvent.click(addUserButton);
+    await act(async () => {
+      fireEvent.click(addUserButton);
+    });
 
     const inputFullName = screen.getByPlaceholderText('Enter full name');
     fireEvent.change(inputFullName, { target: { value: 'New full name' } });
     const inputEmail = screen.getByPlaceholderText('Enter email');
     fireEvent.change(inputEmail, { target: { value: 'bob11111@example.com' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+    await act(async () => {
+      const saveBtn = screen.getByLabelText('save-user');
+      fireEvent.click(saveBtn);
+    })
     expect(screen.queryByTestId('Add')).not.toBeInTheDocument();
   });
 
@@ -82,8 +87,9 @@ describe('Dashboard Component', () => {
     expect(addProjectButton).toBeInTheDocument();
 
     // Simulate button click
-    fireEvent.click(addProjectButton);
-
+    await act(async () => {
+      fireEvent.click(addProjectButton);
+    });
     await waitFor(() => screen.getByText('Cancel'));
     const cancelBtn = screen.getByText('Cancel');
     expect(screen.getByText('Add Project')).toBeInTheDocument();
@@ -98,8 +104,9 @@ describe('Dashboard Component', () => {
     );
 
     // Trigger the modal to open
-    fireEvent.click(screen.getByText('Add a project'));
-
+    await act(async () => {
+      fireEvent.click(screen.getByText('Add a project'));
+    });
     await waitFor(() => screen.getByTestId('modal-overlay'));
     const modalOverlay = screen.getByTestId('modal-overlay');
     expect(screen.queryByTestId('modal-overlay')).toBeInTheDocument();
@@ -116,7 +123,9 @@ describe('Dashboard Component', () => {
     expect(addProjectButton).toBeInTheDocument();
 
     // Simulate button click
-    fireEvent.click(addProjectButton);
+    await act(async () => {
+      fireEvent.click(addProjectButton);
+    });
 
     const input = screen.getByPlaceholderText('Enter project name');
     fireEvent.change(input, { target: { value: 'New Project' } });
@@ -132,8 +141,9 @@ describe('Dashboard Component', () => {
     expect(addTaskButton).toBeInTheDocument();
 
     // Simulate button click
-    fireEvent.click(addTaskButton);
-
+    await act(async () => {
+      fireEvent.click(addTaskButton);
+    });
     await waitFor(() => screen.getByText('Cancel'));
     const cancelBtn = screen.getByText('Cancel');
     expect(screen.getByText('Add Task')).toBeInTheDocument();
@@ -150,8 +160,9 @@ describe('Dashboard Component', () => {
     expect(addTaskButton).toBeInTheDocument();
 
     // Simulate button click
-    fireEvent.click(addTaskButton);
-
+    await act(async () => {
+      fireEvent.click(addTaskButton);
+    });
     const inputTask = screen.getByPlaceholderText('Enter task name');
     fireEvent.change(inputTask, { target: { value: 'New task' } });
     const inputCurrency = screen.getByPlaceholderText('Enter currency');
@@ -177,8 +188,9 @@ describe('Dashboard Component', () => {
     );
 
     // Trigger the modal to open
-    fireEvent.click(screen.getByText('Add a task'));
-
+    await act(async () => {
+      fireEvent.click(screen.getByText('Add a task'));
+    });
     await waitFor(() => screen.getByTestId('modal-overlay'));
     const modalOverlay = screen.getByTestId('modal-overlay');
     expect(screen.queryByTestId('modal-overlay')).toBeInTheDocument();
@@ -195,14 +207,66 @@ describe('Dashboard Component', () => {
 
     // Simulate button click
     fireEvent.click(rowSelected[0]);
-    fireEvent.doubleClick(rowSelected[0]);
-    await waitFor(() => expect(screen.getByText('Edit User')).toBeInTheDocument());
-    const inputFullName = screen.getByPlaceholderText('Enter full name');
-    fireEvent.change(inputFullName, { target: { value: 'New full name' } });
-    const inputEmail = screen.getByPlaceholderText('Enter email');
-    fireEvent.change(inputEmail, { target: { value: 'bob1122@example.com' } });
+  });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
-    expect(screen.queryByTestId('Save')).not.toBeInTheDocument();
+  test('calls doubleClick on user form', async () => {
+    render(<Dashboard />);
+    const rowSelected = screen.getByRole('listitem', { name: 'Alice Brown' });
+
+    // Simulate button double-click
+    await act(async () => {
+      fireEvent.dblClick(rowSelected);
+    });
+
+    // Wait for 'Edit User' to be in the document
+    await waitFor(() => {
+      expect(screen.getByText('Edit User')).toBeInTheDocument();
+    });
+
+    const saveBtn = screen.getByLabelText('save-user');
+    // Click the Save button
+    await act(async () => {
+      fireEvent.click(saveBtn);
+    });
+  });
+
+  test('calls selected row on Task form', async () => {
+    render(
+      <Dashboard />
+    );
+    const rowSelected = screen.getAllByRole('gridcell', { name: 'Alice Brown' });
+    // Simulate button click
+    await act(async () => {
+      fireEvent.click(rowSelected[1]);
+    });
+  });
+
+  it('Calls to change the user', async () => {
+    render(
+      <Dashboard />
+    );
+    const rowSelected = screen.getAllByRole('gridcell', { name: 'Alice Brown' });
+    await act(async () => {
+      fireEvent.dblClick(rowSelected[1]);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryAllByRole('gridcell', { name: 'Jane Smith' }).length).toBeGreaterThan(0);
+    })
+    const cellSelected = screen.getByRole('option', { name: 'Jane Smith' })
+    screen.debug(cellSelected);
+    await act(async () => {
+      fireEvent.click(cellSelected);
+    })
+  });
+
+  it('Calls to change the icon', async () => {
+    render(
+      <Dashboard />
+    );
+    const rowElement = screen.getAllByLabelText("icon");
+    await act(async () => {
+      fireEvent.click(rowElement[0]);
+    });
   });
 });

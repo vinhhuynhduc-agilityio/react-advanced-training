@@ -3,7 +3,9 @@
 exports[`PersonRenderer component matches snapshot for default state 1`] = `
 <div>
   <div
+    aria-label="Joe Bloggs"
     class="flex items-center py-2"
+    role="listitem"
   >
     <img
       alt="avatar"

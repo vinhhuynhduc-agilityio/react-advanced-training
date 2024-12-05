@@ -8,7 +8,11 @@ export const PersonRenderer = (params: ICellRendererParams<UserData>) => {
 
   const { avatarUrl, fullName, earnings } = params.data;
   return (
-    <div className="flex items-center py-2">
+    <div
+      className="flex items-center py-2"
+      role="listitem"
+      aria-label={fullName}
+    >
       <img
         src={avatarUrl}
         alt="avatar"

@@ -4,7 +4,7 @@ interface ButtonProps {
   label: string;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
-  variant?: 'primary' | 'secondary' | 'default';
+  variant?: 'primary' | 'secondary' | 'disabled' | 'default';
   disabled?: boolean;
   ariaLabel?: string;
 }

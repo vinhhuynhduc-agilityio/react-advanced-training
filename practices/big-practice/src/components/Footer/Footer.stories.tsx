@@ -1,30 +1,47 @@
+import { Footer } from '@/components';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Footer } from '@/components/Footer';
 
-// Metadata cho story
+// Story metadata for the Footer component
 const meta: Meta<typeof Footer> = {
   title: 'Components/Footer',
   component: Footer,
   tags: ['autodocs'],
-  argTypes: {
-    content: { control: 'text' },
-  },
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'Footer component with customizable background color.',
+      },
+    },
+  },
+  argTypes: {
+    content: {
+      description: 'The content displayed inside the footer',
+      control: 'text',
+    },
+    backgroundColor: {
+      description: 'Custom background color for the footer',
+      control: 'text',
+      defaultValue: 'bg-gradient-to-r from-gray-800 via-blue-900 to-gray-900', // Default background
+    },
   },
 };
 
 export default meta;
+
 type Story = StoryObj<typeof Footer>;
 
-export const Default: Story = {
+// Default story for the Footer component
+export const CustomGradientBackground: Story = {
   args: {
-    content: 'Default Footer Content',
+    content: 'This is the footer content',
+    backgroundColor: 'bg-gradient-to-r from-green-400 via-blue-500 to-purple-600', // Custom background for this story
   },
 };
 
-export const CustomContent: Story = {
+// Story with default background color
+export const DefaultBackground: Story = {
   args: {
-    content: 'Custom Footer Content',
+    content: 'Footer with default background',
   },
 };

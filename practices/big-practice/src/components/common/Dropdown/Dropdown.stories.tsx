@@ -1,24 +1,32 @@
+import { Dropdown } from '@/components/common';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Dropdown } from '@/components/common/Dropdown';
 
-// Mock Data
-const mockOptions = [
-  { id: '1', value: 'Option 1' },
-  { id: '2', value: 'Option 2' },
-  { id: '3', value: 'Option 3' },
-  { id: '4', value: 'Option 4' },
-  { id: '5', value: 'Option 5' },
-];
-
+// Metadata for story
 const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown',
   component: Dropdown,
-  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'A dropdown component that allows users to select an option from a list.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
-    onSelect: { action: 'Option selected' },
+    options: {
+      description: 'The list of options to display in the dropdown',
+      control: 'object',
+    },
+    placeholder: {
+      description: 'Placeholder text displayed when no option is selected',
+      control: 'text',
+    },
+    onSelect: {
+      description: 'Callback function triggered when a user selects an option',
+      action: 'selected',
+    },
   },
 };
 
@@ -26,45 +34,31 @@ export default meta;
 
 type Story = StoryObj<typeof Dropdown>;
 
-// Story default
+// Specific stories
 export const Default: Story = {
   args: {
-    options: mockOptions,
+    options: [
+      { id: '1', value: 'Option 1' },
+      { id: '2', value: 'Option 2' },
+      { id: '3', value: 'Option 3' },
+    ],
     placeholder: 'Select an option...',
   },
 };
 
-// Story with big data
-export const LargeDataSet: Story = {
+export const WithNoOptions: Story = {
   args: {
-    options: Array.from({ length: 50 }, (_, i) => ({
-      id: `${i + 1}`,
-      value: `Option ${i + 1}`,
-    })),
-    placeholder: 'Select an option (Large List)...',
+    options: [],
+    placeholder: 'No options available',
   },
 };
 
-// Story when a value has been pre-selected
-export const PreSelectedValue: Story = {
-  render: (args) => {
-    const preSelectedOption = mockOptions[1];
-    return (
-      <Dropdown
-        {...args}
-        onSelect={args.onSelect}
-        options={mockOptions}
-        placeholder="Select an option..."
-        ref={(ref) => {
-          if (ref) {
-            ref.value = preSelectedOption.value;
-          }
-        }}
-      />
-    );
-  },
+export const WithCustomPlaceholder: Story = {
   args: {
-    options: mockOptions,
-    placeholder: 'Pre-selected option...',
+    options: [
+      { id: '1', value: 'Custom Option 1' },
+      { id: '2', value: 'Custom Option 2' },
+    ],
+    placeholder: 'Choose your favorite option...',
   },
 };

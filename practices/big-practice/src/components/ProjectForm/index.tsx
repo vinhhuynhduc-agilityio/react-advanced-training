@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
-// hooks
 import { useDashboardContext } from '@/hooks';
+
+// components
+import { Button } from '@/components/common';
 
 interface ProjectFormProps {
   onClose: () => void;
@@ -65,17 +66,17 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
       {/* Footer */}
       <div className="flex justify-between border-t pt-3">
-        <button
+        <Button
           type="button"
           onClick={onClose}
-          className="bg-slate-200 text-pink-600 font-bold">
-          Cancel
-        </button>
-        <button
+          label="Cancel"
+          variant="secondary"
+        />
+        <Button
           type="submit"
-          className="bg-slate-200 text-blue-600 font-bold">
-          Save
-        </button>
+          label="Save"
+          variant="primary"
+        />
       </div>
     </form>
   );

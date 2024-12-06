@@ -105,7 +105,7 @@ exports[`UserProfileForm matches snapshot for default state 1`] = `
       </button>
       <button
         aria-label="save-user"
-        class="bg-slate-200 text-blue-600 font-bold active:bg-slate-400"
+        class="bg-slate-200 text-blue-600 font-bold"
         type="submit"
       >
         Save

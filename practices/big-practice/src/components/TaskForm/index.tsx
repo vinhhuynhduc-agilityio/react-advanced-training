@@ -12,7 +12,7 @@ import { formatDropdownOptions } from '@/helpers';
 import { TaskFormData } from '@/types';
 
 // component
-import { Dropdown } from '@/components/common';
+import { Button, Dropdown } from '@/components/common';
 
 // hooks
 import { useDashboardContext } from '@/hooks';
@@ -150,17 +150,17 @@ const TaskForm: React.FC<TaskFormProps> = ({
 
       {/* Footer */}
       <div className="flex justify-between border-t pt-3">
-        <button
+        <Button
           type="button"
           onClick={onClose}
-          className="bg-slate-200 text-pink-600 font-bold">
-          Cancel
-        </button>
-        <button
+          label="Cancel"
+          variant="secondary"
+        />
+        <Button
           type="submit"
-          className="bg-slate-200 text-blue-600 font-bold">
-          Save
-        </button>
+          label="Save"
+          variant="primary"
+        />
       </div>
     </form>
   );

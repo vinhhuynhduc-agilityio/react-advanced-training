@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom'; // Import Jest DOM matchers
-import { Button } from '.';
+import '@testing-library/jest-dom';
+import { Button } from '@/components/common';
 
 describe('Button component', () => {
   it('matches snapshot for default state', () => {
@@ -13,55 +13,92 @@ describe('Button component', () => {
   });
 
   it('renders the correct label', () => {
-    // Render the Button component with a label "Click me"
-    render(<Button label="Click me" onClick={() => { }} />);
-
-    // Find the button element by its label text
-    const buttonElement = screen.getByText(/click me/i);
-
-    // Assert that the button is in the document
-    expect(buttonElement).toBeInTheDocument();
+    render(
+      <Button
+        label="Submit"
+        onClick={() => { }} />
+    );
+    expect(screen.getByText('Submit')).toBeInTheDocument();
   });
 
-  it('calls onClick when clicked', () => {
-    const handleClick = jest.fn();
-    render(<Button label="Click me" onClick={handleClick} />);
-
-    // Find the button and simulate a click
-    const buttonElement = screen.getByText(/click me/i);
-    fireEvent.click(buttonElement);
-
-    // Assert that the onClick function was called once
-    expect(handleClick).toHaveBeenCalledTimes(1);
+  it('renders with the correct type', () => {
+    const { container } = render(
+      <Button
+        label="Reset"
+        type="reset"
+        onClick={() => { }} />
+    );
+    const button = container.querySelector('button');
+    expect(button).toHaveAttribute('type', 'reset');
   });
 
-  it('is disabled when the disabled prop is true', () => {
-    render(<Button label="Disabled" onClick={() => { }} disabled={true} />);
+  it('calls the onClick handler when clicked', () => {
+    const onClickMock = jest.fn();
+    render(
+      <Button
+        label="Click me"
+        onClick={onClickMock} />
+    );
 
-    // Find the button element
-    const buttonElement = screen.getByText(/disabled/i);
-
-    // Assert that the button is disabled
-    expect(buttonElement).toBeDisabled();
+    const button = screen.getByText('Click me');
+    fireEvent.click(button);
+    expect(onClickMock).toHaveBeenCalledTimes(1);
   });
 
-  it('has correct class when disabled', () => {
-    render(<Button label="Disabled" onClick={() => { }} disabled={true} />);
-
-    // Find the button element
-    const buttonElement = screen.getByText(/disabled/i);
-
-    // Assert that the button has the correct CSS classes for a disabled state
-    expect(buttonElement).toHaveClass('bg-gray-300 text-gray-500 cursor-not-allowed');
+  it('applies correct class for default variant', () => {
+    const { container } = render(
+      <Button
+        label="Default"
+        onClick={() => { }} />
+    );
+    const button = container.querySelector('button');
+    expect(button).toHaveClass('px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300');
   });
 
-  it('has correct class when not disabled', () => {
-    render(<Button label="Enabled" onClick={() => { }} disabled={false} />);
+  it('applies correct class for primary variant', () => {
+    const { container } = render(
+      <Button
+        label="Primary"
+        variant="primary"
+        onClick={() => { }} />
+    );
+    const button = container.querySelector('button');
+    expect(button).toHaveClass('bg-slate-200 text-blue-600 font-bold');
+  });
 
-    // Find the button element
-    const buttonElement = screen.getByText(/enabled/i);
+  it('applies correct class for secondary variant', () => {
+    const { container } = render(
+      <Button
+        label="Secondary"
+        variant="secondary"
+        onClick={() => { }} />
+    );
+    const button = container.querySelector('button');
+    expect(button).toHaveClass('bg-slate-200 text-pink-600 font-bold');
+  });
 
-    // Assert that the button has the correct CSS classes for an enabled state
-    expect(buttonElement).toHaveClass('bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300');
+  it('does not call onClick when button is disabled', () => {
+    const onClickMock = jest.fn();
+    render(
+      <Button
+        label="Disabled"
+        onClick={onClickMock}
+        disabled />
+    );
+
+    const button = screen.getByText('Disabled');
+    fireEvent.click(button);
+    expect(onClickMock).toHaveBeenCalledTimes(0);
+  });
+
+  it('applies aria-label if provided', () => {
+    render(
+      <Button
+        label="Accessible Button"
+        ariaLabel="Submit Form"
+        onClick={() => { }} />
+    );
+    const button = screen.getByLabelText('Submit Form');
+    expect(button).toBeInTheDocument();
   });
 });

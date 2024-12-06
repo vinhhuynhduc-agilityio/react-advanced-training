@@ -10,6 +10,9 @@ import { defaultAvatarUrl } from '@/constant';
 // hooks
 import { useEmailValidation, useUserProfileForm } from '@/hooks';
 
+// components
+import { Button } from '@/components/common';
+
 interface UserProfileFormProps {
   defaultValues: UserData;
   isEditUser: boolean;
@@ -183,20 +186,18 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
 
       {/* Footer with Cancel and Save buttons */}
       <div className="border-t border-gray-300 pt-3 flex justify-between">
-        <button
-          className="bg-slate-200 text-pink-600 font-bold"
-          onClick={onClose}
+        <Button
           type="button"
-        >
-          Cancel
-        </button>
-        <button
-          className="bg-slate-200 text-blue-600 font-bold active:bg-slate-400"
+          onClick={onClose}
+          label="Cancel"
+          variant="secondary"
+        />
+        <Button
           type="submit"
-          aria-label='save-user'
-        >
-          {buttonLabel}
-        </button>
+          label={buttonLabel}
+          variant="primary"
+          ariaLabel='save-user'
+        />
       </div>
     </form>
   );

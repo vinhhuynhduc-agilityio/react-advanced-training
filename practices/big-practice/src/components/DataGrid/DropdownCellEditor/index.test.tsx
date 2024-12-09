@@ -60,6 +60,15 @@ describe('DropdownCellEditor', () => {
     jest.clearAllMocks();
   });
 
+  it('matches snapshot for default state', () => {
+    const { container } = render(
+      <DropdownCellEditor
+        {...defaultProps as CustomCellEditorParams<typeof mockOptions[0], typeof mockData>}
+      />
+    );
+    expect(container).toMatchSnapshot();
+  });
+
   it('renders options correctly', () => {
     render(
       <DropdownCellEditor

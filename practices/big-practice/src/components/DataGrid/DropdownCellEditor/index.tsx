@@ -112,7 +112,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
             role="option"
             key={index}
             className={clsx(
-              "p-1.5 cursor-pointer border-b border-gray-300 hover:bg-gray-200",
+              "p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200",
               {
                 "bg-blue-100": optionValue === currentValue,
               }

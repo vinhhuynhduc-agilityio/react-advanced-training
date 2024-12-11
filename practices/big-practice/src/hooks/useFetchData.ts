@@ -8,11 +8,11 @@ export const useFetchData = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>([]);
   const [projects, setProjects] = useState<ProjectsData[]>([]);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
-      setLoading(true);
       try {
         const [
           usersData,

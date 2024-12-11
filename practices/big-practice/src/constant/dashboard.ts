@@ -1,16 +1,16 @@
 import { UserData } from '@/types/table';
 
+const defaultAvatarUrl = 'https://via.placeholder.com/80';
+
 const initialDefaultValues: UserData = {
   fullName: '',
   email: '',
-  avatarUrl: 'https://via.placeholder.com/80',
+  avatarUrl: defaultAvatarUrl,
   id: '',
   earnings: '',
   registered: '',
   lastUpdated: ''
 };
-
-const defaultAvatarUrl = 'https://via.placeholder.com/80';
 
 export {
   initialDefaultValues,

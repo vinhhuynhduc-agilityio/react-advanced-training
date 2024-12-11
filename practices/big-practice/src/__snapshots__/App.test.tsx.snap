@@ -135,7 +135,7 @@ exports[`renders Dashboard component with heading 1`] = `
                               aria-hidden="true"
                               class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                               data-ref="eLabel"
-                              id="ag-6-label"
+                              id="ag-8-label"
                               role="presentation"
                             />
                             
@@ -151,7 +151,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                 aria-label="Press Space to toggle all rows selection (unchecked)"
                                 class="ag-input-field-input ag-checkbox-input"
                                 data-ref="eInput"
-                                id="ag-6-input"
+                                id="ag-8-input"
                                 tabindex="-1"
                                 type="checkbox"
                               />
@@ -557,6 +557,7 @@ exports[`renders Dashboard component with heading 1`] = `
                       class="ag-overlay-wrapper ag-layout-normal ag-overlay-loading-wrapper"
                       data-ref="eOverlayWrapper"
                       role="presentation"
+                      style="padding-top: 0px;"
                     />
                     
                 
@@ -574,7 +575,7 @@ exports[`renders Dashboard component with heading 1`] = `
             <div
               aria-hidden="true"
               class="ag-paging-panel ag-unselectable ag-focus-managed ag-hidden"
-              id="ag-14"
+              id="ag-16"
             >
               <div
                 class="ag-tab-guard ag-tab-guard-top"
@@ -598,12 +599,12 @@ exports[`renders Dashboard component with heading 1`] = `
                 <span
                   class="ag-paging-row-summary-panel-number"
                   data-ref="lbFirstRowOnPage"
-                  id="ag-14-first-row"
+                  id="ag-16-first-row"
                 />
                 
                     
                 <span
-                  id="ag-14-to"
+                  id="ag-16-to"
                 >
                   to
                 </span>
@@ -612,12 +613,12 @@ exports[`renders Dashboard component with heading 1`] = `
                 <span
                   class="ag-paging-row-summary-panel-number"
                   data-ref="lbLastRowOnPage"
-                  id="ag-14-last-row"
+                  id="ag-16-last-row"
                 />
                 
                     
                 <span
-                  id="ag-14-of"
+                  id="ag-16-of"
                 >
                   of
                 </span>
@@ -626,7 +627,7 @@ exports[`renders Dashboard component with heading 1`] = `
                 <span
                   class="ag-paging-row-summary-panel-number"
                   data-ref="lbRecordCount"
-                  id="ag-14-row-count"
+                  id="ag-16-row-count"
                 />
                 
                 
@@ -675,7 +676,7 @@ exports[`renders Dashboard component with heading 1`] = `
                   
                         
                   <span
-                    id="ag-14-start-page"
+                    id="ag-16-start-page"
                   >
                     Page
                   </span>
@@ -684,12 +685,12 @@ exports[`renders Dashboard component with heading 1`] = `
                   <span
                     class="ag-paging-number"
                     data-ref="lbCurrent"
-                    id="ag-14-start-page-number"
+                    id="ag-16-start-page-number"
                   />
                   
                         
                   <span
-                    id="ag-14-of-page"
+                    id="ag-16-of-page"
                   >
                     of
                   </span>
@@ -698,7 +699,7 @@ exports[`renders Dashboard component with heading 1`] = `
                   <span
                     class="ag-paging-number"
                     data-ref="lbTotal"
-                    id="ag-14-of-page-number"
+                    id="ag-16-of-page-number"
                   />
                   
                     
@@ -751,40 +752,34 @@ exports[`renders Dashboard component with heading 1`] = `
         class="flex-grow bg-slate-100 my-4 mr-4 overflow-auto"
       >
         <div
-          class="flex-1 bg-white border border-customBorder h-[302px]"
+          class="flex items-center justify-center p-4 bg-red-100 border border-red-400 text-red-800 rounded-lg shadow-md"
         >
-          <div
-            class="flex items-center justify-center w-full h-full"
+          <p
+            class="font-semibold"
           >
-            <div
-              class="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"
-            />
-          </div>
+            Something went wrong in this card.
+          </p>
         </div>
         <div
           class="flex flex-row bg-slate-100 mt-4 h-[302px]"
         >
           <div
-            class="flex-1 mr-4 bg-white border border-customBorder"
+            class="flex items-center justify-center p-4 bg-red-100 border border-red-400 text-red-800 rounded-lg shadow-md"
           >
-            <div
-              class="flex items-center justify-center w-full h-full"
+            <p
+              class="font-semibold"
             >
-              <div
-                class="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"
-              />
-            </div>
+              Something went wrong in this card.
+            </p>
           </div>
           <div
-            class="flex-1 bg-white border border-customBorder"
+            class="flex items-center justify-center p-4 bg-red-100 border border-red-400 text-red-800 rounded-lg shadow-md"
           >
-            <div
-              class="flex items-center justify-center w-full h-full"
+            <p
+              class="font-semibold"
             >
-              <div
-                class="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"
-              />
-            </div>
+              Something went wrong in this card.
+            </p>
           </div>
         </div>
         <div
@@ -881,7 +876,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                   aria-hidden="true"
                                   class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                                   data-ref="eLabel"
-                                  id="ag-7-label"
+                                  id="ag-9-label"
                                   role="presentation"
                                 />
                                 
@@ -897,7 +892,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                     aria-label="Press Space to toggle all rows selection (unchecked)"
                                     class="ag-input-field-input ag-checkbox-input"
                                     data-ref="eInput"
-                                    id="ag-7-input"
+                                    id="ag-9-input"
                                     tabindex="-1"
                                     type="checkbox"
                                   />
@@ -1046,7 +1041,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                   aria-hidden="true"
                                   class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                                   data-ref="eLabel"
-                                  id="ag-8-label"
+                                  id="ag-10-label"
                                   role="presentation"
                                 />
                                 
@@ -1062,7 +1057,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                     aria-label="Press Space to toggle all rows selection (unchecked)"
                                     class="ag-input-field-input ag-checkbox-input"
                                     data-ref="eInput"
-                                    id="ag-8-input"
+                                    id="ag-10-input"
                                     tabindex="-1"
                                     type="checkbox"
                                   />
@@ -1213,7 +1208,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                   aria-hidden="true"
                                   class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                                   data-ref="eLabel"
-                                  id="ag-9-label"
+                                  id="ag-11-label"
                                   role="presentation"
                                 />
                                 
@@ -1229,7 +1224,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                     aria-label="Press Space to toggle all rows selection (unchecked)"
                                     class="ag-input-field-input ag-checkbox-input"
                                     data-ref="eInput"
-                                    id="ag-9-input"
+                                    id="ag-11-input"
                                     tabindex="-1"
                                     type="checkbox"
                                   />
@@ -1380,7 +1375,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                   aria-hidden="true"
                                   class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                                   data-ref="eLabel"
-                                  id="ag-10-label"
+                                  id="ag-12-label"
                                   role="presentation"
                                 />
                                 
@@ -1396,7 +1391,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                     aria-label="Press Space to toggle all rows selection (unchecked)"
                                     class="ag-input-field-input ag-checkbox-input"
                                     data-ref="eInput"
-                                    id="ag-10-input"
+                                    id="ag-12-input"
                                     tabindex="-1"
                                     type="checkbox"
                                   />
@@ -1547,7 +1542,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                   aria-hidden="true"
                                   class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                                   data-ref="eLabel"
-                                  id="ag-11-label"
+                                  id="ag-13-label"
                                   role="presentation"
                                 />
                                 
@@ -1563,7 +1558,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                     aria-label="Press Space to toggle all rows selection (unchecked)"
                                     class="ag-input-field-input ag-checkbox-input"
                                     data-ref="eInput"
-                                    id="ag-11-input"
+                                    id="ag-13-input"
                                     tabindex="-1"
                                     type="checkbox"
                                   />
@@ -1714,7 +1709,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                   aria-hidden="true"
                                   class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                                   data-ref="eLabel"
-                                  id="ag-12-label"
+                                  id="ag-14-label"
                                   role="presentation"
                                 />
                                 
@@ -1730,7 +1725,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                     aria-label="Press Space to toggle all rows selection (unchecked)"
                                     class="ag-input-field-input ag-checkbox-input"
                                     data-ref="eInput"
-                                    id="ag-12-input"
+                                    id="ag-14-input"
                                     tabindex="-1"
                                     type="checkbox"
                                   />
@@ -1881,7 +1876,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                   aria-hidden="true"
                                   class="ag-input-field-label ag-label ag-hidden ag-checkbox-label"
                                   data-ref="eLabel"
-                                  id="ag-13-label"
+                                  id="ag-15-label"
                                   role="presentation"
                                 />
                                 
@@ -1897,7 +1892,7 @@ exports[`renders Dashboard component with heading 1`] = `
                                     aria-label="Press Space to toggle all rows selection (unchecked)"
                                     class="ag-input-field-input ag-checkbox-input"
                                     data-ref="eInput"
-                                    id="ag-13-input"
+                                    id="ag-15-input"
                                     tabindex="-1"
                                     type="checkbox"
                                   />
@@ -2303,6 +2298,7 @@ exports[`renders Dashboard component with heading 1`] = `
                           class="ag-overlay-wrapper ag-layout-normal ag-overlay-loading-wrapper"
                           data-ref="eOverlayWrapper"
                           role="presentation"
+                          style="padding-top: 0px;"
                         />
                         
                 
@@ -2320,7 +2316,7 @@ exports[`renders Dashboard component with heading 1`] = `
                 <div
                   aria-hidden="true"
                   class="ag-paging-panel ag-unselectable ag-focus-managed ag-hidden"
-                  id="ag-16"
+                  id="ag-18"
                 >
                   <div
                     class="ag-tab-guard ag-tab-guard-top"
@@ -2344,12 +2340,12 @@ exports[`renders Dashboard component with heading 1`] = `
                     <span
                       class="ag-paging-row-summary-panel-number"
                       data-ref="lbFirstRowOnPage"
-                      id="ag-16-first-row"
+                      id="ag-18-first-row"
                     />
                     
                     
                     <span
-                      id="ag-16-to"
+                      id="ag-18-to"
                     >
                       to
                     </span>
@@ -2358,12 +2354,12 @@ exports[`renders Dashboard component with heading 1`] = `
                     <span
                       class="ag-paging-row-summary-panel-number"
                       data-ref="lbLastRowOnPage"
-                      id="ag-16-last-row"
+                      id="ag-18-last-row"
                     />
                     
                     
                     <span
-                      id="ag-16-of"
+                      id="ag-18-of"
                     >
                       of
                     </span>
@@ -2372,7 +2368,7 @@ exports[`renders Dashboard component with heading 1`] = `
                     <span
                       class="ag-paging-row-summary-panel-number"
                       data-ref="lbRecordCount"
-                      id="ag-16-row-count"
+                      id="ag-18-row-count"
                     />
                     
                 
@@ -2421,7 +2417,7 @@ exports[`renders Dashboard component with heading 1`] = `
                       
                         
                       <span
-                        id="ag-16-start-page"
+                        id="ag-18-start-page"
                       >
                         Page
                       </span>
@@ -2430,12 +2426,12 @@ exports[`renders Dashboard component with heading 1`] = `
                       <span
                         class="ag-paging-number"
                         data-ref="lbCurrent"
-                        id="ag-16-start-page-number"
+                        id="ag-18-start-page-number"
                       />
                       
                         
                       <span
-                        id="ag-16-of-page"
+                        id="ag-18-of-page"
                       >
                         of
                       </span>
@@ -2444,7 +2440,7 @@ exports[`renders Dashboard component with heading 1`] = `
                       <span
                         class="ag-paging-number"
                         data-ref="lbTotal"
-                        id="ag-16-of-page-number"
+                        id="ag-18-of-page-number"
                       />
                       
                     

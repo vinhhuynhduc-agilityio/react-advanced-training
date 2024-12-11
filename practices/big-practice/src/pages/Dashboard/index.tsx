@@ -41,7 +41,7 @@ import {
 import { apiRequest } from '@/services';
 
 // constant
-import { API_ROUTES, initialDefaultValues } from '@/constant';
+import { API_ROUTES, defaultAvatarUrl, initialDefaultValues } from '@/constant';
 
 // ag-grid
 import { GridApi } from 'ag-grid-community';
@@ -210,7 +210,7 @@ const Dashboard: React.FC = () => {
       : handleAddNewUser(data);
 
   const handleAddNewUser = async (data: UserFormData) => {
-    const avatarUrl = data.avatarUrl ?? 'https://via.placeholder.com/80';
+    const avatarUrl = data.avatarUrl ?? defaultAvatarUrl;
     const registeredDate = getRegisteredDate();
 
     setSavingUser(true);
@@ -259,7 +259,7 @@ const Dashboard: React.FC = () => {
       fullName: data.fullName,
       earnings: defaultValues.earnings,
       email: data.email,
-      avatarUrl: data.avatarUrl || 'https://via.placeholder.com/80',
+      avatarUrl: data.avatarUrl || defaultAvatarUrl,
       registered: defaultValues.registered,
       lastUpdated: getRegisteredDate(),
     };

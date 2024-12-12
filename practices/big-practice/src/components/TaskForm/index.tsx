@@ -9,7 +9,7 @@ import {
 import { formatDropdownOptions } from '@/helpers';
 
 // types
-import { TaskFormData } from '@/types';
+import { TaskFormValues } from '@/types';
 
 // component
 import { Button, Dropdown } from '@/components/common';
@@ -19,7 +19,7 @@ import { useDashboardContext } from '@/hooks';
 
 interface TaskFormProps {
   onClose: () => void;
-  onSubmit: (data: TaskFormData) => void;
+  onSubmit: (data: TaskFormValues) => void;
 };
 
 const TaskForm: React.FC<TaskFormProps> = ({
@@ -37,9 +37,9 @@ const TaskForm: React.FC<TaskFormProps> = ({
     handleSubmit,
     control,
     formState: { errors }
-  } = useForm<TaskFormData>();
+  } = useForm<TaskFormValues>();
 
-  const onSubmitForm = (data: TaskFormData) => {
+  const onSubmitForm = (data: TaskFormValues) => {
     onSubmit(data);
   };
 

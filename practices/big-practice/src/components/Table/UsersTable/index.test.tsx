@@ -1,14 +1,14 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { DashboardContext } from '@/context';
-import UserListDrawer from '.';
 import { mockContextValue } from '@/mocks';
+import UsersTable from '.';
 
-describe('UserListDrawer component', () => {
+describe('UsersTable component', () => {
   it('matches snapshot for default state', () => {
     const { container } = render(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserListDrawer
+        <UsersTable
           selectedUserId={null}
           onUserSelected={jest.fn()}
           sourceComponent=""
@@ -25,7 +25,7 @@ describe('UserListDrawer component', () => {
   it('renders user data correctly', () => {
     render(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserListDrawer
+        <UsersTable
           isLoading={false}
           selectedUserId={null}
           onUserSelected={jest.fn()}
@@ -45,7 +45,7 @@ describe('UserListDrawer component', () => {
   it('should render the selected row with a special class', () => {
     render(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserListDrawer
+        <UsersTable
           selectedUserId="d290f1ee-6c54-4b01-90e6-d701748f0851"
           onUserSelected={jest.fn()}
           sourceComponent=""
@@ -67,7 +67,7 @@ describe('UserListDrawer component', () => {
     // Render the component and pass the necessary props
     render(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserListDrawer
+        <UsersTable
           selectedUserId={null}
           onUserSelected={jest.fn()}
           sourceComponent=""
@@ -86,7 +86,7 @@ describe('UserListDrawer component', () => {
 
     render(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserListDrawer
+        <UsersTable
           selectedUserId={null}
           onUserSelected={mockOnUserSelected}
           sourceComponent=""
@@ -114,7 +114,7 @@ describe('UserListDrawer component', () => {
     // Render the component
     render(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserListDrawer
+        <UsersTable
           selectedUserId={null}
           onUserSelected={jest.fn()}
           sourceComponent=""

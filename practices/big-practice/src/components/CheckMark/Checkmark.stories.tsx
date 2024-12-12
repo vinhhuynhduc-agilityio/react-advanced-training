@@ -1,15 +1,15 @@
-import { IconRenderer } from '@/components/DataGrid';
+import { CheckMark } from '@/components';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof IconRenderer> = {
-  title: 'Components/IconRenderer',
-  component: IconRenderer,
+const meta: Meta<typeof CheckMark> = {
+  title: 'Components/CheckMark',
+  component: CheckMark,
   parameters: {
     layout: 'centered', // Center the component in the preview area
     docs: {
       description: {
         component:
-          'IconRenderer component shows either a check or a clock icon based on the boolean value passed as `value`. It updates the displayed icon when the `value` changes.',
+          'CheckMark component shows either a check or a clock icon based on the boolean value passed as `value`. It updates the displayed icon when the `value` changes.',
       },
     },
   },
@@ -29,7 +29,7 @@ const meta: Meta<typeof IconRenderer> = {
 
 export default meta;
 
-type Story = StoryObj<typeof IconRenderer>;
+type Story = StoryObj<typeof CheckMark>;
 
 // Story with default "complete" status (check icon)
 export const Default: Story = {

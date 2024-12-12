@@ -3,9 +3,6 @@ import React, {
   useRef,
 } from 'react';
 
-// styles
-import '../../style.css';
-
 // ag-grid
 import {
   ColDef,
@@ -19,6 +16,9 @@ import {
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
+// styles
+import '../../../style.css';
+
 // types
 import { UserData } from '@/types';
 
@@ -30,7 +30,7 @@ import { PersonRenderer } from '@/components/DataGrid';
 // hooks
 import { useDashboardContext } from '@/hooks';
 
-interface UserListDrawerProps {
+interface UsersTableProps {
   selectedUserId: string | null;
   sourceComponent: string | null;
   onUserSelected: (userId: string | null) => void;
@@ -40,7 +40,7 @@ interface UserListDrawerProps {
   isSavingUser: boolean;
 }
 
-const UserListDrawer: React.FC<UserListDrawerProps> = ({
+const UsersTable: React.FC<UsersTableProps> = ({
   selectedUserId,
   onUserSelected,
   sourceComponent,
@@ -62,7 +62,7 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
   // When `selectedUserId` changes, scroll to the corresponding row
   useEffect(() => {
     if (
-      sourceComponent !== 'UserListDrawer'
+      sourceComponent !== 'UsersTable'
       && selectedUserId
       && gridApi.current
     ) {
@@ -125,4 +125,4 @@ const UserListDrawer: React.FC<UserListDrawerProps> = ({
   );
 };
 
-export default UserListDrawer;
+export default UsersTable;

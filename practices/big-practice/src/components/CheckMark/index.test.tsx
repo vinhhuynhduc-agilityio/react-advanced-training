@@ -5,7 +5,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {
-  IconRenderer,
+  CheckMark,
   IconRendererProps
 } from ".";
 
@@ -16,9 +16,9 @@ const defaultProps: IconRendererProps = {
 
 // Utility function to render component
 const renderComponent = (props = defaultProps) =>
-  render(<IconRenderer {...props} />);
+  render(<CheckMark {...props} />);
 
-describe("IconRenderer Component", () => {
+describe("CheckMark Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

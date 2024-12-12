@@ -1,15 +1,15 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ModalDialog } from '.';
+import { Modal } from '.';
 
-describe('ModalDialog Component', () => {
+describe('Modal Component', () => {
   const mockOnClose = jest.fn();
   const modalTitle = 'Test Modal Title';
   const modalContent = <p>Test Modal Content</p>;
 
   const renderModalDialog = (props = {}) => {
     return render(
-      <ModalDialog
+      <Modal
         title={modalTitle}
         onClose={mockOnClose}
         content={modalContent}

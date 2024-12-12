@@ -6,7 +6,7 @@ import {
   act
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import TaskDashboard from '.';
+import TaskTable from '.';
 import { DashboardContext } from '@/context';
 import { mockContextValue, mockTasks } from '@/mocks';
 
@@ -33,12 +33,12 @@ const setup = (props = {}) => {
   const setupProps = { ...defaultProps, ...props };
   return render(
     <DashboardContext.Provider value={mockContextValue}>
-      <TaskDashboard {...setupProps} />
+      <TaskTable {...setupProps} />
     </DashboardContext.Provider>
   );
 };
 
-describe('TaskDashboard', () => {
+describe('TaskTable', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

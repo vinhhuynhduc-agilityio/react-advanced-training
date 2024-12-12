@@ -3,8 +3,6 @@ import {
   useRef,
 } from 'react';
 
-import { API_BASE_URL } from '@/config';
-
 // ag-grid
 import {
   CellEditingStartedEvent,
@@ -22,11 +20,11 @@ import {
 import {
   DataGrid,
   DropdownCellEditor,
-  IconRenderer
 } from '@/components/DataGrid';
 import { Spinner } from '@/components/common';
+import { CheckMark } from '@/components';
 
-// utils
+// services
 import { apiRequest } from '@/services';
 
 // helpers
@@ -35,9 +33,10 @@ import {
   getUpdatedRow
 } from '@/helpers';
 
+import { API_BASE_URL } from '@/config';
+
 // types
 import {
-  FieldType,
   FieldValue,
   ProjectsData,
   TaskData,
@@ -45,7 +44,7 @@ import {
 } from '@/types';
 
 // constants
-import { API_ROUTES } from '@/constant';
+import { API_ROUTES, FIELD_TYPE } from '@/constant';
 
 // hooks
 import { useDashboardContext } from '@/hooks';
@@ -64,7 +63,7 @@ interface TaskDataProps {
   setSavingTask: (value: boolean) => void;
 };
 
-const TaskDashboard: React.FC<TaskDataProps> = ({
+const TaskTable: React.FC<TaskDataProps> = ({
   selectedUserId,
   sourceComponent,
   isLoading,
@@ -101,7 +100,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   //  When `selectedUserId` changes, scroll to the corresponding row
   useEffect(() => {
     if (
-      sourceComponent !== 'TaskDashboard'
+      sourceComponent !== 'TaskTable'
       && selectedUserId
       && gridApi.current
     ) {
@@ -135,7 +134,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   }, []);
 
   const handleSaveSelect = async (
-    type: FieldType,
+    type: keyof typeof FIELD_TYPE,
     value: FieldValue,
     row: TaskData
   ) => {
@@ -165,21 +164,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     }
   };
 
-  const getCurrentValueByColumn = {
-    [FieldType.TASK_NAME]: () => originalTaskNameRef.current,
-    [FieldType.PROJECT]: (row: TaskData) => row.projectId,
-    [FieldType.USER]: (row: TaskData) => row.userId,
-    [FieldType.STATUS]: (row: TaskData) => row.status,
-  };
-
-  const getNewValueByColumn = {
-    [FieldType.TASK_NAME]: (value: string) => value,
-    [FieldType.PROJECT]: (value: ProjectsData) => (value as ProjectsData).id,
-    [FieldType.USER]: (value: UserData) => (value as UserData).id,
-    [FieldType.STATUS]: (value: boolean) => value,
-  };
-
-  const handleValueChange = (type: FieldType) => (
+  const handleValueChange = (type: keyof typeof FIELD_TYPE) => (
     value: FieldValue,
     row: TaskData
   ) => {
@@ -188,15 +173,15 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     let customValue;
 
     switch (type) {
-      case FieldType.TASK_NAME:
-        currentValue = getCurrentValueByColumn[FieldType.TASK_NAME]();
-        newValue = getNewValueByColumn[FieldType.TASK_NAME](value as string);
+      case FIELD_TYPE.TASK_NAME:
+        currentValue = originalTaskNameRef.current;
+        newValue = value;
         customValue = newValue;
         break;
 
-      case FieldType.PROJECT:
-        currentValue = getCurrentValueByColumn[FieldType.PROJECT](row);
-        newValue = getNewValueByColumn[FieldType.PROJECT](value as ProjectsData);
+      case FIELD_TYPE.PROJECT:
+        currentValue = row.projectId;
+        newValue = (value as ProjectsData).id;
         customValue = value;
 
         // Update tasks state in Dashboard
@@ -205,7 +190,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
             task.id === row.id
               ? {
                 ...task,
-                projectId: getNewValueByColumn[FieldType.TASK_NAME](value as string),
+                projectId: (value as ProjectsData).id,
                 projectName: (value as ProjectsData).projectName,
               }
               : task
@@ -213,7 +198,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         );
         break;
 
-      case FieldType.USER: {
+      case FIELD_TYPE.USER: {
         const {
           userId,
           currency,
@@ -221,8 +206,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         } = row;
         const oldUserId = userId;
         const newUserId = (value as UserData).id;
-        currentValue = getCurrentValueByColumn[FieldType.USER](row);
-        newValue = getNewValueByColumn[FieldType.USER](value as UserData);
+        currentValue = row.userId;
+        newValue = (value as UserData).id;
         customValue = value;
 
         if (oldUserId !== newUserId) {
@@ -249,7 +234,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
         break;
       }
 
-      case FieldType.STATUS: {
+      case FIELD_TYPE.STATUS: {
         const status = value as boolean;
         const currency = row.currency;
         const userId = row.userId;
@@ -313,7 +298,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   const handleCellEditingStarted = (event: CellEditingStartedEvent) => {
     const { value, colDef } = event;
 
-    if (colDef.field === FieldType.TASK_NAME) {
+    if (colDef.field === FIELD_TYPE.TASK_NAME) {
       originalTaskNameRef.current = value;
     }
   };
@@ -326,8 +311,8 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     } = event;
 
     // Check if the edited column is 'taskName'
-    if (colDef.field === FieldType.TASK_NAME) {
-      handleValueChange(FieldType.TASK_NAME)(value, data);
+    if (colDef.field === FIELD_TYPE.TASK_NAME) {
+      handleValueChange(FIELD_TYPE.TASK_NAME as keyof typeof FIELD_TYPE)(value, data);
     }
   };
 
@@ -337,9 +322,9 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
     {
       headerName: '',
       field: 'status',
-      cellRenderer: IconRenderer,
+      cellRenderer: CheckMark,
       cellRendererParams: (params: ICellRendererParams) => ({
-        onStatusValueChange: () => handleValueChange(FieldType.STATUS)(!params.data.status, params.data)
+        onStatusValueChange: () => handleValueChange(FIELD_TYPE.STATUS as keyof typeof FIELD_TYPE)(!params.data.status, params.data)
       }),
       width: 55,
       tooltipValueGetter: () => 'Click to complete/uncomplete the task',
@@ -360,7 +345,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       flex: 3.4,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
-        onSelectOption: handleValueChange(FieldType.PROJECT),
+        onSelectOption: handleValueChange(FIELD_TYPE.PROJECT as keyof typeof FIELD_TYPE),
         options: projects,
         displayKey: 'projectName'
       },
@@ -375,7 +360,7 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
       flex: 2.4,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
-        onSelectOption: handleValueChange(FieldType.USER),
+        onSelectOption: handleValueChange(FIELD_TYPE.USER as keyof typeof FIELD_TYPE),
         options: users,
         displayKey: 'fullName'
       },
@@ -437,4 +422,4 @@ const TaskDashboard: React.FC<TaskDataProps> = ({
   )
 };
 
-export default TaskDashboard;
+export default TaskTable;

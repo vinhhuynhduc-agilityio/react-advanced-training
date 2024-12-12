@@ -1,4 +1,4 @@
-export interface optionDropdown {
+interface optionDropdown {
   id: string;
   value: string;
 };

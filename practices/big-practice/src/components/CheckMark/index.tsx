@@ -6,7 +6,7 @@ export interface IconRendererProps {
   value: boolean
 }
 
-export const IconRenderer: React.FC<IconRendererProps> = (props) => {
+export const CheckMark: React.FC<IconRendererProps> = (props) => {
   const [isComplete, setIsComplete] = useState<boolean>(props.value);
 
   // Update icon state when props.value changes

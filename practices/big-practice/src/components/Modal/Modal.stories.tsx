@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { ModalDialog } from '.';
+import { Modal } from '.';
 
 // Metadata for story
-const meta: Meta<typeof ModalDialog> = {
-  title: 'Components/ModalDialog',
-  component: ModalDialog,
+const meta: Meta<typeof Modal> = {
+  title: 'Components/Modal',
+  component: Modal,
   argTypes: {
     onClose: { action: 'closed' },
   },
@@ -12,7 +12,7 @@ const meta: Meta<typeof ModalDialog> = {
 
 export default meta;
 
-type Story = StoryObj<typeof ModalDialog>;
+type Story = StoryObj<typeof Modal>;
 
 // Story default
 export const Default: Story = {

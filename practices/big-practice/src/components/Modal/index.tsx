@@ -7,7 +7,7 @@ interface ModalProps {
   content: ReactNode;
 }
 
-export const ModalDialog: React.FC<ModalProps> = ({
+export const Modal: React.FC<ModalProps> = ({
   title,
   onClose,
   content,
@@ -23,12 +23,12 @@ export const ModalDialog: React.FC<ModalProps> = ({
         onClick={(e) => e.stopPropagation()}
         data-testid="modal-content"
       >
-        {/* ModalDialog Header */}
+        {/* Modal Header */}
         <div className="bg-blue-600 text-white p-4 rounded-t-lg">
           <h2 className="text-lg font-semibold">{title}</h2>
         </div>
 
-        {/* ModalDialog Body */}
+        {/* Modal Body */}
         <div className="p-4">{content}</div>
       </div>
     </div>,

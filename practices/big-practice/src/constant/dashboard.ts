@@ -12,7 +12,15 @@ const initialDefaultValues: UserData = {
   lastUpdated: ''
 };
 
+const FIELD_TYPE = {
+  PROJECT: "project",
+  USER: "user",
+  TASK_NAME: "taskName",
+  STATUS: "status",
+};
+
 export {
   initialDefaultValues,
-  defaultAvatarUrl
+  defaultAvatarUrl,
+  FIELD_TYPE
 };

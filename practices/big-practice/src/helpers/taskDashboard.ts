@@ -1,6 +1,6 @@
 // types
+import { FIELD_TYPE } from '@/constant';
 import {
-  FieldType,
   FieldValue,
   ProjectsData,
   StatusWithDate,
@@ -12,12 +12,12 @@ import {
  * Updates a row in the TaskData table based on the provided type and value.
  */
 const getUpdatedRow = (
-  type: FieldType,
+  type: keyof typeof FIELD_TYPE,
   value: FieldValue,
   row: TaskData
 ): TaskData => {
   switch (type) {
-    case FieldType.PROJECT: {
+    case FIELD_TYPE.PROJECT: {
       const { projectName, id } = value as ProjectsData;
 
       return {
@@ -27,7 +27,7 @@ const getUpdatedRow = (
       };
     }
 
-    case FieldType.USER: {
+    case FIELD_TYPE.USER: {
       const { fullName, id } = value as UserData;
 
       return {
@@ -37,14 +37,14 @@ const getUpdatedRow = (
       };
     }
 
-    case FieldType.TASK_NAME:
+    case FIELD_TYPE.TASK_NAME:
 
       return {
         ...row,
         taskName: value as string,
       };
 
-    case FieldType.STATUS: {
+    case FIELD_TYPE.STATUS: {
       const { status, completedDate } = value as StatusWithDate;
 
       return {

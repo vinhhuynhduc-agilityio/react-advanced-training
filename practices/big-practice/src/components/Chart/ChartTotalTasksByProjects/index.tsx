@@ -10,10 +10,7 @@ import {
 } from 'ag-charts-community';
 
 // helpers
-import {
-  formatDataForChartTotalTasksByProjects,
-  renderTooltipProjectChart
-} from '@/helpers';
+import { formatDataForChartTotalTasksByProjects, renderTooltipProjectChart } from '@/components/Chart/helpers';
 
 // component
 import { Spinner } from '@/components/common';

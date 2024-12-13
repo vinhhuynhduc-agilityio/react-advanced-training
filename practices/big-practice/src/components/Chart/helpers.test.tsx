@@ -5,7 +5,7 @@ import {
   renderTooltipChart,
   renderTooltipProjectChart,
   initOptions,
-} from "../chartTasks";
+} from "./helpers";
 import { mockTasks, mockProject } from "../../mocks/data";
 import { AgAreaSeriesOptions, AgBarSeriesTooltipRendererParams, AgChartLegendClickEvent } from "ag-charts-community";
 

@@ -10,13 +10,13 @@ import {
 } from 'ag-charts-community';
 
 // helpers
-import { formatDataForChartTotalTasks, renderTooltipChart } from '@/helpers';
 
 // component
 import { Spinner } from '@/components/common';
 
 // hooks
 import { useDashboardContext } from '@/hooks';
+import { formatDataForChartTotalTasks, renderTooltipChart } from '@/components/Chart/helpers';
 
 interface ChartTotalTasksCompletedProps {
   isLoading: boolean;

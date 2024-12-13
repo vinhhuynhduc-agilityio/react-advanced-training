@@ -1,3 +1,4 @@
-export * from './chartTypes';
-export * from './table';
+export * from './chart';
 export * from './task';
+export * from './user';
+export * from './project';

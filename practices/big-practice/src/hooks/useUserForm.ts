@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { UserData, UserFormData } from '@/types';
 
-export const useUserProfileForm = (defaultValues: UserData) => {
+export const useUserForm = (defaultValues: UserData) => {
   const {
     register,
     handleSubmit,

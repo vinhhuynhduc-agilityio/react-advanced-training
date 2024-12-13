@@ -6,20 +6,20 @@ import {
 } from '@testing-library/react';
 import { mockContextValue, mockUsers } from '@/mocks';
 import { DashboardContext } from '@/context';
-import UserProfileForm from '.';
+import UserForm from '.';
 
 // Mock the onSubmit and onClose functions
 const mockOnSubmit = jest.fn();
 const mockOnClose = jest.fn();
 
-describe('UserProfileForm', () => {
+describe('UserForm', () => {
   const defaultValues = mockUsers[0]; // Make sure mockUsers contains the user with valid data
 
   // Setup helper function
   const setup = (isEditUser = false, buttonLabel = 'Save') =>
     render(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserProfileForm
+        <UserForm
           defaultValues={defaultValues}
           isEditUser={isEditUser}
           onClose={mockOnClose}
@@ -120,7 +120,7 @@ describe('UserProfileForm', () => {
     const updatedValues = { ...defaultValues, avatarUrl: 'new-avatar-url.png' };
     rerender(
       <DashboardContext.Provider value={mockContextValue}>
-        <UserProfileForm
+        <UserForm
           defaultValues={updatedValues}
           isEditUser={true}
           onClose={mockOnClose}

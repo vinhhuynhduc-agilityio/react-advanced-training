@@ -25,7 +25,7 @@ import { UserData } from '@/types';
 // component
 import { Spinner } from '@/components/common';
 import { DataGrid } from '@/components';
-import { PersonRenderer } from '@/components/DataGrid';
+import { PersonListItem } from '@/components/DataGrid';
 
 // hooks
 import { useDashboardContext } from '@/hooks';
@@ -103,7 +103,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
     {
       headerName: 'Persons',
       field: 'fullName',
-      cellRenderer: PersonRenderer,
+      cellRenderer: PersonListItem,
       headerClass: 'custom-header',
       flex: 1
     },

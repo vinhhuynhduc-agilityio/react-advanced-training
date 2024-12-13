@@ -10,10 +10,7 @@ import { AgCharts } from 'ag-charts-react';
 import { AgChartOptions } from 'ag-charts-community';
 
 // helpers
-import {
-  formatDataForChartIndividualEmployee,
-  initOptions
-} from '@/helpers';
+import { formatDataForChartIndividualEmployee, initOptions } from '@/components/Chart/helpers';
 
 // component
 import { Spinner } from '@/components/common';

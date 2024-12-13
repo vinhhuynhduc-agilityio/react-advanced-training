@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PersonRenderer } from '.';
+import { PersonListItem } from '.';
 import { ICellRendererParams } from 'ag-grid-community';
 
 // Mock Data
@@ -10,9 +10,9 @@ const mockUserData = {
 };
 
 // Metadata for Storybook
-const meta: Meta<typeof PersonRenderer> = {
-  title: 'Components/PersonRenderer',
-  component: PersonRenderer,
+const meta: Meta<typeof PersonListItem> = {
+  title: 'Components/PersonListItem',
+  component: PersonListItem,
   parameters: {
     layout: 'centered', // Center the component in the preview area
     docs: {
@@ -33,9 +33,9 @@ const meta: Meta<typeof PersonRenderer> = {
 
 export default meta;
 
-type Story = StoryObj<typeof PersonRenderer>;
+type Story = StoryObj<typeof PersonListItem>;
 
-// Default Story for PersonRenderer with mock data
+// Default Story for PersonListItem with mock data
 export const Default: Story = {
   args: {
     data: mockUserData, // Pass the mock user data

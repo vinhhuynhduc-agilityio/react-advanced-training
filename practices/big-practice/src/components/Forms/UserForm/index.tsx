@@ -8,12 +8,12 @@ import { UserData, UserFormData } from '@/types';
 import { defaultAvatarUrl } from '@/constant';
 
 // hooks
-import { useEmailValidation, useUserProfileForm } from '@/hooks';
+import { useEmailValidation, useUserForm } from '@/hooks';
 
 // components
 import { Button } from '@/components/common';
 
-interface UserProfileFormProps {
+interface UserFormProps {
   defaultValues: UserData;
   isEditUser: boolean;
   onClose: () => void;
@@ -21,7 +21,7 @@ interface UserProfileFormProps {
   buttonLabel: string
 };
 
-const UserProfileForm: React.FC<UserProfileFormProps> = ({
+const UserForm: React.FC<UserFormProps> = ({
   defaultValues,
   isEditUser,
   onClose,
@@ -30,7 +30,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
 }) => {
   const [avatarUrl, setAvatarPreview] = useState<string>(defaultAvatarUrl);
   const { isEmailDuplicate } = useEmailValidation(defaultValues?.email);
-  const { register, handleSubmit, errors } = useUserProfileForm(defaultValues);
+  const { register, handleSubmit, errors } = useUserForm(defaultValues);
 
   useEffect(() => {
     if (isEditUser && defaultValues?.avatarUrl) {
@@ -75,18 +75,18 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
   };
 
   return (
-    <form id="userProfileForm" onSubmit={handleSubmit(onSubmitWithPreview)} className="space-y-6">
+    <form id="UserForm" onSubmit={handleSubmit(onSubmitWithPreview)} className="space-y-6">
 
       {/* Full Name */}
       <div>
         <div className="flex items-center">
           <label
-            htmlFor="fullNameUserProfileForm"
+            htmlFor="fullNameUserForm"
             className="w-24 text-gray-700 font-semibold">
             Full Name
           </label>
           <input
-            id="fullNameUserProfileForm"
+            id="fullNameUserForm"
             className="flex-1 p-2 border border-gray-300 rounded-md bg-white text-black"
             type="text"
             {...register("fullName", {
@@ -203,4 +203,4 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({
   );
 };
 
-export default UserProfileForm;
+export default UserForm;

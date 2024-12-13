@@ -22,9 +22,9 @@ import {
   ErrorBoundary,
   UsersTable,
 } from '@/components';
-const UserProfileForm = lazy(() => import('@/components/UserProfileForm'));
-const TaskForm = lazy(() => import('@/components/TaskForm'));
-const ProjectForm = lazy(() => import('@/components/ProjectForm'));
+const UserForm = lazy(() => import('@/components/Forms/UserForm'));
+const TaskForm = lazy(() => import('@/components/Forms/TaskForm'));
+const ProjectForm = lazy(() => import('@/components/Forms/ProjectForm'));
 import { Spinner } from '@/components/common';
 import {
   ChartIndividualEmployeeProgress,
@@ -48,7 +48,7 @@ import { apiRequest } from '@/services';
 import {
   API_ROUTES,
   defaultAvatarUrl,
-  initialDefaultValues
+  defaultUserFormValues
 } from '@/constant';
 
 // helpers
@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
   // State variables related to opening modal dialog
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEditUser, setEditUser] = useState(false);
-  const [defaultValues, setDefaultValues] = useState<UserData>(initialDefaultValues);
+  const [defaultValues, setDefaultValues] = useState<UserData>(defaultUserFormValues);
   const [isProjectModalOpen, setProjectModalOpen] = useState(false);
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
 
@@ -202,8 +202,8 @@ const Dashboard: React.FC = () => {
     setTaskModalOpen(true);
   }, []);
 
-  const handleToggleUserProfileForm = useCallback(() => {
-    setDefaultValues(initialDefaultValues);
+  const handleToggleUserForm = useCallback(() => {
+    setDefaultValues(defaultUserFormValues);
     setModalOpen(true);
     setEditUser(false);
   }, []);
@@ -402,7 +402,7 @@ const Dashboard: React.FC = () => {
     />
   );
 
-  const renderUserProfileForm = () => {
+  const renderUserForm = () => {
     const title = isEditUser ? 'Edit User' : 'Add User';
     const buttonLabel = isEditUser ? 'Save' : 'Add';
 
@@ -412,7 +412,7 @@ const Dashboard: React.FC = () => {
         onClose={() => setModalOpen(false)}
         content={
           <Suspense fallback={<Spinner />}>
-            <UserProfileForm
+            <UserForm
               defaultValues={defaultValues}
               isEditUser={isEditUser}
               onClose={() => setModalOpen(false)}
@@ -438,7 +438,7 @@ const Dashboard: React.FC = () => {
     <DashboardContext.Provider value={contextValue}>
       <div className="flex flex-col h-screen w-screen">
         <Header
-          onAddUser={handleToggleUserProfileForm}
+          onAddUser={handleToggleUserForm}
           onAddProject={handleToggleProjectForm}
           onAddTask={handleToggleTaskForm}
         />
@@ -499,7 +499,7 @@ const Dashboard: React.FC = () => {
           content='Team Progress App'
         />
       </div>
-      {isModalOpen && renderUserProfileForm()}
+      {isModalOpen && renderUserForm()}
       {isProjectModalOpen && renderProjectForm()}
       {isTaskModalOpen && renderTaskForm()}
     </DashboardContext.Provider>

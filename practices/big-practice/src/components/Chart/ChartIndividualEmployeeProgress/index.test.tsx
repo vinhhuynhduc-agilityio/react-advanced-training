@@ -3,7 +3,7 @@ import {
   screen
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { formatDataForChartIndividualEmployee } from '@/helpers/chartTasks';
+import { formatDataForChartIndividualEmployee } from '@/components/Chart/helpers';
 import {
   TaskData,
   UserData
@@ -18,8 +18,8 @@ jest.mock('ag-charts-react', () => ({
 }));
 
 // Mock helper functions
-jest.mock('@/helpers/ChartTasks', () => ({
-  ...jest.requireActual('@/helpers/ChartTasks'),
+jest.mock('@/Components/Chart/helpers', () => ({
+  ...jest.requireActual('@/Components/Chart/helpers'),
   formatDataForChartIndividualEmployee: jest.fn(),
 }));
 

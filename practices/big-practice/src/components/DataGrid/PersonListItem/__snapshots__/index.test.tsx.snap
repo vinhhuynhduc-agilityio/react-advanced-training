@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PersonRenderer component matches snapshot for default state 1`] = `
+exports[`PersonListItem component matches snapshot for default state 1`] = `
 <div>
   <div
     aria-label="Joe Bloggs"

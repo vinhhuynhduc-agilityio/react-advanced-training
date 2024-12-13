@@ -1,8 +1,8 @@
-import { UserData } from '@/types/table';
+import { UserData } from "@/types";
 
 const defaultAvatarUrl = 'https://via.placeholder.com/80';
 
-const initialDefaultValues: UserData = {
+const defaultUserFormValues: UserData = {
   fullName: '',
   email: '',
   avatarUrl: defaultAvatarUrl,
@@ -20,7 +20,7 @@ const FIELD_TYPE = {
 };
 
 export {
-  initialDefaultValues,
+  defaultUserFormValues,
   defaultAvatarUrl,
   FIELD_TYPE
 };

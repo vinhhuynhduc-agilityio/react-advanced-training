@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ICellRendererParams } from 'ag-grid-community';
-import { PersonRenderer } from '.';
+import { PersonListItem } from '.';
 import { UserData } from '@/types';
 
 const mockData: UserData = {
@@ -14,17 +14,17 @@ const mockData: UserData = {
   lastUpdated: "October 10, 2023 12:30:00"
 };
 
-describe('PersonRenderer component', () => {
+describe('PersonListItem component', () => {
   it('matches snapshot for default state', () => {
     const params: ICellRendererParams<UserData> = { data: mockData } as ICellRendererParams<UserData>;
-    const { container } = render(<PersonRenderer {...params} />);
+    const { container } = render(<PersonListItem {...params} />);
     expect(container).toMatchSnapshot();
   });
 
   it('should render user data correctly', () => {
     const params: ICellRendererParams<UserData> = { data: mockData } as ICellRendererParams<UserData>;
 
-    render(<PersonRenderer {...params} />);
+    render(<PersonListItem {...params} />);
 
     expect(screen.getByText('Joe Bloggs')).toBeInTheDocument();
     expect(screen.getByText('$5000')).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe('PersonRenderer component', () => {
 
   it('should return null when params.data is undefined', () => {
     const params: ICellRendererParams<UserData> = { data: undefined } as ICellRendererParams<UserData>;
-    const { container } = render(<PersonRenderer {...params} />);
+    const { container } = render(<PersonListItem {...params} />);
 
     expect(container.firstChild).toBeNull();
   });

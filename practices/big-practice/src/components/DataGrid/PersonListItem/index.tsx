@@ -1,7 +1,8 @@
 import { UserData } from "@/types";
 import { ICellRendererParams } from "ag-grid-community";
 
-export const PersonRenderer = (params: ICellRendererParams<UserData>) => {
+
+export const PersonListItem = (params: ICellRendererParams<UserData>) => {
   if (!params.data) {
     return null;
   }

@@ -32,15 +32,20 @@ import {
   getDateColumnSortComparator,
   getUpdatedRow
 } from '@/helpers';
+import {
+  handleProjectChange,
+  handleStatusChange,
+  handleTaskNameChange,
+  handleUserChange
+} from './helpers';
 
+// config
 import { API_BASE_URL } from '@/config';
 
 // types
 import {
   FieldValue,
-  ProjectsData,
   TaskData,
-  UserData
 } from '@/types';
 
 // constants
@@ -168,114 +173,33 @@ const TaskTable: React.FC<TaskDataProps> = ({
     value: FieldValue,
     row: TaskData
   ) => {
-    let currentValue;
-    let newValue;
-    let customValue;
+    let result;
 
     switch (type) {
       case FIELD_TYPE.TASK_NAME:
-        currentValue = originalTaskNameRef.current;
-        newValue = value;
-        customValue = newValue;
+        result = handleTaskNameChange(value, originalTaskNameRef);
         break;
 
       case FIELD_TYPE.PROJECT:
-        currentValue = row.projectId;
-        newValue = (value as ProjectsData).id;
-        customValue = value;
-
-        // Update tasks state in Dashboard
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === row.id
-              ? {
-                ...task,
-                projectId: (value as ProjectsData).id,
-                projectName: (value as ProjectsData).projectName,
-              }
-              : task
-          )
-        );
+        result = handleProjectChange(value, row, setTasks);
         break;
 
-      case FIELD_TYPE.USER: {
-        const {
-          userId,
-          currency,
-          status
-        } = row;
-        const oldUserId = userId;
-        const newUserId = (value as UserData).id;
-        currentValue = row.userId;
-        newValue = (value as UserData).id;
-        customValue = value;
-
-        if (oldUserId !== newUserId) {
-          updateEarningsForUsers(
-            oldUserId,
-            newUserId,
-            currency,
-            status
-          );
-        }
-
-        // Update tasks state in Dashboard
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === row.id
-              ? {
-                ...task,
-                userId: newUserId,
-                fullName: (value as UserData).fullName,
-              }
-              : task
-          )
-        );
+      case FIELD_TYPE.USER:
+        result = handleUserChange(value, row, setTasks, updateEarningsForUsers);
         break;
-      }
 
-      case FIELD_TYPE.STATUS: {
-        const status = value as boolean;
-        const currency = row.currency;
-        const userId = row.userId;
-        const completedDate = status
-          ? new Date().toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: 'short',
-            year: '2-digit',
-          } as Intl.DateTimeFormatOptions)
-          : 'incomplete';
-
-        newValue = { status, completedDate };
-        customValue = newValue;
-
-        updateEarningsOnStatusChange(userId, currency, status);
-
-        // Update tasks state in Dashboard
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === row.id
-              ? {
-                ...task,
-                status,
-                completedDate
-              }
-              : task
-          )
-        );
+      case FIELD_TYPE.STATUS:
+        result = handleStatusChange(value, row, setTasks, updateEarningsOnStatusChange);
         break;
-      }
 
       default:
         return;
-    };
-
-    // If the value hasn't changed, return.
-    if (newValue === currentValue) {
-      return;
     }
 
-    handleSaveSelect(type, customValue, row);
+    if (!result?.isValidChange) return;
+
+    const { customValue } = result;
+    handleSaveSelect(type, customValue as FieldValue, row);
   };
 
   const handleRowClicked = (event: RowClickedEvent) => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { apiRequest } from '@/services';
-import { API_ROUTES } from '@/constant';
-import { API_BASE_URL } from '@/config';
+import { fetchUsers } from '@/services/user';
+import { fetchTasks } from '@/services/task';
+import { fetchProjects } from '@/services/project';
 import { UserData, TaskData, ProjectsData } from '@/types';
 
 export const useFetchData = () => {
@@ -10,27 +10,34 @@ export const useFetchData = () => {
   const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [isLoading, setLoading] = useState(false);
 
+  const processResult = <T>(
+    result: { data: T[] | null; error: Error | null },
+    setState: React.Dispatch<React.SetStateAction<T[]>>,
+    entityName: string
+  ) => {
+    if (result.data) {
+      setState(result.data);
+    } else {
+      console.error(`Failed to load ${entityName}:`, result.error);
+    }
+  };
+
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
-      try {
-        const [
-          usersData,
-          tasksData,
-          projectsData
-        ] = await Promise.all([
-          apiRequest<UserData[], UserData[]>('GET', `${API_BASE_URL}${API_ROUTES.USERS}`),
-          apiRequest<TaskData[], TaskData[]>('GET', `${API_BASE_URL}${API_ROUTES.TASKS}`),
-          apiRequest<ProjectsData[], ProjectsData[]>('GET', `${API_BASE_URL}${API_ROUTES.PROJECTS}`)
-        ]);
-        setUsers(usersData);
-        setTasks(tasksData);
-        setProjects(projectsData);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      } finally {
-        setLoading(false);
-      }
+      setLoading(true);
+
+      const [userResult, taskResult, projectResult] = await Promise.all([
+        fetchUsers(),
+        fetchTasks(),
+        fetchProjects(),
+      ]);
+
+      // Process each API response
+      processResult(userResult, setUsers, "users");
+      processResult(taskResult, setTasks, "tasks");
+      processResult(projectResult, setProjects, "projects");
+
+      setLoading(false);
     };
 
     fetchData();

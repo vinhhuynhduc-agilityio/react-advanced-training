@@ -1,46 +1,68 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { apiRequest } from '@/services'; // Mock API call
-import { mockProject, mockTasks, mockUsers } from '@/mocks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useFetchData } from '@/hooks/useFetchData';
+import { fetchUsers } from '@/services/user';
+import { fetchTasks } from '@/services/task';
+import { fetchProjects } from '@/services/project';
+import { mockUsers, mockTasks, mockProject } from '@/mocks';
 
-// Mock apiRequest to return mock data
-jest.mock('@/services', () => ({
-  apiRequest: jest.fn(),
+jest.mock('@/services/user', () => ({
+  fetchUsers: jest.fn(),
+}));
+jest.mock('@/services/task', () => ({
+  fetchTasks: jest.fn(),
+}));
+jest.mock('@/services/project', () => ({
+  fetchProjects: jest.fn(),
 }));
 
-describe('useFetchData', () => {
+const mockFetchUsers = fetchUsers as jest.Mock;
+const mockFetchTasks = fetchTasks as jest.Mock;
+const mockFetchProjects = fetchProjects as jest.Mock;
+
+describe('useFetchData Hook', () => {
   beforeEach(() => {
-    (apiRequest as jest.Mock).mockReset();
+    jest.clearAllMocks();
   });
 
-  it('should set isLoading to true initially and fetch data', async () => {
-    (apiRequest as jest.Mock)
-      .mockResolvedValueOnce(mockUsers)
-      .mockResolvedValueOnce(mockTasks)
-      .mockResolvedValueOnce(mockProject);
+  test('should fetch users, tasks, and projects successfully', async () => {
+    mockFetchUsers.mockResolvedValue({ data: mockUsers, error: null });
+    mockFetchTasks.mockResolvedValue({ data: mockTasks, error: null });
+    mockFetchProjects.mockResolvedValue({ data: mockProject, error: null });
 
-    const TestComponent = () => {
-      const { isLoading, users, tasks, projects } = useFetchData();
+    const { result } = renderHook(() => useFetchData());
 
-      if (isLoading) return <div>Loading...</div>;
+    expect(result.current.isLoading).toBe(true);
 
-      return (
-        <div>
-          <div role="user-count">{users.length}</div>
-          <div role="task-count">{tasks.length}</div>
-          <div role="project-count">{projects.length}</div>
-        </div>
-      );
-    };
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
-    render(<TestComponent />);
+    expect(mockFetchUsers).toHaveBeenCalledTimes(1);
+    expect(mockFetchTasks).toHaveBeenCalledTimes(1);
+    expect(mockFetchProjects).toHaveBeenCalledTimes(1);
 
-    // Assert that "Loading..." appears during fetch
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(result.current.users).toEqual(mockUsers);
+    expect(result.current.tasks).toEqual(mockTasks);
+    expect(result.current.projects).toEqual(mockProject);
+  });
 
-    await waitFor(() => screen.getByRole('user-count'));
-    expect(screen.getByRole('user-count').textContent).toBe('3');
-    expect(screen.getByRole('task-count').textContent).toBe('5');
-    expect(screen.getByRole('project-count').textContent).toBe('5');
+  test('should handle errors when fetchUsers fails', async () => {
+    mockFetchUsers.mockResolvedValue({ data: null, error: new Error('Fetch users error') });
+    mockFetchTasks.mockResolvedValue({ data: mockTasks, error: null });
+    mockFetchProjects.mockResolvedValue({ data: mockProject, error: null });
+
+    const { result } = renderHook(() => useFetchData());
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(mockFetchUsers).toHaveBeenCalledTimes(1);
+    expect(result.current.users).toEqual([]);
+
+    expect(mockFetchTasks).toHaveBeenCalledTimes(1);
+    expect(mockFetchProjects).toHaveBeenCalledTimes(1);
+    expect(result.current.tasks).toEqual(mockTasks);
+    expect(result.current.projects).toEqual(mockProject);
   });
 });

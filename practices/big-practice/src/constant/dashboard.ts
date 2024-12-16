@@ -19,6 +19,8 @@ const FIELD_TYPE = {
   STATUS: "status",
 };
 
+export type FieldType = keyof typeof FIELD_TYPE;
+
 export {
   defaultUserFormValues,
   defaultAvatarUrl,

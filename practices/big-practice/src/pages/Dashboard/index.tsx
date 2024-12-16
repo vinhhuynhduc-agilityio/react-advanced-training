@@ -42,11 +42,10 @@ import {
 } from '@/types';
 
 // services
-import { apiRequest } from '@/services';
+import { createProject, createTask, createUser, updateUser } from '@/services';
 
 // constant
 import {
-  API_ROUTES,
   defaultAvatarUrl,
   defaultUserFormValues
 } from '@/constant';
@@ -60,8 +59,6 @@ import {
   handleRowSelection,
   handleScrollingToAddedRow
 } from '@/pages/Dashboard/helper';
-
-import { API_BASE_URL } from '@/config';
 
 // context
 import { DashboardContext } from '@/context';
@@ -113,41 +110,50 @@ const Dashboard: React.FC = () => {
   ) => {
     handleTaskRowSelected(newUserId);
 
-    if (!userListGridApi.current || !status) return;
+    if (!status) return;
 
     setSavingUser(true);
-    const updates: Promise<UserData>[] = [];
 
-    [oldUserId, newUserId].forEach(userId => {
+    const updates: Promise<{ data: UserData | null; error: Error | null }>[] = [];
+
+    [oldUserId, newUserId].forEach((userId) => {
       const rowNode = userListGridApi.current!.getRowNode(userId);
 
       if (rowNode) {
         const currentEarnings = parseInt(rowNode.data.earnings.slice(1)) || 0;
-        const adjustedEarnings = userId === oldUserId
-          ? currentEarnings - currency
-          : currentEarnings + currency;
+        const adjustedEarnings =
+          userId === oldUserId
+            ? currentEarnings - currency
+            : currentEarnings + currency;
 
-        rowNode.setData({
+        const updatedData: UserData = {
           ...rowNode.data,
-          earnings: `$${adjustedEarnings}`
-        });
+          earnings: `$${adjustedEarnings}`,
+        };
 
-        updates.push(
-          apiRequest<UserData, UserData>('PUT', `${API_BASE_URL}${API_ROUTES.USERS}/${userId}`, {
-            ...rowNode.data,
-            earnings: `$${adjustedEarnings}`,
-          })
-        );
+        // Push the updateUser call to the updates array
+        updates.push(updateUser(userId, updatedData));
       }
     });
 
-    try {
-      await Promise.all(updates);
-    } catch (error) {
-      console.error('Failed to update earnings:', error);
-    } finally {
-      setSavingUser(false);
-    }
+    // Wait for all updates to complete
+    const results = await Promise.all(updates);
+
+    // Only update the data if all updates succeed
+    results.forEach((result, index) => {
+      if (result.error) {
+        setSavingUser(false); // Stop saving and return early if there’s any error
+        return;
+      }
+
+      const userId = [oldUserId, newUserId][index];
+      const rowNode = userListGridApi.current!.getRowNode(userId);
+      if (rowNode && result.data) {
+        rowNode.setData(result.data);
+      }
+    });
+
+    setSavingUser(false);
   };
 
   const updateEarningsOnStatusChange = async (
@@ -167,29 +173,27 @@ const Dashboard: React.FC = () => {
         ? currentEarnings + currency
         : currentEarnings - currency;
 
-      // Update row edit data
-      rowNode.setData({
+      // Prepare updated data
+      const updatedData: UserData = {
         ...rowNode.data,
-        earnings: `$${adjustedEarnings}`
-      });
+        earnings: `$${adjustedEarnings}`,
+      };
 
-      // Update earnings to backend
-      try {
-        await apiRequest<UserData, UserData>(
-          'PUT',
-          `${API_BASE_URL}${API_ROUTES.USERS}/${userId}`,
-          {
-            ...rowNode.data,
-            earnings: `$${adjustedEarnings}`,
-          }
-        );
-      } catch (error) {
-        console.error('Failed to update earnings:', error);
-      } finally {
+      // Call updateUser API
+      const response = await updateUser(userId, updatedData);
+
+      if (response.error) {
         setSavingUser(false);
+        return;
       }
-    };
+
+      // Update row data only if the API call is successful
+      rowNode.setData(response.data);
+
+      setSavingUser(false);
+    }
   };
+
   const registerGridApi = (api: GridApi) => {
     userListGridApi.current = api
   };
@@ -224,7 +228,8 @@ const Dashboard: React.FC = () => {
     const registeredDate = formatRegisteredDate();
 
     setSavingUser(true);
-    const newUser = {
+
+    const newUser: UserData = {
       id: uuidv4(),
       fullName: data.fullName,
       earnings: '$0',
@@ -234,34 +239,33 @@ const Dashboard: React.FC = () => {
       lastUpdated: registeredDate,
     };
 
-    try {
-      const addedUser = await apiRequest<UserData, UserData>(
-        'POST',
-        `${API_BASE_URL}${API_ROUTES.USERS}`,
-        newUser
-      );
+    // Call createUser API
+    const response = await createUser(newUser);
 
-      // Update state users to add new users
-      setUsers((prevUsers) => [...prevUsers, addedUser]);
-
-      setModalOpen(false);
-
-      // Handles scrolling to new user
-      if (userListGridApi.current) {
-        handleScrollingToAddedRow(newUser.id, userListGridApi.current)
-      }
-
-      // handle selected for new user
-      handleUserRowSelected(newUser.id);
-    } catch (error) {
-      console.error('Failed to add new user:', error);
-    } finally {
+    if (response.error) {
       setSavingUser(false);
+      return;
     }
+
+    // Add the new user to the state
+    setUsers((prevUsers) => [...prevUsers, response.data!]);
+
+    setModalOpen(false);
+
+    // Handles scrolling to the new user
+    if (userListGridApi.current) {
+      handleScrollingToAddedRow(newUser.id, userListGridApi.current);
+    }
+
+    // Handle selection for the new user
+    handleUserRowSelected(newUser.id);
+
+    setSavingUser(false);
   };
 
   const handleEditUser = async (data: UserFormData) => {
     if (!defaultValues?.id) return;
+
     setSavingUser(true);
 
     const editUser: UserData = {
@@ -274,45 +278,34 @@ const Dashboard: React.FC = () => {
       lastUpdated: formatRegisteredDate(),
     };
 
-    try {
+    // Call updateUser API
+    const response = await updateUser(defaultValues.id, editUser);
 
-      // Send user update request
-      const updatedUser = await apiRequest<UserData, UserData>(
-        'PUT',
-        `${API_BASE_URL}${API_ROUTES.USERS}/${defaultValues.id}`,
-        editUser
-      );
-
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === defaultValues.id
-            ? updatedUser
-            : user
-        )
-      );
-
-      setModalOpen(false);
-    } catch (error) {
-      console.error('Failed to edit user:', error);
-    } finally {
+    if (response.error) {
       setSavingUser(false);
+      return;
     }
+
+    // Update the users state with the updated user
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === defaultValues.id
+          ? response.data!
+          : user
+      )
+    );
+
+    setModalOpen(false);
+    setSavingUser(false);
   };
 
   const handleAddNewTask = async (data: TaskFormValues) => {
-    const {
-      currency,
-      project,
-      taskName,
-      user
-    } = data;
-    const currencyValue = typeof currency === 'string'
-      ? parseInt(currency, 10)
-      : currency;
+    const { currency, project, taskName, user } = data;
+    const currencyValue = typeof currency === 'string' ? parseInt(currency, 10) : currency;
 
     setSavingTask(true);
 
-    const newTask = {
+    const newTask: TaskData = {
       id: uuidv4(),
       userId: user.id,
       projectId: project.id,
@@ -322,54 +315,51 @@ const Dashboard: React.FC = () => {
       currency: currencyValue,
       status: false,
       projectName: project.value,
-      fullName: user.value
+      fullName: user.value,
     };
 
-    try {
-      const addedTask = await apiRequest<TaskData, TaskData>(
-        'POST',
-        `${API_BASE_URL}${API_ROUTES.TASKS}`,
-        newTask
-      );
+    const response = await createTask(newTask);
 
-      setTasks((prevTasks) => [...prevTasks, addedTask]);
-      setTaskModalOpen(false);
-
-      // Handles scrolling to new user
-      if (taskDashboardGridApi.current) {
-        handleScrollingToAddedRow(newTask.id, taskDashboardGridApi.current)
-      }
-
-      // handle selected for new task
-      handleTaskRowSelected(newTask.userId);
-    } catch (error) {
-      console.error('Failed to add new task:', error);
-    } finally {
+    if (response.error) {
       setSavingTask(false);
+      return;
     }
+
+    // If no error, update tasks state
+    setTasks((prevTasks) => [...prevTasks, response.data!]);
+    setTaskModalOpen(false);
+
+    // Handles scrolling to new user
+    if (taskDashboardGridApi.current) {
+      handleScrollingToAddedRow(newTask.id, taskDashboardGridApi.current);
+    }
+
+    // Handle selected for new task
+    handleTaskRowSelected(newTask.userId);
+
+    setSavingTask(false);
   };
 
   const handleAddProject = async (newProjectName: string) => {
-    const newProject = {
+    const newProject: ProjectsData = {
       id: uuidv4(),
       projectName: newProjectName
     };
+
     setSavingProject(true);
 
-    try {
-      const addedProject = await apiRequest<ProjectsData, ProjectsData>(
-        'POST',
-        `${API_BASE_URL}${API_ROUTES.PROJECTS}`,
-        newProject
-      );
+    const response = await createProject(newProject);
 
-      setProjects((prevProjects) => [...prevProjects, addedProject]);
-      setProjectModalOpen(false);
-    } catch (error) {
-      console.error('Failed to add new project', error);
-    } finally {
+    if (response.error) {
       setSavingProject(false);
+      return;
     }
+
+    // Update projects state with the new project
+    setProjects((prevProjects) => [...prevProjects, response.data!]);
+    setProjectModalOpen(false);
+
+    setSavingProject(false);
   };
 
   const renderProjectForm = () => (

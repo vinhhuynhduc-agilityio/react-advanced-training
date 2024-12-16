@@ -1,5 +1,5 @@
 // types
-import { FIELD_TYPE } from '@/constant';
+import { FIELD_TYPE, FieldType } from '@/constant';
 import {
   FieldValue,
   ProjectsData,
@@ -12,7 +12,7 @@ import {
  * Updates a row in the TaskData table based on the provided type and value.
  */
 const getUpdatedRow = (
-  type: keyof typeof FIELD_TYPE,
+  type: FieldType,
   value: FieldValue,
   row: TaskData
 ): TaskData => {

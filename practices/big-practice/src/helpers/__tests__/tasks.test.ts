@@ -11,13 +11,13 @@ import {
 import {
   FieldValue
 } from "@/types";
-import { FIELD_TYPE } from "@/constant";
+import { FIELD_TYPE, FieldType } from "@/constant";
 
 describe("Utility Functions", () => {
   describe("getUpdatedRow", () => {
     it("should update the row with new project data", () => {
       const row = mockTasks[0];
-      const updatedRow = getUpdatedRow(FIELD_TYPE.PROJECT as keyof typeof FIELD_TYPE, mockProject[1], row);
+      const updatedRow = getUpdatedRow(FIELD_TYPE.PROJECT as FieldType, mockProject[1], row);
 
       expect(updatedRow).toEqual({
         ...row,
@@ -28,7 +28,7 @@ describe("Utility Functions", () => {
 
     it("should update the row with new user data", () => {
       const row = mockTasks[0];
-      const updatedRow = getUpdatedRow(FIELD_TYPE.USER as keyof typeof FIELD_TYPE, mockUsers[1], row);
+      const updatedRow = getUpdatedRow(FIELD_TYPE.USER as FieldType, mockUsers[1], row);
 
       expect(updatedRow).toEqual({
         ...row,
@@ -40,7 +40,7 @@ describe("Utility Functions", () => {
     it("should update the row with a new task name", () => {
       const row = mockTasks[0];
       const newTaskName = "New Task Name";
-      const updatedRow = getUpdatedRow(FIELD_TYPE.TASK_NAME as keyof typeof FIELD_TYPE, newTaskName, row);
+      const updatedRow = getUpdatedRow(FIELD_TYPE.TASK_NAME as FieldType, newTaskName, row);
 
       expect(updatedRow).toEqual({
         ...row,
@@ -51,7 +51,7 @@ describe("Utility Functions", () => {
     it("should update the row with new status and completed date", () => {
       const row = mockTasks[0];
       const newStatus = { status: false, completedDate: "incomplete" };
-      const updatedRow = getUpdatedRow(FIELD_TYPE.STATUS as keyof typeof FIELD_TYPE, newStatus, row);
+      const updatedRow = getUpdatedRow(FIELD_TYPE.STATUS as FieldType, newStatus, row);
 
       expect(updatedRow).toEqual({
         ...row,
@@ -62,7 +62,7 @@ describe("Utility Functions", () => {
 
     it("should return the original row for an unhandled field type", () => {
       const row = mockTasks[0];
-      const updatedRow = getUpdatedRow("" as keyof typeof FIELD_TYPE, "value" as FieldValue, row);
+      const updatedRow = getUpdatedRow("" as FieldType, "value" as FieldValue, row);
       expect(updatedRow).toEqual(row);
     });
   });

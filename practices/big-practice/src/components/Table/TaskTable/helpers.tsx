@@ -1,30 +1,32 @@
+import { FIELD_TYPE, FieldType } from "@/constant";
 import { FieldValue, ProjectsData, TaskData, UserData } from "@/types";
 
-export const handleTaskNameChange = (
+const handleTaskNameChange = (
   value: FieldValue,
-  originalTaskNameRef: React.MutableRefObject<string>
+  row: TaskData,
+  originalTaskNameRef: React.MutableRefObject<string>,
+  handleSaveSelect: (type: FieldType, value: FieldValue, row: TaskData) => void,
 ) => {
   const currentValue = originalTaskNameRef.current;
   const newValue = value;
 
-  if (newValue === currentValue) return { isValidChange: false };
+  if (newValue === currentValue) return;
 
-  return {
-    newValue,
-    customValue: newValue,
-    isValidChange: true
-  };
+  handleSaveSelect(FIELD_TYPE.TASK_NAME as FieldType, newValue, row);
 };
 
-export const handleProjectChange = (
+const handleProjectChange = (
   value: FieldValue,
   row: TaskData,
-  setTasks: React.Dispatch<React.SetStateAction<TaskData[]>>
+  setTasks: React.Dispatch<React.SetStateAction<TaskData[]>>,
+  handleSaveSelect: (type: FieldType, value: FieldValue, row: TaskData) => void
 ) => {
   const currentValue = row.projectId;
   const newValue = (value as ProjectsData).id;
 
-  if (newValue === currentValue) return { isValidChange: false };
+  if (newValue === currentValue) return;
+
+  handleSaveSelect(FIELD_TYPE.PROJECT as FieldType, value, row);
 
   setTasks((prevTasks) =>
     prevTasks.map((task) =>
@@ -37,35 +39,23 @@ export const handleProjectChange = (
         : task
     )
   );
-
-  return {
-    newValue,
-    customValue: value,
-    isValidChange: true
-  };
 };
 
-export const handleUserChange = (
+const handleUserChange = (
   value: FieldValue,
   row: TaskData,
   setTasks: React.Dispatch<React.SetStateAction<TaskData[]>>,
-  updateEarningsForUsers: (
-    oldUserId: string,
-    newUserId: string,
-    currency: number,
-    status: boolean
-  ) => void
+  updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number, status: boolean) => void,
+  handleSaveSelect: (type: FieldType, value: FieldValue, row: TaskData) => void
 ) => {
   const { userId, currency, status } = row;
   const oldUserId = userId;
   const newUserId = (value as UserData).id;
-  const currentValue = row.userId;
 
-  if (newUserId === currentValue) return { isValidChange: false };
+  if (newUserId === oldUserId) return;
 
-  if (oldUserId !== newUserId) {
-    updateEarningsForUsers(oldUserId, newUserId, currency, status);
-  }
+  handleSaveSelect(FIELD_TYPE.USER as FieldType, value, row);
+  updateEarningsForUsers(oldUserId, newUserId, currency, status);
 
   setTasks((prevTasks) =>
     prevTasks.map((task) =>
@@ -78,23 +68,14 @@ export const handleUserChange = (
         : task
     )
   );
-
-  return {
-    newValue: newUserId,
-    customValue: value,
-    isValidChange: true
-  };
 };
 
-export const handleStatusChange = (
+const handleStatusChange = (
   value: FieldValue,
   row: TaskData,
   setTasks: React.Dispatch<React.SetStateAction<TaskData[]>>,
-  updateEarningsOnStatusChange: (
-    userId: string,
-    currency: number,
-    status: boolean
-  ) => void
+  updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void,
+  handleSaveSelect: (type: FieldType, value: FieldValue, row: TaskData) => void
 ) => {
   const status = value as boolean;
   const { currency, userId } = row;
@@ -106,8 +87,7 @@ export const handleStatusChange = (
     } as Intl.DateTimeFormatOptions)
     : 'incomplete';
 
-  const newValue = { status, completedDate };
-
+  handleSaveSelect(FIELD_TYPE.STATUS as FieldType, { status, completedDate }, row);
   updateEarningsOnStatusChange(userId, currency, status);
 
   setTasks((prevTasks) =>
@@ -121,10 +101,11 @@ export const handleStatusChange = (
         : task
     )
   );
+};
 
-  return {
-    newValue,
-    customValue: newValue,
-    isValidChange: true
-  };
+export {
+  handleTaskNameChange,
+  handleProjectChange,
+  handleUserChange,
+  handleStatusChange
 };

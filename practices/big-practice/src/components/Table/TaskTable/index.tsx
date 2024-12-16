@@ -25,7 +25,7 @@ import { Spinner } from '@/components/common';
 import { CheckMark } from '@/components';
 
 // services
-import { apiRequest } from '@/services';
+import { updateTask } from '@/services';
 
 // helpers
 import {
@@ -39,8 +39,6 @@ import {
   handleUserChange
 } from './helpers';
 
-// config
-import { API_BASE_URL } from '@/config';
 
 // types
 import {
@@ -49,7 +47,7 @@ import {
 } from '@/types';
 
 // constants
-import { API_ROUTES, FIELD_TYPE } from '@/constant';
+import { FIELD_TYPE, FieldType } from '@/constant';
 
 // hooks
 import { useDashboardContext } from '@/hooks';
@@ -139,67 +137,47 @@ const TaskTable: React.FC<TaskDataProps> = ({
   }, []);
 
   const handleSaveSelect = async (
-    type: keyof typeof FIELD_TYPE,
+    type: FieldType,
     value: FieldValue,
     row: TaskData
   ) => {
-    setSavingTask(true)
+    setSavingTask(true);
     const updatedRow = getUpdatedRow(type, value, row);
 
     // Call API to update row in the backend
-    try {
-      await apiRequest<TaskData, TaskData>(
-        'PUT',
-        `${API_BASE_URL}${API_ROUTES.TASKS}/${row.id}`,
-        updatedRow
-      );
-    } catch (error) {
-      console.error('Failed to update task', error);
-    } finally {
+    const { error } = await updateTask(row.id, updatedRow);
+
+    if (error) {
       setSavingTask(false);
+      return;
     }
 
-    if (gridApi.current) {
-      const rowNode = gridApi.current.getRowNode(row.id);
-
-      // Update the row data in the grid
-      if (rowNode) {
-        rowNode.setData(updatedRow);
-      }
-    }
+    setSavingTask(false);
   };
 
-  const handleValueChange = (type: keyof typeof FIELD_TYPE) => (
-    value: FieldValue,
-    row: TaskData
-  ) => {
-    let result;
-
+  const handleValueChange = (
+    type: FieldType,
+  ) => (value: FieldValue, row: TaskData) => {
     switch (type) {
       case FIELD_TYPE.TASK_NAME:
-        result = handleTaskNameChange(value, originalTaskNameRef);
+        handleTaskNameChange(value, row, originalTaskNameRef, handleSaveSelect);
         break;
 
       case FIELD_TYPE.PROJECT:
-        result = handleProjectChange(value, row, setTasks);
+        handleProjectChange(value, row, setTasks, handleSaveSelect);
         break;
 
       case FIELD_TYPE.USER:
-        result = handleUserChange(value, row, setTasks, updateEarningsForUsers);
+        handleUserChange(value, row, setTasks, updateEarningsForUsers, handleSaveSelect);
         break;
 
       case FIELD_TYPE.STATUS:
-        result = handleStatusChange(value, row, setTasks, updateEarningsOnStatusChange);
+        handleStatusChange(value, row, setTasks, updateEarningsOnStatusChange, handleSaveSelect);
         break;
 
       default:
         return;
     }
-
-    if (!result?.isValidChange) return;
-
-    const { customValue } = result;
-    handleSaveSelect(type, customValue as FieldValue, row);
   };
 
   const handleRowClicked = (event: RowClickedEvent) => {
@@ -236,7 +214,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
 
     // Check if the edited column is 'taskName'
     if (colDef.field === FIELD_TYPE.TASK_NAME) {
-      handleValueChange(FIELD_TYPE.TASK_NAME as keyof typeof FIELD_TYPE)(value, data);
+      handleValueChange(FIELD_TYPE.TASK_NAME as FieldType)(value, data);
     }
   };
 
@@ -248,7 +226,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
       field: 'status',
       cellRenderer: CheckMark,
       cellRendererParams: (params: ICellRendererParams) => ({
-        onStatusValueChange: () => handleValueChange(FIELD_TYPE.STATUS as keyof typeof FIELD_TYPE)(!params.data.status, params.data)
+        onStatusValueChange: () => handleValueChange(FIELD_TYPE.STATUS as FieldType)(!params.data.status, params.data)
       }),
       width: 55,
       tooltipValueGetter: () => 'Click to complete/uncomplete the task',
@@ -269,7 +247,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
       flex: 3.4,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
-        onSelectOption: handleValueChange(FIELD_TYPE.PROJECT as keyof typeof FIELD_TYPE),
+        onSelectOption: handleValueChange(FIELD_TYPE.PROJECT as FieldType),
         options: projects,
         displayKey: 'projectName'
       },
@@ -284,7 +262,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
       flex: 2.4,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
-        onSelectOption: handleValueChange(FIELD_TYPE.USER as keyof typeof FIELD_TYPE),
+        onSelectOption: handleValueChange(FIELD_TYPE.USER as FieldType),
         options: users,
         displayKey: 'fullName'
       },

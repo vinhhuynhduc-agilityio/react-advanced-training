@@ -6,3 +6,4 @@ export * from './ErrorBoundary';
 export * from './CheckMark';
 export * from './Table';
 export * from './Forms';
+export * from './Avatar';

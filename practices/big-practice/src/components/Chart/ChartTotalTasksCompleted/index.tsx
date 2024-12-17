@@ -16,7 +16,7 @@ import { Spinner } from '@/components/common';
 
 // hooks
 import { useDashboardContext } from '@/hooks';
-import { formatDataForChartTotalTasks, renderTooltipChart } from '@/components/Chart/helpers';
+import { formatDataForChartTotalTasks, totalTasksCompletedOptions } from '@/components/Chart/helpers';
 
 interface ChartTotalTasksCompletedProps {
   isLoading: boolean;
@@ -27,50 +27,12 @@ export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> =
     isLoading
   }) => {
     const { tasks } = useDashboardContext();
+    const [options, setOptions] = useState<AgChartOptions>(totalTasksCompletedOptions);
 
     const formattedData = useMemo(
       () => formatDataForChartTotalTasks(tasks),
       [tasks]
     );
-
-    const [options, setOptions] = useState<AgChartOptions>({
-      title: {
-        text: 'Total tasks completed',
-      },
-      data: formattedData,
-      series: [
-        {
-          type: 'line',
-          xKey: 'month',
-          yKey: '2023',
-          yName: '2023',
-          tooltip: {
-            renderer: renderTooltipChart
-          },
-        },
-        {
-          type: 'line',
-          xKey: 'month',
-          yKey: '2024',
-          yName: '2024',
-          tooltip: {
-            renderer: renderTooltipChart
-          },
-        },
-      ],
-      legend: {
-        enabled: true,
-        position: 'bottom',
-        item: {
-          marker: {
-            size: 10,
-          },
-          label: {
-            fontWeight: 'bold',
-          },
-        },
-      },
-    });
 
     useEffect(() => {
       setOptions((prevOptions) => ({

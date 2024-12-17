@@ -12,6 +12,10 @@ import { useEmailValidation, useUserForm } from '@/hooks';
 
 // components
 import { Button } from '@/components/common';
+import { Avatar } from '@/components';
+
+// helpers
+import { readFileAsBase64 } from '@/helpers';
 
 interface UserFormProps {
   defaultValues: UserData;
@@ -43,19 +47,7 @@ const UserForm: React.FC<UserFormProps> = ({
     const file = event.target.files?.[0];
 
     if (file) {
-      const reader = new FileReader();
-
-      // Start reading the file
-      reader.readAsDataURL(file);
-
-      // Set a handler function when the file reading process is complete
-      reader.onloadend = () => {
-
-        // base64 string, can be displayed directly in an <img>
-        const avatarUrl = reader.result as string;
-
-        setAvatarPreview(avatarUrl);
-      };
+      readFileAsBase64(file, setAvatarPreview);
     }
   };
 
@@ -142,10 +134,10 @@ const UserForm: React.FC<UserFormProps> = ({
             Avatar
           </label>
           <div className="flex items-center space-x-4">
-            <img
+            <Avatar
               src={avatarUrl}
               alt="Avatar Preview"
-              className="w-24 h-24 rounded-full object-cover"
+              size="w-24 h-24"
             />
             <input
               type="file"

@@ -134,7 +134,7 @@ const renderTooltipChart = (
 };
 
 // Default chart configuration
-const initOptions: AgChartOptions = {
+const individualEmployeeProgressOptions: AgChartOptions = {
   title: {
     text: `Individual employee's progress`,
   },
@@ -173,11 +173,93 @@ const renderTooltipProjectChart = (
   };
 };
 
+const totalTasksByProjectsOption: AgChartOptions = {
+  title: {
+    text: 'Total tasks by projects',
+  },
+  data: [],
+  series: [
+    {
+      type: 'bar',
+      xKey: 'projectName',
+      yKey: '2023',
+      yName: '2023',
+      direction: 'horizontal',
+      tooltip: {
+        renderer: renderTooltipProjectChart
+      },
+    },
+    {
+      type: 'bar',
+      xKey: 'projectName',
+      yKey: '2024',
+      yName: '2024',
+      direction: 'horizontal',
+      tooltip: {
+        renderer: renderTooltipProjectChart
+      },
+    },
+  ],
+  legend: {
+    enabled: true,
+    position: 'bottom',
+    item: {
+      marker: {
+        size: 10,
+      },
+      label: {
+        fontWeight: 'bold',
+      },
+    },
+  },
+};
+
+const totalTasksCompletedOptions: AgChartOptions = {
+  title: {
+    text: 'Total tasks completed',
+  },
+  data: [],
+  series: [
+    {
+      type: 'line',
+      xKey: 'month',
+      yKey: '2023',
+      yName: '2023',
+      tooltip: {
+        renderer: renderTooltipChart
+      },
+    },
+    {
+      type: 'line',
+      xKey: 'month',
+      yKey: '2024',
+      yName: '2024',
+      tooltip: {
+        renderer: renderTooltipChart
+      },
+    },
+  ],
+  legend: {
+    enabled: true,
+    position: 'bottom',
+    item: {
+      marker: {
+        size: 10,
+      },
+      label: {
+        fontWeight: 'bold',
+      },
+    },
+  },
+};
+
 export {
   formatDataForChartTotalTasks,
   formatDataForChartTotalTasksByProjects,
   formatDataForChartIndividualEmployee,
-  initOptions,
-  renderTooltipChart,
   renderTooltipProjectChart,
+  renderTooltipChart,
+  totalTasksByProjectsOption,
+  totalTasksCompletedOptions,
+  individualEmployeeProgressOptions,
 };

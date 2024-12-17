@@ -28,7 +28,27 @@ const handleRowSelection = (
   handleRowSelected(userId, sourceComponent);
 };
 
+/**
+ * Calculate adjusted earnings based on current earnings, currency, and condition
+ * @param earnings - String earnings in the format "$12345"
+ * @param currency - The currency adjustment amount
+ * @param isIncrease - Boolean to determine whether to increase or decrease earnings
+ * @returns number - The adjusted earnings value
+ */
+const calculateAdjustedEarnings = (
+  earnings: string,
+  currency: number,
+  isIncrease: boolean
+): number => {
+  const currentEarnings = parseInt(earnings.slice(1)) || 0;
+
+  return isIncrease
+    ? currentEarnings + currency
+    : currentEarnings - currency;
+};
+
 export {
   handleScrollingToAddedRow,
-  handleRowSelection
+  handleRowSelection,
+  calculateAdjustedEarnings
 };

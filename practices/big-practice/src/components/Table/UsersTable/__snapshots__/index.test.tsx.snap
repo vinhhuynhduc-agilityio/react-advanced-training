@@ -331,12 +331,12 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                         role="listitem"
                       >
                         <img
-                          alt="avatar"
-                          class="w-14 h-14 rounded-full mr-4"
+                          alt="User Avatar"
+                          class="rounded-full object-cover w-14 h-14"
                           src="https://i.pravatar.cc/150?img=1"
                         />
                         <div
-                          class="flex flex-col"
+                          class="flex flex-col ml-4"
                         >
                           <div
                             class="text-base font-medium text-[#313131]"
@@ -375,12 +375,12 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                         role="listitem"
                       >
                         <img
-                          alt="avatar"
-                          class="w-14 h-14 rounded-full mr-4"
+                          alt="User Avatar"
+                          class="rounded-full object-cover w-14 h-14"
                           src="https://i.pravatar.cc/150?img=2"
                         />
                         <div
-                          class="flex flex-col"
+                          class="flex flex-col ml-4"
                         >
                           <div
                             class="text-base font-medium text-[#313131]"
@@ -419,12 +419,12 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                         role="listitem"
                       >
                         <img
-                          alt="avatar"
-                          class="w-14 h-14 rounded-full mr-4"
+                          alt="User Avatar"
+                          class="rounded-full object-cover w-14 h-14"
                           src="https://i.pravatar.cc/150?img=3"
                         />
                         <div
-                          class="flex flex-col"
+                          class="flex flex-col ml-4"
                         >
                           <div
                             class="text-base font-medium text-[#313131]"

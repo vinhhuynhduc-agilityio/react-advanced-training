@@ -1,5 +1,5 @@
 import { GridApi } from "ag-grid-community";
-import { handleRowSelection, handleScrollingToAddedRow } from './helper';
+import { calculateAdjustedEarnings, handleRowSelection, handleScrollingToAddedRow } from './helper';
 
 // Mock function
 const mockHandleRowSelected = jest.fn();
@@ -61,5 +61,67 @@ describe('handleRowSelection', () => {
     handleRowSelection(userId, sourceComponent, mockHandleRowSelected);
 
     expect(mockHandleRowSelected).toHaveBeenCalledWith(userId, sourceComponent);
+  });
+
+  describe('calculateAdjustedEarnings', () => {
+    test('should return increased earnings when isIncrease is true', () => {
+      const earnings = '$1000';
+      const currency = 500;
+      const isIncrease = true;
+
+      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+
+      expect(result).toBe(1500);
+    });
+
+    test('should return decreased earnings when isIncrease is false', () => {
+      const earnings = '$1000';
+      const currency = 300;
+      const isIncrease = false;
+
+      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+
+      expect(result).toBe(700);
+    });
+
+    test('should handle earnings with invalid string format gracefully', () => {
+      const earnings = 'invalid';
+      const currency = 200;
+      const isIncrease = true;
+
+      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+
+      expect(result).toBe(200); // Default currentEarnings is 0
+    });
+
+    test('should handle earnings with empty string', () => {
+      const earnings = '';
+      const currency = 100;
+      const isIncrease = false;
+
+      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+
+      expect(result).toBe(-100);
+    });
+
+    test('should handle currency as zero correctly when isIncrease is true', () => {
+      const earnings = '$500';
+      const currency = 0;
+      const isIncrease = true;
+
+      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+
+      expect(result).toBe(500);
+    });
+
+    test('should handle currency as zero correctly when isIncrease is false', () => {
+      const earnings = '$500';
+      const currency = 0;
+      const isIncrease = false;
+
+      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+
+      expect(result).toBe(500);
+    });
   });
 });

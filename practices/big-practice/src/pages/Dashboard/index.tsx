@@ -56,6 +56,7 @@ import {
   formatRegisteredDate,
 } from '@/helpers';
 import {
+  calculateAdjustedEarnings,
   handleRowSelection,
   handleScrollingToAddedRow
 } from '@/pages/Dashboard/helper';
@@ -120,11 +121,11 @@ const Dashboard: React.FC = () => {
       const rowNode = userListGridApi.current!.getRowNode(userId);
 
       if (rowNode) {
-        const currentEarnings = parseInt(rowNode.data.earnings.slice(1)) || 0;
-        const adjustedEarnings =
-          userId === oldUserId
-            ? currentEarnings - currency
-            : currentEarnings + currency;
+        const adjustedEarnings = calculateAdjustedEarnings(
+          rowNode.data.earnings,
+          currency,
+          userId !== oldUserId
+        );
 
         const updatedData: UserData = {
           ...rowNode.data,
@@ -168,12 +169,12 @@ const Dashboard: React.FC = () => {
     const rowNode = userListGridApi.current.getRowNode(userId);
 
     if (rowNode) {
-      const currentEarnings = parseInt(rowNode.data.earnings.slice(1)) || 0;
-      const adjustedEarnings = status
-        ? currentEarnings + currency
-        : currentEarnings - currency;
+      const adjustedEarnings = calculateAdjustedEarnings(
+        rowNode.data.earnings,
+        currency,
+        status
+      );
 
-      // Prepare updated data
       const updatedData: UserData = {
         ...rowNode.data,
         earnings: `$${adjustedEarnings}`,

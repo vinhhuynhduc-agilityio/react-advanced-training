@@ -56,8 +56,8 @@ interface TaskDataProps {
   selectedUserId: string | null;
   onTaskRowSelected: (userId: string | null) => void;
   sourceComponent: string | null;
-  updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number, status: boolean) => void;
-  updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => void;
+  updateEarningsForUsers: (oldUserId: string, newUserId: string, currency: number, status: boolean) => Promise<void>;
+  updateEarningsOnStatusChange: (userId: string, currency: number, status: boolean) => Promise<void>;
   registerGridApiTaskDashboard: (api: GridApi) => void;
   isLoading: boolean;
   isSavingTask: boolean;
@@ -140,7 +140,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
     type: FieldType,
     value: FieldValue,
     row: TaskData
-  ) => {
+  ): Promise<void> => {
     setSavingTask(true);
     const updatedRow = getUpdatedRow(type, value, row);
 
@@ -319,7 +319,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
         tooltipShowDelay={0}
         enableBrowserTooltips={true}
         loadingOverlayComponent={Spinner}
-        loading={isLoading}
+        loading={isLoading || isSavingTask}
         suppressClickEdit={isDisabled}
       />
     </div>

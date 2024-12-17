@@ -4,10 +4,12 @@ import {
   formatDataForChartIndividualEmployee,
   renderTooltipChart,
   renderTooltipProjectChart,
-  initOptions,
+  individualEmployeeProgressOptions,
+  totalTasksCompletedOptions,
+  totalTasksByProjectsOption,
 } from "./helpers";
 import { mockTasks, mockProject } from "../../mocks/data";
-import { AgAreaSeriesOptions, AgBarSeriesTooltipRendererParams, AgChartLegendClickEvent } from "ag-charts-community";
+import { AgAreaSeriesOptions, AgBarSeriesOptions, AgBarSeriesTooltipRendererParams, AgChartLegendClickEvent, AgLineSeriesOptions } from "ag-charts-community";
 
 describe("formatDataForChartTotalTasks", () => {
   it("should correctly format task completion data for 2023 and 2024", () => {
@@ -105,13 +107,13 @@ describe("formatDataForChartIndividualEmployee", () => {
     });
   });
 
-  describe("initOptions", () => {
+  describe("individualEmployeeProgressOptions", () => {
     it("should have correct initial options for the chart", () => {
-      expect(initOptions.title?.text).toBe("Individual employee's progress");
-      expect(initOptions.series?.[0].type).toBe("area");
-      expect((initOptions.series?.[0] as AgAreaSeriesOptions).xKey).toBe("month");
-      expect((initOptions.series?.[0] as AgAreaSeriesOptions).yKey).toBe("totalTasksCompleted");
-      expect((initOptions.series?.[0] as AgAreaSeriesOptions).yName).toBe("Loading...");
+      expect(individualEmployeeProgressOptions.title?.text).toBe("Individual employee's progress");
+      expect(individualEmployeeProgressOptions.series?.[0].type).toBe("area");
+      expect((individualEmployeeProgressOptions.series?.[0] as AgAreaSeriesOptions).xKey).toBe("month");
+      expect((individualEmployeeProgressOptions.series?.[0] as AgAreaSeriesOptions).yKey).toBe("totalTasksCompleted");
+      expect((individualEmployeeProgressOptions.series?.[0] as AgAreaSeriesOptions).yName).toBe("Loading...");
     });
 
     it("should prevent default action on legend item click", () => {
@@ -125,9 +127,89 @@ describe("formatDataForChartIndividualEmployee", () => {
         event: {} as Event,
       };
 
-      initOptions.legend?.listeners?.legendItemClick?.(event);
+      individualEmployeeProgressOptions.legend?.listeners?.legendItemClick?.(event);
 
       expect(preventDefault).toHaveBeenCalled();
+    });
+  });
+
+  describe("totalTasksCompletedOptions", () => {
+    it("should have correct initial options for the chart", () => {
+      expect(totalTasksCompletedOptions.title?.text).toBe("Total tasks completed");
+
+      // Check series for 2023
+      const series2023 = totalTasksCompletedOptions.series?.[0] as AgLineSeriesOptions;
+      expect(series2023.type).toBe("line");
+      expect(series2023.xKey).toBe("month");
+      expect(series2023.yKey).toBe("2023");
+      expect(series2023.yName).toBe("2023");
+
+      // Check series for 2024
+      const series2024 = totalTasksCompletedOptions.series?.[1] as AgLineSeriesOptions;
+      expect(series2024.type).toBe("line");
+      expect(series2024.xKey).toBe("month");
+      expect(series2024.yKey).toBe("2024");
+      expect(series2024.yName).toBe("2024");
+    });
+
+    it("should use the correct tooltip renderer", () => {
+      const params: AgBarSeriesTooltipRendererParams = {
+        seriesId: "test-series",
+        datum: { month: "Feb", "2023": 10 },
+        xKey: "month",
+        yKey: "2023",
+      };
+
+      const tooltip = renderTooltipChart(params);
+
+      expect(tooltip.title).toContain("Feb");
+      expect(tooltip.title).toContain("10 tasks completed");
+      expect(tooltip.backgroundColor).toBe("#181d1f");
+    });
+  });
+
+  describe("totalTasksByProjectsOption", () => {
+    it("should have the correct title", () => {
+      expect(totalTasksByProjectsOption.title?.text).toBe("Total tasks by projects");
+    });
+
+    it("should have two bar series for 2023 and 2024", () => {
+      // Check series for 2023
+      const series2023 = totalTasksByProjectsOption.series?.[0] as AgBarSeriesOptions;
+      expect(series2023.type).toBe("bar");
+      expect(series2023.xKey).toBe("projectName");
+      expect(series2023.yKey).toBe("2023");
+      expect(series2023.yName).toBe("2023");
+      expect(series2023.direction).toBe("horizontal");
+
+      // Check series for 2024
+      const series2024 = totalTasksByProjectsOption.series?.[1] as AgBarSeriesOptions;
+      expect(series2024.type).toBe("bar");
+      expect(series2024.xKey).toBe("projectName");
+      expect(series2024.yKey).toBe("2024");
+      expect(series2024.yName).toBe("2024");
+      expect(series2024.direction).toBe("horizontal");
+    });
+
+    it("should use the correct tooltip renderer for both series", () => {
+      const params: AgBarSeriesTooltipRendererParams = {
+        seriesId: "test-series",
+        datum: { projectName: "Project A", "2023": 15 },
+        xKey: "projectName",
+        yKey: "2023",
+      };
+
+      const tooltipResult = renderTooltipProjectChart(params);
+      expect(tooltipResult.title).toBe(15);
+      expect(tooltipResult.backgroundColor).toBe("#181d1f");
+    });
+
+    it("should have a correctly configured legend", () => {
+      const legend = totalTasksByProjectsOption.legend;
+      expect(legend?.enabled).toBe(true);
+      expect(legend?.position).toBe("bottom");
+      expect(legend?.item?.marker?.size).toBe(10);
+      expect(legend?.item?.label?.fontWeight).toBe("bold");
     });
   });
 });

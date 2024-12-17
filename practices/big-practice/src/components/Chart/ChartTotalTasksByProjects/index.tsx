@@ -10,7 +10,7 @@ import {
 } from 'ag-charts-community';
 
 // helpers
-import { formatDataForChartTotalTasksByProjects, renderTooltipProjectChart } from '@/components/Chart/helpers';
+import { formatDataForChartTotalTasksByProjects, totalTasksByProjectsOption } from '@/components/Chart/helpers';
 
 // component
 import { Spinner } from '@/components/common';
@@ -27,52 +27,12 @@ export const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps>
     isLoading,
   }) => {
     const { tasks, projects } = useDashboardContext();
+    const [options, setOptions] = useState<AgChartOptions>(totalTasksByProjectsOption);
+
     const formattedData = useMemo(
       () => formatDataForChartTotalTasksByProjects(tasks, projects),
       [tasks, projects]
     );
-
-    // Configure chart with bar series
-    const [options, setOptions] = useState<AgChartOptions>({
-      title: {
-        text: 'Total tasks by projects',
-      },
-      data: formattedData,
-      series: [
-        {
-          type: 'bar',
-          xKey: 'projectName',
-          yKey: '2023',
-          yName: '2023',
-          direction: 'horizontal',
-          tooltip: {
-            renderer: renderTooltipProjectChart
-          },
-        },
-        {
-          type: 'bar',
-          xKey: 'projectName',
-          yKey: '2024',
-          yName: '2024',
-          direction: 'horizontal',
-          tooltip: {
-            renderer: renderTooltipProjectChart
-          },
-        },
-      ],
-      legend: {
-        enabled: true,
-        position: 'bottom',
-        item: {
-          marker: {
-            size: 10,
-          },
-          label: {
-            fontWeight: 'bold',
-          },
-        },
-      },
-    });
 
     // Update chart data when formattedData changes
     useEffect(() => {

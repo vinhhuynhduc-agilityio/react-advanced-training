@@ -10,7 +10,7 @@ import { AgCharts } from 'ag-charts-react';
 import { AgChartOptions } from 'ag-charts-community';
 
 // helpers
-import { formatDataForChartIndividualEmployee, initOptions } from '@/components/Chart/helpers';
+import { formatDataForChartIndividualEmployee, individualEmployeeProgressOptions } from '@/components/Chart/helpers';
 
 // component
 import { Spinner } from '@/components/common';
@@ -29,7 +29,7 @@ export const ChartIndividualEmployeeProgress: React.FC<ChartIndividualEmployeePr
     isLoading,
   }) => {
     const { users, tasks } = useDashboardContext();
-    const [options, setOptions] = useState<AgChartOptions>(initOptions);
+    const [options, setOptions] = useState<AgChartOptions>(individualEmployeeProgressOptions);
 
     const selectedUser = useMemo(() => {
       if (users.length === 0) return null;

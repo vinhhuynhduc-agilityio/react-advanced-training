@@ -28,7 +28,7 @@ describe('PersonListItem component', () => {
 
     expect(screen.getByText('Joe Bloggs')).toBeInTheDocument();
     expect(screen.getByText('$5000')).toBeInTheDocument();
-    const img = screen.getByAltText('avatar') as HTMLImageElement;
+    const img = screen.getByAltText('User Avatar') as HTMLImageElement;
     expect(img.src).toBe('https://i.pravatar.cc/150?img=1');
   });
 

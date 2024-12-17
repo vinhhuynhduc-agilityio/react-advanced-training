@@ -20,12 +20,10 @@ import { formatDataForChartTotalTasks, renderTooltipChart } from '@/components/C
 
 interface ChartTotalTasksCompletedProps {
   isLoading: boolean;
-  isSavingTask: boolean;
 };
 
 export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = memo(
   ({
-    isSavingTask,
     isLoading
   }) => {
     const { tasks } = useDashboardContext();
@@ -81,7 +79,7 @@ export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> =
       }));
     }, [formattedData]);
 
-    if (isLoading || isSavingTask) {
+    if (isLoading) {
       return (
         <div className="flex-1 bg-white border border-customBorder h-[302px]">
           <Spinner />

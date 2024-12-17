@@ -47,7 +47,6 @@ const UsersTable: React.FC<UsersTableProps> = ({
   registerGridApi,
   onUserDoubleClicked,
   isLoading,
-  isSavingUser
 }) => {
   const { users } = useDashboardContext();
   const gridApi = useRef<GridApi | null>(null);
@@ -120,7 +119,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
       getRowId={getRowId}
       onRowDoubleClicked={onRowDoubleClicked}
       loadingOverlayComponent={Spinner}
-      loading={isLoading || isSavingUser}
+      loading={isLoading}
     />
   );
 };

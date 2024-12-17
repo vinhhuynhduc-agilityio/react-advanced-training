@@ -7,14 +7,26 @@ interface HeaderProps {
   onAddUser: () => void;
   onAddProject: () => void;
   onAddTask: () => void;
+  isLoading: boolean;
+  isSavingUser: boolean;
+  isSavingTask: boolean;
+  isSavingProject: boolean;
 };
 
 export const Header: React.FC<HeaderProps> = memo(
   ({
     onAddUser,
     onAddProject,
-    onAddTask
+    onAddTask,
+    isLoading,
+    isSavingUser,
+    isSavingTask,
+    isSavingProject
   }) => {
+    const isDisable = isLoading ||
+      isSavingUser ||
+      isSavingTask ||
+      isSavingProject
 
     return (
       <header className=" bg-white flex flex-row py-2 px-3 items-center border border-customBorder">
@@ -24,9 +36,21 @@ export const Header: React.FC<HeaderProps> = memo(
             Team Progress
           </h1>
         </div>
-        <Button label="Add a user" onClick={onAddUser} />
-        <Button label="Add a task" onClick={onAddTask} />
-        <Button label="Add a project" onClick={onAddProject} />
+        <Button
+          label="Add a user"
+          onClick={onAddUser}
+          disabled={isDisable}
+        />
+        <Button
+          label="Add a task"
+          onClick={onAddTask}
+          disabled={isDisable}
+        />
+        <Button
+          label="Add a project"
+          onClick={onAddProject}
+          disabled={isDisable}
+        />
       </header>
     );
   }

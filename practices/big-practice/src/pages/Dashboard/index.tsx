@@ -431,6 +431,10 @@ const Dashboard: React.FC = () => {
           onAddUser={handleToggleUserForm}
           onAddProject={handleToggleProjectForm}
           onAddTask={handleToggleTaskForm}
+          isLoading={isLoading}
+          isSavingTask={isSavingTask}
+          isSavingUser={isSavingUser}
+          isSavingProject={isSavingProject}
         />
         <div className="flex flex-row flex-grow bg-slate-100 min-h-0">
           <div className="flex-grow-0 ml-1 mr-4 my-4 w-64 ag-theme-alpine overflow-auto">
@@ -448,7 +452,6 @@ const Dashboard: React.FC = () => {
             <ErrorBoundary>
               <ChartTotalTasksCompleted
                 isLoading={isLoading}
-                isSavingTask={isSavingTask}
               />
             </ErrorBoundary>
             <div className="flex flex-row bg-slate-100 mt-4 h-[302px]">
@@ -456,15 +459,11 @@ const Dashboard: React.FC = () => {
                 <ChartIndividualEmployeeProgress
                   selectedUserId={selectedUserId}
                   isLoading={isLoading}
-                  isSavingTask={isSavingTask}
-                  isSavingUser={isSavingUser}
                 />
               </ErrorBoundary>
               <ErrorBoundary>
                 <ChartTotalTasksByProjects
                   isLoading={isLoading}
-                  isSavingTask={isSavingTask}
-                  isSavingProject={isSavingProject}
                 />
               </ErrorBoundary>
             </div>

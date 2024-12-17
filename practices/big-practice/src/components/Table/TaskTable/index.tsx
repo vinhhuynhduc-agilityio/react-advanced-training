@@ -220,13 +220,19 @@ const TaskTable: React.FC<TaskDataProps> = ({
 
   const getRowId = (params: GetRowIdParams<TaskData>) => params.data.id;
 
+  const isDisabled = isLoading ||
+    isSavingTask ||
+    isSavingProject ||
+    isSavingUser;
+
   const columnDefs: ColDef<TaskData>[] = [
     {
       headerName: '',
       field: 'status',
       cellRenderer: CheckMark,
       cellRendererParams: (params: ICellRendererParams) => ({
-        onStatusValueChange: () => handleValueChange(FIELD_TYPE.STATUS as FieldType)(!params.data.status, params.data)
+        onStatusValueChange: () => handleValueChange(FIELD_TYPE.STATUS as FieldType)(!params.data.status, params.data),
+        isDisabled: isDisabled
       }),
       width: 55,
       tooltipValueGetter: () => 'Click to complete/uncomplete the task',
@@ -313,12 +319,8 @@ const TaskTable: React.FC<TaskDataProps> = ({
         tooltipShowDelay={0}
         enableBrowserTooltips={true}
         loadingOverlayComponent={Spinner}
-        loading={
-          isLoading
-          || isSavingTask
-          || isSavingProject
-          || isSavingUser
-        }
+        loading={isLoading}
+        suppressClickEdit={isDisabled}
       />
     </div>
   )

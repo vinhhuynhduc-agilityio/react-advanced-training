@@ -12,6 +12,10 @@ describe('Header Component', () => {
         onAddUser={mockOnAddUser}
         onAddProject={mockOnAddProject}
         onAddTask={mockOnAddTask}
+        isLoading={false}
+        isSavingUser={false}
+        isSavingTask={false}
+        isSavingProject={false}
       />
     );;
     expect(container).toMatchSnapshot();
@@ -23,6 +27,10 @@ describe('Header Component', () => {
         onAddUser={mockOnAddUser}
         onAddProject={mockOnAddProject}
         onAddTask={mockOnAddTask}
+        isLoading={false}
+        isSavingUser={false}
+        isSavingTask={false}
+        isSavingProject={false}
       />
     );
     const logoElement = screen.getByAltText('Logo');

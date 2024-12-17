@@ -82,8 +82,6 @@ describe('ChartIndividualEmployeeProgress Component', () => {
         <ChartIndividualEmployeeProgress
           selectedUserId={null}
           isLoading={false}
-          isSavingTask={false}
-          isSavingUser={false}
         />
       </DashboardContext.Provider>
     );
@@ -101,8 +99,6 @@ describe('ChartIndividualEmployeeProgress Component', () => {
         <ChartIndividualEmployeeProgress
           selectedUserId='d290f1ee-6c54-4b01-90e6-d701748f0851'
           isLoading={false}
-          isSavingTask={false}
-          isSavingUser={false}
         />
       </DashboardContext.Provider>
     );
@@ -121,8 +117,6 @@ describe('ChartIndividualEmployeeProgress Component', () => {
         <ChartIndividualEmployeeProgress
           selectedUserId='f47ac10b-58cc-4372-a567-0e02b2c3d479'
           isLoading={false}
-          isSavingTask={false}
-          isSavingUser={false}
         />
       </DashboardContext.Provider>
     );
@@ -140,8 +134,6 @@ describe('ChartIndividualEmployeeProgress Component', () => {
         <ChartIndividualEmployeeProgress
           selectedUserId={null}
           isLoading={false}
-          isSavingTask={false}
-          isSavingUser={false}
         />
       </DashboardContext.Provider>
     );
@@ -158,8 +150,6 @@ describe('ChartIndividualEmployeeProgress Component', () => {
         <ChartIndividualEmployeeProgress
           selectedUserId={null}
           isLoading={true}
-          isSavingTask={false}
-          isSavingUser={false}
         />
       </DashboardContext.Provider>
     );

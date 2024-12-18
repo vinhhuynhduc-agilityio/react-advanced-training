@@ -12,7 +12,7 @@ import { useEmailValidation, useUserForm } from '@/hooks';
 
 // components
 import { Button } from '@/components/common';
-import { Avatar } from '@/components';
+import { Avatar, TextField } from '@/components';
 
 // helpers
 import { readFileAsBase64 } from '@/helpers';
@@ -22,7 +22,7 @@ interface UserFormProps {
   isEditUser: boolean;
   onClose: () => void;
   onSubmit: (data: UserFormData) => void;
-  buttonLabel: string
+  buttonLabel: string;
 };
 
 const UserForm: React.FC<UserFormProps> = ({
@@ -40,7 +40,6 @@ const UserForm: React.FC<UserFormProps> = ({
     if (isEditUser && defaultValues?.avatarUrl) {
       setAvatarPreview(defaultValues.avatarUrl);
     }
-
   }, [isEditUser, defaultValues]);
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,79 +57,57 @@ const UserForm: React.FC<UserFormProps> = ({
     });
   };
 
-  const renderError = (content: string | undefined) => {
-    return (
-      <p className="text-red-500 text-sm mt-1 ml-24">
-        {content}
-      </p>
-    )
-  };
-
   return (
-    <form id="UserForm" onSubmit={handleSubmit(onSubmitWithPreview)} className="space-y-6">
-
+    <form
+      id='UserForm'
+      onSubmit={handleSubmit(onSubmitWithPreview)}
+      className='space-y-6'
+    >
       {/* Full Name */}
-      <div>
-        <div className="flex items-center">
-          <label
-            htmlFor="fullNameUserForm"
-            className="w-24 text-gray-700 font-semibold">
-            Full Name
-          </label>
-          <input
-            id="fullNameUserForm"
-            className="flex-1 p-2 border border-gray-300 rounded-md bg-white text-black"
-            type="text"
-            {...register("fullName", {
-              required: "Full Name is required",
-              maxLength: {
-                value: 20,
-                message: "Full Name cannot exceed 20 characters",
-              },
-            })}
-            placeholder="Enter full name"
-          />
-        </div>
-        {errors.fullName && renderError(errors.fullName.message)}
-      </div>
+      <TextField
+        name='fullName'
+        label='Full Name'
+        placeholder='Enter full name'
+        register={register}
+        withErrorMargin='ml-24'
+        validation={{
+          required: 'Full Name is required',
+          maxLength: {
+            value: 20,
+            message: 'Full Name cannot exceed 20 characters',
+          },
+        }}
+        error={errors.fullName?.message}
+      />
 
       {/* Email */}
-      <div>
-        <div className="flex items-center">
-          <label
-            className="w-24 text-gray-700 font-semibold"
-            htmlFor="emailUserProfileForm"
-          >
-            Email
-          </label>
-          <input
-            id="emailUserProfileForm"
-            className="flex-1 p-2 border border-gray-300 rounded-md bg-white text-black"
-            type="email"
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: "Invalid email format",
-              },
-              validate: {
-                duplicate: (value) => !isEmailDuplicate(value) || "Email already exists",
-              }
-            })}
-            placeholder="Enter email"
-            aria-label='email-user'
-          />
-        </div>
-        {errors.email && renderError(errors.email.message)}
-      </div>
+      <TextField
+        name='email'
+        label='Email'
+        type='email'
+        placeholder='Enter email'
+        register={register}
+        withErrorMargin='ml-24'
+        validation={{
+          required: 'Email is required',
+          pattern: {
+            value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+            message: 'Invalid email format',
+          },
+          validate: {
+            duplicate: (value) =>
+              typeof value === 'string' && !isEmailDuplicate(value)
+                ? true
+                : 'Email already exists',
+          },
+        }}
+        error={errors.email?.message}
+      />
 
       {/* Avatar */}
       <div>
         <div className="flex items-center">
-          <label
-            className="w-24 text-gray-700 font-semibold"
-            htmlFor="avatar-upload"
-          >
+          <label className="w-24 text-gray-700 font-semibold" htmlFor="avatar-upload">
             Avatar
           </label>
           <div className="flex items-center space-x-4">
@@ -142,7 +119,7 @@ const UserForm: React.FC<UserFormProps> = ({
             <input
               type="file"
               accept="image/*"
-              {...register("avatar", {
+              {...register('avatar', {
                 onChange: handleAvatarChange,
               })}
               className="hidden"
@@ -157,7 +134,9 @@ const UserForm: React.FC<UserFormProps> = ({
             </label>
           </div>
         </div>
-        {errors.avatar && renderError(errors.avatar.message)}
+        {errors.avatar && (
+          <p className="text-red-500 text-sm mt-1 ml-24">{errors.avatar.message}</p>
+        )}
       </div>
 
       {/* Registered */}
@@ -188,7 +167,7 @@ const UserForm: React.FC<UserFormProps> = ({
           type="submit"
           label={buttonLabel}
           variant="primary"
-          ariaLabel='save-user'
+          ariaLabel="save-user"
         />
       </div>
     </form>

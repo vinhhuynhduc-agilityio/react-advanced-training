@@ -96,8 +96,26 @@ const formatDropdownOptions = <T extends { id: string }>(
     value: item[valueKey],
   }));
 
+/**
+ * Checks if a task name already exists in the task list.
+ *
+ * @param tasks - Array of existing tasks
+ * @param value - New task name to check
+ * @returns True if the task name already exists, otherwise false
+ */
+const isTaskDuplicate = (
+  tasks: TaskData[],
+  value: string
+): boolean => {
+  return tasks.some(
+    task => task.taskName.toUpperCase() === value.toUpperCase()
+  );
+};
+
+
 export {
   formatDropdownOptions,
   getUpdatedRow,
-  getDateColumnSortComparator
+  getDateColumnSortComparator,
+  isTaskDuplicate
 };

@@ -1,18 +1,14 @@
-
-import React from 'react';
-import {
-  useForm,
-  Controller
-} from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 // helpers
-import { formatDropdownOptions } from '@/helpers';
+import { formatDropdownOptions, isTaskDuplicate } from '@/helpers';
 
 // types
 import { TaskFormValues } from '@/types';
 
-// component
+// components
 import { Button, Dropdown } from '@/components/common';
+import { TextField } from '@/components';
 
 // hooks
 import { useDashboardContext } from '@/hooks';
@@ -43,68 +39,49 @@ const TaskForm: React.FC<TaskFormProps> = ({
     onSubmit(data);
   };
 
-  const renderError = (content: string | undefined) => (
-    <p className="text-red-500 text-sm mt-1">
-      {content}
-    </p>
-  );
-
-  const isTaskDuplicate = (value: string) => {
-    return tasks.some(task =>
-      task.taskName.toUpperCase() === value.toUpperCase()
-    );
-  };
-
   const projectOptions = formatDropdownOptions(projects, 'projectName');
-
   const userOptions = formatDropdownOptions(users, 'fullName');
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className='space-y-4'>
-
+    <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
       {/* Task Name */}
-      <div>
-        <label className="text-gray-700 font-semibold mb-1">
-          Task Name
-        </label>
-        <input
-          className="w-full p-2 rounded-md border border-gray-300 bg-white text-black"
-          type="text"
-          {...register("taskName", {
-            required: "Task name is required",
-            validate: {
-              duplicate: (value) => !isTaskDuplicate(value) || "Task name already exists",
-            },
-          })}
-          placeholder="Enter task name"
-        />
-        {errors.taskName && renderError(errors.taskName.message)}
-      </div>
+      <TextField
+        name='taskName'
+        label='Task Name'
+        placeholder='Enter task name'
+        register={register}
+        vertical
+        validation={{
+          required: 'Task name is required',
+          validate: {
+            duplicate: (value) =>
+              typeof value === 'string' && !isTaskDuplicate(tasks, value)
+                ? true
+                : 'Task name already exists',
+          },
+        }}
+        error={errors.taskName?.message}
+      />
 
       {/* Currency */}
-      <div>
-        <label className="text-gray-700 font-semibold mb-1">
-          Currency
-        </label>
-        <input
-          className="w-full p-2 rounded-md border border-gray-300 bg-white text-black"
-          type="text"
-          inputMode="numeric"
-          maxLength={4}
-          {...register("currency", {
-            required: "Currency is required",
-            pattern: {
-              value: /^[1-9][0-9]*$/,
-              message: "Currency must be a number not starting with 0"
-            },
-          })}
-          placeholder="Enter currency"
-        />
-        {errors.currency && renderError(errors.currency.message)}
-      </div>
+      <TextField
+        name='currency'
+        label='Currency'
+        type='text'
+        placeholder='Enter currency'
+        vertical
+        register={register}
+        validation={{
+          required: 'Currency is required',
+          pattern: {
+            value: /^[1-9][0-9]*$/,
+            message: 'Currency must be a number not starting with 0',
+          },
+        }}
+        error={errors.currency?.message}
+      />
 
       <div className="flex space-x-4">
-
         {/* Project Dropdown */}
         <div className="flex-1">
           <label className="text-gray-700 font-semibold mb-1">Project</label>
@@ -112,18 +89,22 @@ const TaskForm: React.FC<TaskFormProps> = ({
             name="project"
             control={control}
             rules={{
-              required: "Project is required",
+              required: 'Project is required',
             }}
             render={({ field }) => (
               <Dropdown
-                {...field}  // Pass react-hook-form"s field props to Dropdown
+                {...field}
                 options={projectOptions}
                 placeholder="Select a project"
-                onSelect={(selected) => field.onChange(selected)}  // Use `onChange` to update the value
+                onSelect={(selected) => field.onChange(selected)}
               />
             )}
           />
-          {errors.project && renderError(errors.project.message)}
+          {errors.project && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.project.message}
+            </p>
+          )}
         </div>
 
         {/* Assignee Dropdown */}
@@ -133,18 +114,20 @@ const TaskForm: React.FC<TaskFormProps> = ({
             name="user"
             control={control}
             rules={{
-              required: "Assignee is required",
+              required: 'Assignee is required',
             }}
             render={({ field }) => (
               <Dropdown
-                {...field}  // Pass react-hook-form"s field props to Dropdown
+                {...field}
                 options={userOptions}
                 placeholder="Select an assignee"
-                onSelect={(selected) => field.onChange(selected)}  // Use `onChange` to update the value
+                onSelect={(selected) => field.onChange(selected)}
               />
             )}
           />
-          {errors.user && renderError(errors.user.message)}
+          {errors.user && (
+            <p className="text-red-500 text-sm mt-1">{errors.user.message}</p>
+          )}
         </div>
       </div>
 
@@ -156,11 +139,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
           label="Cancel"
           variant="secondary"
         />
-        <Button
-          type="submit"
-          label="Save"
-          variant="primary"
-        />
+        <Button type="submit" label="Save" variant="primary" />
       </div>
     </form>
   );

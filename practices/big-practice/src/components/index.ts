@@ -7,3 +7,4 @@ export * from './CheckMark';
 export * from './Table';
 export * from './Forms';
 export * from './Avatar';
+export * from './TextField';

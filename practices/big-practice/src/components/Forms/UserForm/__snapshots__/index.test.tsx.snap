@@ -12,13 +12,13 @@ exports[`UserForm matches snapshot for default state 1`] = `
       >
         <label
           class="w-24 text-gray-700 font-semibold"
-          for="fullNameUserForm"
+          for="fullName"
         >
           Full Name
         </label>
         <input
           class="flex-1 p-2 border border-gray-300 rounded-md bg-white text-black"
-          id="fullNameUserForm"
+          id="fullName"
           name="fullName"
           placeholder="Enter full name"
           type="text"
@@ -31,14 +31,13 @@ exports[`UserForm matches snapshot for default state 1`] = `
       >
         <label
           class="w-24 text-gray-700 font-semibold"
-          for="emailUserProfileForm"
+          for="email"
         >
           Email
         </label>
         <input
-          aria-label="email-user"
           class="flex-1 p-2 border border-gray-300 rounded-md bg-white text-black"
-          id="emailUserProfileForm"
+          id="email"
           name="email"
           placeholder="Enter email"
           type="email"

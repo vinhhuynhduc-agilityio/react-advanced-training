@@ -1,7 +1,8 @@
 import {
   getUpdatedRow,
   getDateColumnSortComparator,
-  formatDropdownOptions
+  formatDropdownOptions,
+  isTaskDuplicate
 } from "../tasks";
 import {
   mockTasks,
@@ -127,5 +128,31 @@ describe("Utility Functions", () => {
     });
   });
 
+  describe("isTaskDuplicate", () => {
+    it("should return true if the task name already exists (case insensitive)", () => {
+      const result = isTaskDuplicate(mockTasks, "build test");
+      expect(result).toBe(true);
+    });
+
+    it("should return false if the task name does not exist", () => {
+      const result = isTaskDuplicate(mockTasks, "Non-Existing Task");
+      expect(result).toBe(false);
+    });
+
+    it("should return true if the task name matches exactly", () => {
+      const result = isTaskDuplicate(mockTasks, "Build test");
+      expect(result).toBe(true);
+    });
+
+    it("should handle empty input task name and return false", () => {
+      const result = isTaskDuplicate(mockTasks, "");
+      expect(result).toBe(false);
+    });
+
+    it("should handle empty task list and return false", () => {
+      const result = isTaskDuplicate([], "Build test");
+      expect(result).toBe(false);
+    });
+  });
 });
 

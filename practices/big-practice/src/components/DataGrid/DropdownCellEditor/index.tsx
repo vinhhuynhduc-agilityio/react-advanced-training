@@ -9,11 +9,13 @@ import clsx from 'clsx';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ICellEditorParams } from 'ag-grid-community';
+import { Avatar } from '@/components';
 
 export interface CustomCellEditorParams<T, D> extends ICellEditorParams {
   onSelectOption: (value: T, data: D) => void;
   options: T[];
   displayKey: keyof T;
+  showAvatar?: boolean;
 };
 
 export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) => {
@@ -22,10 +24,12 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
     data,
     column,
     displayKey,
+    showAvatar = false,
     eGridCell,
     stopEditing,
     onSelectOption,
   } = props;
+
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
@@ -35,8 +39,6 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
   };
 
   useEffect(() => {
-
-    // Use eGridCell from props to get the position of the cell being edited
     const cellElement = eGridCell as HTMLElement;
     const cellRect = cellElement.getBoundingClientRect();
     const dropdownHeight = dropdownRef.current?.offsetHeight || 0;
@@ -47,9 +49,10 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
       const spaceBelow = window.innerHeight - cellRect.bottom;
 
       // If there is enough space below, display the dropdown below, otherwise display it above.
-      const topPosition = spaceBelow > dropdownHeight
-        ? cellRect.bottom
-        : cellRect.top - dropdownHeight;
+      const topPosition =
+        spaceBelow > dropdownHeight
+          ? cellRect.bottom
+          : cellRect.top - dropdownHeight;
 
       setDropdownPosition({
         top: topPosition,
@@ -95,7 +98,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
   return (
     <div
       ref={dropdownRef}
-      className="bg-white border border-gray-300 shadow-lg rounded z-1000 overflow-y-auto max-h-[300px]"
+      className="bg-white border border-gray-300 shadow-lg rounded z-1000 overflow-y-auto max-h-[314px]"
       style={{
         position: "fixed",
         top: dropdownPosition.top,
@@ -105,6 +108,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
     >
       {options.map((option, index) => {
         const optionValue = String(option[displayKey]);
+        const avatarUrl = (option as { avatarUrl?: string })['avatarUrl'];
 
         return (
           <div
@@ -112,14 +116,21 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
             role="option"
             key={index}
             className={clsx(
-              "p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200",
+              "flex items-center p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200",
               {
                 "bg-blue-100": optionValue === currentValue,
               }
             )}
             onClick={() => handleSelect(option)}
           >
-            {optionValue}
+            {showAvatar && avatarUrl && (
+              <Avatar
+                src={avatarUrl}
+                alt="Option Avatar"
+                size="w-8 h-8"
+              />
+            )}
+            <div className="ml-3">{optionValue}</div>
           </div>
         );
       })}

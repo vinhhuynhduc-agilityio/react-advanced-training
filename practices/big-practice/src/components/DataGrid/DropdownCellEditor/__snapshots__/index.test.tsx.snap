@@ -3,43 +3,63 @@
 exports[`DropdownCellEditor matches snapshot for default state 1`] = `
 <div>
   <div
-    class="bg-white border border-gray-300 shadow-lg rounded z-1000 overflow-y-auto max-h-[300px]"
+    class="bg-white border border-gray-300 shadow-lg rounded z-1000 overflow-y-auto max-h-[314px]"
     style="position: fixed; top: 0px; left: 0px; width: 200px;"
   >
     <div
       aria-label="Support"
-      class="p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
+      class="flex items-center p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
       role="option"
     >
-      Support
+      <div
+        class="ml-3"
+      >
+        Support
+      </div>
     </div>
     <div
       aria-label="Failure Testing"
-      class="p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
+      class="flex items-center p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
       role="option"
     >
-      Failure Testing
+      <div
+        class="ml-3"
+      >
+        Failure Testing
+      </div>
     </div>
     <div
       aria-label="Quality Management"
-      class="p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
+      class="flex items-center p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
       role="option"
     >
-      Quality Management
+      <div
+        class="ml-3"
+      >
+        Quality Management
+      </div>
     </div>
     <div
       aria-label="Data Quality"
-      class="p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
+      class="flex items-center p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
       role="option"
     >
-      Data Quality
+      <div
+        class="ml-3"
+      >
+        Data Quality
+      </div>
     </div>
     <div
       aria-label="Test"
-      class="p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
+      class="flex items-center p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200 [object Object]"
       role="option"
     >
-      Test
+      <div
+        class="ml-3"
+      >
+        Test
+      </div>
     </div>
   </div>
 </div>

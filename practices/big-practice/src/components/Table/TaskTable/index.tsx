@@ -270,7 +270,8 @@ const TaskTable: React.FC<TaskDataProps> = ({
       cellEditorParams: {
         onSelectOption: handleValueChange(FIELD_TYPE.USER as FieldType),
         options: users,
-        displayKey: 'fullName'
+        displayKey: 'fullName',
+        showAvatar: true
       },
       cellEditorPopup: true,
       tooltipValueGetter: () => 'Double-click to assign to a different employee',

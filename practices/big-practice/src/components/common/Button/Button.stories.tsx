@@ -80,7 +80,7 @@ export const Secondary: Story = {
 export const Disabled: Story = {
   args: {
     label: 'Disabled Button',
-    variant: 'disabled',
+    variant: 'default',
     disabled: true,
   },
 };

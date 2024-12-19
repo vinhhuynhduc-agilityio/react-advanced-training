@@ -63,6 +63,7 @@ const UserForm: React.FC<UserFormProps> = ({
       onSubmit={handleSubmit(onSubmitWithPreview)}
       className='space-y-6'
     >
+
       {/* Full Name */}
       <TextField
         name='fullName'
@@ -71,10 +72,18 @@ const UserForm: React.FC<UserFormProps> = ({
         register={register}
         withErrorMargin='ml-24'
         validation={{
-          required: 'Full Name is required',
+          required: "Full Name is required",
+          minLength: {
+            value: 3,
+            message: "Full Name must be at least 3 characters long",
+          },
           maxLength: {
-            value: 20,
-            message: 'Full Name cannot exceed 20 characters',
+            value: 50,
+            message: "Full Name cannot exceed 30 characters",
+          },
+          pattern: {
+            value: /^[a-zA-Z\s]+$/,
+            message: "Full Name can only contain letters and spaces",
           },
         }}
         error={errors.fullName?.message}

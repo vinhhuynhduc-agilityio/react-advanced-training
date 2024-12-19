@@ -242,7 +242,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
       headerName: 'Task',
       field: 'taskName',
       editable: true,
-      flex: 4.5,
+      flex: 4.1,
       tooltipValueGetter: () => 'Double-click to edit the task name',
       headerClass: 'custom-header'
     },
@@ -250,7 +250,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
       headerName: 'Project',
       field: 'projectName',
       editable: true,
-      flex: 3.4,
+      flex: 3.1,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
         onSelectOption: handleValueChange(FIELD_TYPE.PROJECT as FieldType),
@@ -265,7 +265,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
       headerName: 'User',
       field: 'fullName',
       editable: true,
-      flex: 2.4,
+      flex: 3.1,
       cellEditor: DropdownCellEditor,
       cellEditorParams: {
         onSelectOption: handleValueChange(FIELD_TYPE.USER as FieldType),

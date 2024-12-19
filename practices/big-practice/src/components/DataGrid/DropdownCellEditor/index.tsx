@@ -130,7 +130,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
                 size="w-8 h-8"
               />
             )}
-            <div className="ml-3">{optionValue}</div>
+            <div className="ml-3 truncate">{optionValue}</div>
           </div>
         );
       })}

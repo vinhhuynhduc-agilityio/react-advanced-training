@@ -23,22 +23,19 @@ exports[`Dashboard Component matches snapshot 1`] = `
         </h1>
       </div>
       <button
-        class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300 opacity-50 cursor-not-allowed"
-        disabled=""
+        class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300"
         type="button"
       >
         Add a user
       </button>
       <button
-        class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300 opacity-50 cursor-not-allowed"
-        disabled=""
+        class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300"
         type="button"
       >
         Add a task
       </button>
       <button
-        class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300 opacity-50 cursor-not-allowed"
-        disabled=""
+        class="px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300"
         type="button"
       >
         Add a project
@@ -121,6 +118,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                           col-id="fullName"
                           role="columnheader"
                           style="top: 0px; height: 48px; width: 200px; left: 0px;"
+                          tabindex="-1"
                         >
                           <div
                             aria-hidden="true"
@@ -676,7 +674,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                 </div>
                 <!-- AG Overlay Wrapper -->
                 <div
-                  class="ag-overlay"
+                  class="ag-overlay ag-hidden"
                   role="presentation"
                 >
                   
@@ -688,10 +686,10 @@ exports[`Dashboard Component matches snapshot 1`] = `
                     
                     
                     <div
-                      class="ag-overlay-wrapper ag-layout-normal ag-overlay-loading-wrapper"
+                      class="ag-overlay-wrapper ag-layout-normal ag-overlay-no-rows-wrapper"
                       data-ref="eOverlayWrapper"
                       role="presentation"
-                      style="padding-top: 0px;"
+                      style="padding-top: 48px;"
                     />
                     
                 
@@ -885,35 +883,17 @@ exports[`Dashboard Component matches snapshot 1`] = `
       <div
         class="flex-grow bg-slate-100 my-4 mr-4 overflow-auto"
       >
-        <div
-          class="flex items-center justify-center p-4 bg-red-100 border border-red-400 text-red-800 rounded-lg shadow-md"
-        >
-          <p
-            class="font-semibold"
-          >
-            Something went wrong in this card.
-          </p>
+        <div>
+          Mock ChartTotalTasksCompleted
         </div>
         <div
           class="flex flex-row bg-slate-100 mt-4 h-[302px]"
         >
-          <div
-            class="flex items-center justify-center p-4 bg-red-100 border border-red-400 text-red-800 rounded-lg shadow-md"
-          >
-            <p
-              class="font-semibold"
-            >
-              Something went wrong in this card.
-            </p>
+          <div>
+            Mock ChartIndividualEmployeeProgress
           </div>
-          <div
-            class="flex items-center justify-center p-4 bg-red-100 border border-red-400 text-red-800 rounded-lg shadow-md"
-          >
-            <p
-              class="font-semibold"
-            >
-              Something went wrong in this card.
-            </p>
+          <div>
+            Mock ChartTotalTasksByProjects
           </div>
         </div>
         <div
@@ -993,6 +973,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               col-id="status"
                               role="columnheader"
                               style="top: 0px; height: 48px; width: 55px; left: 0px;"
+                              tabindex="-1"
                             >
                               <div
                                 aria-hidden="true"
@@ -1156,6 +1137,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               col-id="taskName"
                               role="columnheader"
                               style="top: 0px; height: 48px; width: 200px; left: 55px;"
+                              tabindex="-1"
                             >
                               <div
                                 aria-hidden="true"
@@ -1321,6 +1303,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               col-id="projectName"
                               role="columnheader"
                               style="top: 0px; height: 48px; width: 200px; left: 255px;"
+                              tabindex="-1"
                             >
                               <div
                                 aria-hidden="true"
@@ -1486,6 +1469,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               col-id="fullName"
                               role="columnheader"
                               style="top: 0px; height: 48px; width: 200px; left: 455px;"
+                              tabindex="-1"
                             >
                               <div
                                 aria-hidden="true"
@@ -1651,6 +1635,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               col-id="currency"
                               role="columnheader"
                               style="top: 0px; height: 48px; width: 200px; left: 655px;"
+                              tabindex="-1"
                             >
                               <div
                                 aria-hidden="true"
@@ -1816,6 +1801,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               col-id="startDate"
                               role="columnheader"
                               style="top: 0px; height: 48px; width: 200px; left: 855px;"
+                              tabindex="-1"
                             >
                               <div
                                 aria-hidden="true"
@@ -1981,6 +1967,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               col-id="completedDate"
                               role="columnheader"
                               style="top: 0px; height: 48px; width: 200px; left: 1055px;"
+                              tabindex="-1"
                             >
                               <div
                                 aria-hidden="true"
@@ -2233,7 +2220,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               >
                                 <span
                                   aria-label="icon"
-                                  class="flex justify-center items-center w-full h-full opacity-50 pointer-events-none"
+                                  class="flex justify-center items-center w-full h-full cursor-pointer"
                                   data-testid="status-icon"
                                 >
                                   <svg
@@ -2341,7 +2328,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               >
                                 <span
                                   aria-label="icon"
-                                  class="flex justify-center items-center w-full h-full opacity-50 pointer-events-none"
+                                  class="flex justify-center items-center w-full h-full cursor-pointer"
                                   data-testid="status-icon"
                                 >
                                   <svg
@@ -2449,7 +2436,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               >
                                 <span
                                   aria-label="icon"
-                                  class="flex justify-center items-center w-full h-full opacity-50 pointer-events-none"
+                                  class="flex justify-center items-center w-full h-full cursor-pointer"
                                   data-testid="status-icon"
                                 >
                                   <svg
@@ -2557,7 +2544,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               >
                                 <span
                                   aria-label="icon"
-                                  class="flex justify-center items-center w-full h-full opacity-50 pointer-events-none"
+                                  class="flex justify-center items-center w-full h-full cursor-pointer"
                                   data-testid="status-icon"
                                 >
                                   <svg
@@ -2665,7 +2652,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                               >
                                 <span
                                   aria-label="icon"
-                                  class="flex justify-center items-center w-full h-full opacity-50 pointer-events-none"
+                                  class="flex justify-center items-center w-full h-full cursor-pointer"
                                   data-testid="status-icon"
                                 >
                                   <svg
@@ -2944,7 +2931,7 @@ exports[`Dashboard Component matches snapshot 1`] = `
                     </div>
                     <!-- AG Overlay Wrapper -->
                     <div
-                      class="ag-overlay"
+                      class="ag-overlay ag-hidden"
                       role="presentation"
                     >
                       
@@ -2956,10 +2943,10 @@ exports[`Dashboard Component matches snapshot 1`] = `
                         
                     
                         <div
-                          class="ag-overlay-wrapper ag-layout-normal ag-overlay-loading-wrapper"
+                          class="ag-overlay-wrapper ag-layout-normal ag-overlay-no-rows-wrapper"
                           data-ref="eOverlayWrapper"
                           role="presentation"
-                          style="padding-top: 0px;"
+                          style="padding-top: 48px;"
                         />
                         
                 

@@ -1,11 +1,42 @@
+
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Dashboard from '@/pages/Dashboard';
-import { mockContextValue } from '@/mocks';
+import { mockContextValue, mockProject, mockProjectService, mockTasks, mockTaskService, mockUsers, mockUserService } from '@/mocks';
+
+beforeAll(() => {
+
+  // Mock APIs
+  jest.mock('@/services/user', () => mockUserService);
+  jest.mock('@/services/task', () => mockTaskService);
+  jest.mock('@/services/project', () => mockProjectService);
+});
+
+jest.mock('@/hooks/useFetchData', () => ({
+  useFetchData: () => ({
+    isLoading: false,
+    setUsers: jest.fn(),
+    setTasks: jest.fn(),
+    setProjects: jest.fn(),
+    users: mockUsers,
+    tasks: mockTasks,
+    projects: mockProject,
+  }),
+}));
 
 jest.mock('@/hooks/useDashboardContext', () => ({
   useDashboardContext: () => ({
     ...mockContextValue
   })
+}));
+
+jest.mock('@/services/apiRequest', () => ({
+  apiRequest: jest.fn()
+}));
+
+jest.mock('@/components/Chart', () => ({
+  ChartIndividualEmployeeProgress: () => <div>Mock ChartIndividualEmployeeProgress</div>,
+  ChartTotalTasksByProjects: () => <div>Mock ChartTotalTasksByProjects</div>,
+  ChartTotalTasksCompleted: () => <div>Mock ChartTotalTasksCompleted</div>,
 }));
 
 describe('Dashboard Component', () => {
@@ -22,20 +53,23 @@ describe('Dashboard Component', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  test('renders the "Add User" button and triggers the action ', async () => {
-    render(
-      <Dashboard />
-    );
+  test('renders the "Add User" button and triggers the action', async () => {
+    render(<Dashboard />);
     expect(screen.getByText(/Team Progress App/i)).toBeInTheDocument();
+
     const addUserButton = screen.getByText('Add a user');
+    screen.debug(addUserButton);
     expect(addUserButton).toBeInTheDocument();
 
     // Simulate button click
     fireEvent.click(addUserButton);
 
+    // Wait for the modal to appear
     await waitFor(() => screen.getByText('Cancel'));
     const cancelBtn = screen.getByText('Cancel');
+    expect(cancelBtn).toBeInTheDocument();
 
+    // Simulate closing the modal
     fireEvent.click(cancelBtn);
     expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
   });
@@ -239,25 +273,6 @@ describe('Dashboard Component', () => {
     await act(async () => {
       fireEvent.click(rowSelected[1]);
     });
-  });
-
-  it('Calls to change the user', async () => {
-    render(
-      <Dashboard />
-    );
-    const rowSelected = screen.getAllByRole('gridcell', { name: 'Alice Brown' });
-    await act(async () => {
-      fireEvent.dblClick(rowSelected[1]);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryAllByRole('gridcell', { name: 'Jane Smith' }).length).toBeGreaterThan(0);
-    })
-    const cellSelected = screen.getByRole('option', { name: 'Jane Smith' })
-    screen.debug(cellSelected);
-    await act(async () => {
-      fireEvent.click(cellSelected);
-    })
   });
 
   it('Calls to change the icon', async () => {

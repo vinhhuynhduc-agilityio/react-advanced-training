@@ -122,3 +122,85 @@ export const mockContextValue = {
   setTasks: jest.fn(),
   setProjects: jest.fn(),
 };
+
+export const mockUserService = {
+  fetchUsers: jest.fn().mockResolvedValue({
+    data: mockUsers,
+    error: null,
+  }),
+  createUser: jest.fn().mockResolvedValue({
+    data: {
+      id: "new-user",
+      fullName: "New User",
+      email: "newuser@example.com",
+      avatarUrl: "https://i.pravatar.cc/150?img=3",
+      earnings: "$0",
+      registered: "Dec 19, 2024",
+      lastUpdated: "Dec 19, 2024",
+    },
+    error: null,
+  }),
+  updateUser: jest.fn().mockResolvedValue({
+    data: {
+      id: "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      fullName: "Updated Joe Bloggs",
+      email: "updatedjohn@example.com",
+      avatarUrl: "https://i.pravatar.cc/150?img=1",
+      earnings: "$12500",
+      registered: "May 21, 2020 17:02:06",
+      lastUpdated: "Dec 19, 2024",
+    },
+    error: null,
+  }),
+};
+
+export const mockTaskService = {
+  fetchTasks: jest.fn().mockResolvedValue({
+    data: mockTasks,
+    error: null,
+  }),
+  createTask: jest.fn().mockResolvedValue({
+    data: {
+      id: "new-task",
+      taskName: "New Task",
+      userId: "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      projectId: "f2d32cb6-12c7-4ae7-bb28-74f16d1d2cbb",
+      startDate: "Dec 20, 2024",
+      completedDate: "incomplete",
+      currency: 1000,
+      status: false,
+      projectName: "Support",
+      fullName: "Joe Bloggs",
+    },
+    error: null,
+  }),
+  updateTask: jest.fn().mockResolvedValue({
+    data: {
+      id: "71e564f4-7c18-47f7-89f2-abe4b7ec2854",
+      taskName: "Updated Task",
+      userId: "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      projectId: "f2d32cb6-12c7-4ae7-bb28-74f16d1d2cbb",
+      startDate: "Dec 19, 2024",
+      completedDate: "incomplete",
+      currency: 2000,
+      status: true,
+      projectName: "Support",
+      fullName: "Joe Bloggs",
+    },
+    error: null,
+  }),
+};
+
+export const mockProjectService = {
+  fetchProjects: jest.fn().mockResolvedValue({
+    data: mockProject,
+    error: null,
+  }),
+  createProject: jest.fn().mockResolvedValue({
+    data: {
+      id: "new-project",
+      projectName: "New Project",
+    },
+    error: null,
+  }),
+};

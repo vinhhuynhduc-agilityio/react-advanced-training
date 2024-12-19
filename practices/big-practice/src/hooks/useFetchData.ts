@@ -15,10 +15,11 @@ export const useFetchData = () => {
     setState: React.Dispatch<React.SetStateAction<T[]>>,
     entityName: string
   ) => {
-    if (result.data) {
+    if (result?.data) {
       setState(result.data);
     } else {
       console.error(`Failed to load ${entityName}:`, result.error);
+      setState([]);
     }
   };
 

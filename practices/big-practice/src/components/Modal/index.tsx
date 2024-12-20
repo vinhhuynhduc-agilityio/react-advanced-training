@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { createPortal } from 'react-dom';
 
 interface ModalProps {
   title: string;
@@ -12,7 +11,7 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
   content,
 }) => {
-  return createPortal(
+  return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       onClick={onClose}
@@ -31,7 +30,6 @@ export const Modal: React.FC<ModalProps> = ({
         {/* Modal Body */}
         <div className="p-4">{content}</div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };

@@ -14,6 +14,19 @@ const meta: Meta<typeof Dropdown> = {
     },
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story: React.FC) => (
+      <div
+        style={{
+          position: 'relative',
+          width: '210px',
+          height: '140px',
+        }}
+      >
+        <Story />
+      </div>
+    )
+  ],
   argTypes: {
     options: {
       description: 'The list of options to display in the dropdown',

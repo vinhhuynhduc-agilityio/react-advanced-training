@@ -122,7 +122,7 @@ describe('TaskTable', () => {
     })
   });
 
-  it('Calls to change the user', async () => {
+  it('Calls to change the user using title and content filter', async () => {
     setup();
     const rowSelected = screen.getByRole('gridcell', { name: 'Alice Brown' });
     await act(async () => {
@@ -132,9 +132,14 @@ describe('TaskTable', () => {
     await waitFor(() => {
       expect(screen.queryAllByRole('gridcell', { name: 'Jane Smith' }).length).toBeGreaterThan(0);
     })
-    const cellSelected = screen.getAllByLabelText('Jane Smith');
+
+    const avatar = await screen.findByLabelText('Avatar for Jane Smith');
+    expect(avatar).toBeInTheDocument();
+
     await act(async () => {
-      fireEvent.click(cellSelected[0]);
-    })
+      fireEvent.click(avatar);
+    });
+
+    expect(avatar).not.toBeInTheDocument();
   });
 });

@@ -162,11 +162,10 @@ const Dashboard: React.FC = () => {
     currency: number,
     status: boolean
   ) => {
-    if (!userListGridApi.current) return;
     setSavingUser(true);
 
     // Retrieve `rowNode` by `userId` to update the specific row
-    const rowNode = userListGridApi.current.getRowNode(userId);
+    const rowNode = userListGridApi.current && userListGridApi.current.getRowNode(userId);
 
     if (rowNode) {
       const adjustedEarnings = calculateAdjustedEarnings(

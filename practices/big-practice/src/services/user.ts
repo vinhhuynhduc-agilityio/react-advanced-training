@@ -67,4 +67,3 @@ export const createUser = async (payload: UserData): Promise<{ data: UserData | 
     };
   }
 };
-

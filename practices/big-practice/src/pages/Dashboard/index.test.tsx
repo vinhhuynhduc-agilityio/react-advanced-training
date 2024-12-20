@@ -1,5 +1,5 @@
 
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Dashboard from '@/pages/Dashboard';
 import { mockContextValue, mockProject, mockProjectService, mockTasks, mockTaskService, mockUsers, mockUserService } from '@/mocks';
 
@@ -44,6 +44,10 @@ describe('Dashboard Component', () => {
     jest.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   test('matches snapshot', () => {
     const { asFragment } = render(
       <Dashboard />
@@ -53,12 +57,33 @@ describe('Dashboard Component', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
+  it('Calls to change the user using title and content filter', async () => {
+    render(<Dashboard />);
+
+    const targetDivs = screen.getAllByTitle('Double-click to assign to a different employee');
+
+    const targetDiv = targetDivs.find((div) => div.textContent?.includes('Alice Brown'));
+    expect(targetDiv).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.dblClick(targetDiv!);
+    });
+
+    const avatar = await screen.findByLabelText('Avatar for Jane Smith');
+    expect(avatar).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(avatar);
+    });
+
+    expect(avatar).not.toBeInTheDocument();
+  });
+
   test('renders the "Add User" button and triggers the action', async () => {
     render(<Dashboard />);
     expect(screen.getByText(/Team Progress App/i)).toBeInTheDocument();
 
     const addUserButton = screen.getByText('Add a user');
-    screen.debug(addUserButton);
     expect(addUserButton).toBeInTheDocument();
 
     // Simulate button click

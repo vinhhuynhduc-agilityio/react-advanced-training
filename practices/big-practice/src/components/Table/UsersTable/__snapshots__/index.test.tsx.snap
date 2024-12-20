@@ -332,6 +332,7 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                       >
                         <img
                           alt="User Avatar"
+                          aria-label=""
                           class="rounded-full object-cover w-14 h-14"
                           src="https://i.pravatar.cc/150?img=1"
                         />
@@ -376,6 +377,7 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                       >
                         <img
                           alt="User Avatar"
+                          aria-label=""
                           class="rounded-full object-cover w-14 h-14"
                           src="https://i.pravatar.cc/150?img=2"
                         />
@@ -420,6 +422,7 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                       >
                         <img
                           alt="User Avatar"
+                          aria-label=""
                           class="rounded-full object-cover w-14 h-14"
                           src="https://i.pravatar.cc/150?img=3"
                         />

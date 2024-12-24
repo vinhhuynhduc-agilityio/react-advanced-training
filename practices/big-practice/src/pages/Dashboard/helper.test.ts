@@ -14,6 +14,7 @@ describe("handleScrollingToAddedRow", () => {
     const mockGridApi = {
       getRowNode: jest.fn(() => mockRowNode),
       ensureNodeVisible: jest.fn(),
+      isDestroyed: jest.fn(() => false),
     } as unknown as GridApi;
 
     const id = "test-id";

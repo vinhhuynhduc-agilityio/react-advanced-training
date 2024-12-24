@@ -10,7 +10,7 @@ const handleScrollingToAddedRow = (
   gridApi: GridApi
 ) => {
   setTimeout(() => {
-    if (gridApi) {
+    if (gridApi && !gridApi.isDestroyed()) {
       const rowNode = gridApi.getRowNode(id);
 
       if (rowNode) {

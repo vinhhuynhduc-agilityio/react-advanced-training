@@ -1,6 +1,6 @@
 import { UserData } from "@/types";
 
-const defaultAvatarUrl = 'https://via.placeholder.com/80';
+const defaultAvatarUrl = 'https://dummyimage.com/96x96/cccccc/ffffff&text=No+Avatar';
 
 const defaultUserFormValues: UserData = {
   fullName: '',

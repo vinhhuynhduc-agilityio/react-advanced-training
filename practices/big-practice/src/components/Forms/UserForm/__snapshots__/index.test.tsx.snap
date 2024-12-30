@@ -61,7 +61,7 @@ exports[`UserForm matches snapshot for default state 1`] = `
             alt="Avatar Preview"
             aria-label=""
             class="rounded-full object-cover w-24 h-24"
-            src="https://via.placeholder.com/80"
+            src="https://dummyimage.com/96x96/cccccc/ffffff&text=No+Avatar"
           />
           <input
             accept="image/*"

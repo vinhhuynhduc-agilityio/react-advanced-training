@@ -5,7 +5,6 @@ interface AvatarProps {
   alt?: string;
   size?: string;
   ariaLabel?: string
-  lazy?: boolean
 }
 
 export const Avatar: React.FC<AvatarProps> = memo(({
@@ -13,7 +12,6 @@ export const Avatar: React.FC<AvatarProps> = memo(({
   alt = 'Avatar',
   size = 'w-10 h-10',
   ariaLabel = '',
-  lazy = false
 }) => {
   return (
     <img
@@ -21,7 +19,6 @@ export const Avatar: React.FC<AvatarProps> = memo(({
       alt={alt}
       className={`rounded-full object-cover ${size}`}
       aria-label={ariaLabel}
-      loading={lazy ? 'lazy' : undefined}
     />
   );
 });

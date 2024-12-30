@@ -3,7 +3,10 @@
 exports[`ChartTotalTasksCompleted Component matches snapshot for mocked chart 1`] = `
 <div>
   <div
+    aria-label="Chart showing total tasks completed"
     class="flex-1 bg-white border border-customBorder h-[302px]"
+    id="chart-total-tasks-completed"
+    role="figure"
   >
     <div
       data-testid="mocked-chart"

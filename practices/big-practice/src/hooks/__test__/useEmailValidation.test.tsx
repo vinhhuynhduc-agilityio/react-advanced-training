@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
-import { DashboardContext } from '@/context';
+import { TasksContext } from '@/context';
 import { ReactNode } from 'react';
 import { useEmailValidation } from '@/hooks/useEmailValidation';
-import { mockContextValue } from '@/mocks';
+import { mockContextValue, mockUsers } from '@/mocks';
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <DashboardContext.Provider value={mockContextValue}>
+    <TasksContext.Provider value={mockContextValue}>
       {children}
-    </DashboardContext.Provider>
+    </TasksContext.Provider>
   );
 };
 
@@ -16,7 +16,7 @@ describe('useEmailValidation', () => {
   it('should return true if email is a duplicate', () => {
     const TestComponent = () => {
       const { isEmailDuplicate } = useEmailValidation('john@example.com');
-      return <div>{isEmailDuplicate('jane@example.com') ? 'Duplicate' : 'Unique'}</div>;
+      return <div>{isEmailDuplicate('jane@example.com', mockUsers) ? 'Duplicate' : 'Unique'}</div>;
     };
 
     render(
@@ -31,7 +31,7 @@ describe('useEmailValidation', () => {
   it('should return false if email is not a duplicate', () => {
     const TestComponent = () => {
       const { isEmailDuplicate } = useEmailValidation('john@example.com');
-      return <div>{isEmailDuplicate('john12345@example.com') ? 'Duplicate' : 'Unique'}</div>;
+      return <div>{isEmailDuplicate('john12345@example.com', mockUsers) ? 'Duplicate' : 'Unique'}</div>;
     };
 
     render(
@@ -46,7 +46,7 @@ describe('useEmailValidation', () => {
   it('should not flag the default email as a duplicate', () => {
     const TestComponent = () => {
       const { isEmailDuplicate } = useEmailValidation('john@example.com');
-      return <div>{isEmailDuplicate('john@example.com') ? 'Duplicate' : 'Unique'}</div>;
+      return <div>{isEmailDuplicate('john@example.com', mockUsers) ? 'Duplicate' : 'Unique'}</div>;
     };
 
     render(

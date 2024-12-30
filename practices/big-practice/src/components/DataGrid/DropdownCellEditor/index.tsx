@@ -129,6 +129,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
                 alt={`Avatar for ${optionValue}`}
                 size="w-8 h-8"
                 ariaLabel={`Avatar for ${optionValue}`}
+                lazy
               />
             )}
             <div className="ml-3 truncate">{optionValue}</div>

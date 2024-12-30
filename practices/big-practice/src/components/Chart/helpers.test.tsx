@@ -8,7 +8,7 @@ import {
   totalTasksCompletedOptions,
   totalTasksByProjectsOption,
 } from "./helpers";
-import { mockTasks, mockProject } from "../../mocks/data";
+import { mockTasks, mockProjects } from "../../mocks/data";
 import { AgAreaSeriesOptions, AgBarSeriesOptions, AgBarSeriesTooltipRendererParams, AgChartLegendClickEvent, AgLineSeriesOptions } from "ag-charts-community";
 
 describe("formatDataForChartTotalTasks", () => {
@@ -37,7 +37,7 @@ describe("formatDataForChartTotalTasksByProjects", () => {
   it("should correctly format task data grouped by projects for 2023 and 2024", () => {
     const result = formatDataForChartTotalTasksByProjects(
       mockTasks,
-      mockProject
+      mockProjects
     );
 
     // Update expected data to match the logic output

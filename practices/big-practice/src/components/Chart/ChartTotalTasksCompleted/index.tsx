@@ -1,58 +1,54 @@
 import {
-  useState,
-  useEffect,
   useMemo,
   memo
 } from 'react';
 import { AgCharts } from 'ag-charts-react';
-import {
-  AgChartOptions,
-} from 'ag-charts-community';
-
-// helpers
 
 // component
 import { Spinner } from '@/components/common';
 
-// hooks
-import { useDashboardContext } from '@/hooks';
+// helpers
 import { formatDataForChartTotalTasks, totalTasksCompletedOptions } from '@/components/Chart/helpers';
+
+// types
+import { TaskData } from '@/types';
 
 interface ChartTotalTasksCompletedProps {
   isLoading: boolean;
+  tasks: TaskData[]
 };
 
 export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = memo(
-  ({
-    isLoading
-  }) => {
-    const { tasks } = useDashboardContext();
-    const [options, setOptions] = useState<AgChartOptions>(totalTasksCompletedOptions);
+  ({ isLoading, tasks }) => {
 
-    const formattedData = useMemo(
-      () => formatDataForChartTotalTasks(tasks),
-      [tasks]
-    );
+    const formattedData = useMemo(() => formatDataForChartTotalTasks(tasks), [tasks]);
 
-    useEffect(() => {
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        data: formattedData,
-      }));
-    }, [formattedData]);
+    const memoizedOptions = useMemo(() => ({
+      ...totalTasksCompletedOptions,
+      data: formattedData,
+    }), [formattedData]);
 
     if (isLoading) {
       return (
-        <div className="flex-1 bg-white border border-customBorder h-[302px]">
+        <div
+          className="flex-1 bg-white border border-customBorder h-[302px]"
+          role="figure"
+          aria-label="Loading chart: Total tasks completed"
+        >
           <Spinner />
         </div>
       );
     }
 
     return (
-      <div className="flex-1 bg-white border border-customBorder h-[302px]">
-        <AgCharts options={options} />
+      <div
+        id="chart-total-tasks-completed"
+        role="figure"
+        aria-label="Chart showing total tasks completed"
+        className="flex-1 bg-white border border-customBorder h-[302px]"
+      >
+        <AgCharts options={memoizedOptions} />
       </div>
-    )
+    );
   }
 );

@@ -1,27 +1,23 @@
-import {
-  render,
-  screen
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 // helpers
 import { formatDataForChartTotalTasksByProjects } from '@/components/Chart/helpers';
 import { ChartTotalTasksByProjects } from '.';
-import { DashboardContext } from '@/context';
-import { mockContextValue, mockProject, mockTasks } from '@/mocks';
-
-// component
 
 // Mock AgCharts component to simulate its rendering
 jest.mock('ag-charts-react', () => ({
-  AgCharts: () => <div data-testid='total-tasks-chart'></div>,
+  AgCharts: () => <div data-testid="total-tasks-chart"></div>,
 }));
 
 // Mock helper functions
-jest.mock('@/Components/Chart/helpers', () => ({
-  ...jest.requireActual('@/Components/Chart/helpers'),
+jest.mock('@/components/Chart/helpers', () => ({
+  ...jest.requireActual('@/components/Chart/helpers'),
   formatDataForChartTotalTasksByProjects: jest.fn(),
 }));
+
+// Mock data
+import { mockTasks, mockProjects } from '@/mocks';
 
 describe('ChartTotalTasksByProjects Component', () => {
   beforeEach(() => {
@@ -30,37 +26,24 @@ describe('ChartTotalTasksByProjects Component', () => {
 
   it('renders the chart component', () => {
     const { container } = render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <ChartTotalTasksByProjects
-          isLoading={false}
-        />
-      </DashboardContext.Provider>
+      <ChartTotalTasksByProjects isLoading={false} tasks={mockTasks} projects={mockProjects} />
     );
+
     expect(screen.getByTestId('total-tasks-chart')).toBeInTheDocument();
     expect(container).toMatchSnapshot();
   });
 
   it('calls formatDataForChartTotalTasksByProjects with correct data', () => {
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <ChartTotalTasksByProjects
-          isLoading={false}
-        />
-      </DashboardContext.Provider>
+      <ChartTotalTasksByProjects isLoading={false} tasks={mockTasks} projects={mockProjects} />
     );
-    expect(formatDataForChartTotalTasksByProjects).toHaveBeenCalledWith(
-      mockTasks,
-      mockProject
-    );
+
+    expect(formatDataForChartTotalTasksByProjects).toHaveBeenCalledWith(mockTasks, mockProjects);
   });
 
   it('does not crash if there are no tasks or projects', () => {
     const { container } = render(
-      <DashboardContext.Provider value={{ ...mockContextValue, tasks: [], projects: [] }}>
-        <ChartTotalTasksByProjects
-          isLoading={false}
-        />
-      </DashboardContext.Provider>
+      <ChartTotalTasksByProjects isLoading={false} tasks={[]} projects={[]} />
     );
 
     expect(screen.getByTestId('total-tasks-chart')).toBeInTheDocument();
@@ -70,11 +53,7 @@ describe('ChartTotalTasksByProjects Component', () => {
 
   it('renders a spinner when isLoading is true', () => {
     const { container } = render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <ChartTotalTasksByProjects
-          isLoading={true}
-        />
-      </DashboardContext.Provider>
+      <ChartTotalTasksByProjects isLoading={true} tasks={mockTasks} projects={mockProjects} />
     );
 
     const spinner = container.querySelector(
@@ -82,7 +61,7 @@ describe('ChartTotalTasksByProjects Component', () => {
     );
     expect(spinner).toBeInTheDocument();
 
-    const mockedChart = screen.queryByTestId('mocked-chart');
+    const mockedChart = screen.queryByTestId('total-tasks-chart');
     expect(mockedChart).not.toBeInTheDocument();
   });
 });

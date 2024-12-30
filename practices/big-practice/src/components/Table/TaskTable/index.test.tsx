@@ -7,13 +7,14 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TaskTable from '.';
-import { DashboardContext } from '@/context';
-import { mockContextValue, mockTasks } from '@/mocks';
+import { TasksContext } from '@/context';
+import { mockContextValue, mockTasks, mockProjects, mockUsers } from '@/mocks';
 
 const mockOnTaskRowSelected = jest.fn();
 const mockUpdateEarningsForUsers = jest.fn();
 const mockUpdateEarningsOnStatusChange = jest.fn();
 const mockRegisterGridApiTaskDashboard = jest.fn();
+const mockSetSavingTask = jest.fn();
 
 const defaultProps = {
   isLoading: false,
@@ -26,15 +27,17 @@ const defaultProps = {
   updateEarningsForUsers: mockUpdateEarningsForUsers,
   updateEarningsOnStatusChange: mockUpdateEarningsOnStatusChange,
   registerGridApiTaskDashboard: mockRegisterGridApiTaskDashboard,
-  setSavingTask: jest.fn(),
+  setSavingTask: mockSetSavingTask,
+  projects: mockProjects,
+  users: mockUsers,
 };
 
 const setup = (props = {}) => {
   const setupProps = { ...defaultProps, ...props };
   return render(
-    <DashboardContext.Provider value={mockContextValue}>
+    <TasksContext.Provider value={mockContextValue}>
       <TaskTable {...setupProps} />
-    </DashboardContext.Provider>
+    </TasksContext.Provider>
   );
 };
 

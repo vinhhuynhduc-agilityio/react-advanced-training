@@ -1,9 +1,8 @@
-import { useDashboardContext } from '@/hooks';
+import { UserData } from "@/types";
 
 export const useEmailValidation = (defaultEmail: string) => {
-  const { users } = useDashboardContext();
 
-  const isEmailDuplicate = (email: string) => {
+  const isEmailDuplicate = (email: string, users: UserData[]) => {
     return users.some(
       (user) => user.email === email && user.email !== defaultEmail
     );

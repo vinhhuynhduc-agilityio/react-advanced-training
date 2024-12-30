@@ -98,14 +98,14 @@ exports[`UserForm matches snapshot for default state 1`] = `
       class="border-t border-gray-300 pt-3 flex justify-between"
     >
       <button
-        class="bg-slate-200 text-pink-600 font-bold"
+        class="bg-slate-200 text-pink-600 font-bold [object Object]"
         type="button"
       >
         Cancel
       </button>
       <button
         aria-label="save-user"
-        class="bg-slate-200 text-blue-600 font-bold"
+        class="bg-slate-200 text-blue-600 font-bold [object Object]"
         type="submit"
       >
         Save

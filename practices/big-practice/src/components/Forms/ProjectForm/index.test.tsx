@@ -1,21 +1,18 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { mockContextValue } from '@/mocks/data';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ProjectForm from '.';
-import { DashboardContext } from '@/context';
+import { mockProjects } from '@/mocks/data';
 
 describe('ProjectForm', () => {
   const mockOnClose = jest.fn();
   const mockOnSubmit = jest.fn();
 
-
   const setup = () => {
     return render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <ProjectForm
-          onClose={mockOnClose}
-          onSubmit={mockOnSubmit}
-        />
-      </DashboardContext.Provider>
+      <ProjectForm
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        projects={mockProjects}
+      />
     );
   };
 
@@ -23,7 +20,6 @@ describe('ProjectForm', () => {
     const { container } = setup();
     expect(container).toMatchSnapshot();
   });
-
 
   it('should render the project form correctly', () => {
     setup();
@@ -42,6 +38,7 @@ describe('ProjectForm', () => {
 
   it('should display an error when submitting with an empty project name', async () => {
     setup();
+
     fireEvent.click(screen.getByText('Save'));
 
     expect(await screen.findByText('Project name is required')).toBeInTheDocument();
@@ -52,12 +49,10 @@ describe('ProjectForm', () => {
     setup();
 
     const input = screen.getByPlaceholderText('Enter project name');
-    fireEvent.change(input, { target: { value: 'Support' } });
+    fireEvent.change(input, { target: { value: 'Support' } }); // 'Support' exists in mockProjects
     fireEvent.click(screen.getByText('Save'));
 
-    expect(
-      await screen.findByText('Project name already exists')
-    ).toBeInTheDocument();
+    expect(await screen.findByText('Project name already exists')).toBeInTheDocument();
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
@@ -68,8 +63,9 @@ describe('ProjectForm', () => {
     fireEvent.change(input, { target: { value: 'New Project' } });
     fireEvent.click(screen.getByText('Save'));
 
-    await screen.findByDisplayValue('New Project');
-    expect(mockOnSubmit).toHaveBeenCalledWith('New Project');
-    expect(mockOnSubmit).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalledWith('New Project');
+      expect(mockOnSubmit).toHaveBeenCalledTimes(1);
+    });
   });
 });

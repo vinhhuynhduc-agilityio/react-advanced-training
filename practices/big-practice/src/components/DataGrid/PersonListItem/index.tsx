@@ -13,7 +13,7 @@ export const PersonListItem = (params: ICellRendererParams<UserData>) => {
   return (
     <div
       className="flex items-center py-2"
-      role="listitem"
+      data-testid="person-list-item"
       aria-label={fullName}
     >
       <Avatar

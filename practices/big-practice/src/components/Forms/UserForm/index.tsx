@@ -23,6 +23,7 @@ interface UserFormProps {
   onClose: () => void;
   onSubmit: (data: UserFormData) => void;
   buttonLabel: string;
+  users: UserData[]
 };
 
 const UserForm: React.FC<UserFormProps> = ({
@@ -30,7 +31,8 @@ const UserForm: React.FC<UserFormProps> = ({
   isEditUser,
   onClose,
   onSubmit,
-  buttonLabel
+  buttonLabel,
+  users
 }) => {
   const [avatarUrl, setAvatarPreview] = useState<string>(defaultAvatarUrl);
   const { isEmailDuplicate } = useEmailValidation(defaultValues?.email);
@@ -105,7 +107,7 @@ const UserForm: React.FC<UserFormProps> = ({
           },
           validate: {
             duplicate: (value) =>
-              typeof value === 'string' && !isEmailDuplicate(value)
+              typeof value === 'string' && !isEmailDuplicate(value, users)
                 ? true
                 : 'Email already exists',
           },

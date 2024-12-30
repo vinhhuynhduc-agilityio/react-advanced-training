@@ -27,9 +27,6 @@ import { Spinner } from '@/components/common';
 import { DataGrid } from '@/components';
 import { PersonListItem } from '@/components/DataGrid';
 
-// hooks
-import { useDashboardContext } from '@/hooks';
-
 interface UsersTableProps {
   selectedUserId: string | null;
   sourceComponent: string | null;
@@ -38,6 +35,7 @@ interface UsersTableProps {
   onUserDoubleClicked: (data: UserData) => void;
   isLoading: boolean;
   isSavingUser: boolean;
+  users: UserData[]
 }
 
 const UsersTable: React.FC<UsersTableProps> = ({
@@ -47,8 +45,8 @@ const UsersTable: React.FC<UsersTableProps> = ({
   registerGridApi,
   onUserDoubleClicked,
   isLoading,
+  users
 }) => {
-  const { users } = useDashboardContext();
   const gridApi = useRef<GridApi | null>(null);
 
   const onGridReady = (params: GridReadyEvent) => {

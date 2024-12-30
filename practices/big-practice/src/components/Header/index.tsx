@@ -26,13 +26,17 @@ export const Header: React.FC<HeaderProps> = memo(
     const isDisable = isLoading ||
       isSavingUser ||
       isSavingTask ||
-      isSavingProject
+      isSavingProject;
 
     return (
       <header className=" bg-white flex flex-row py-2 px-3 items-center border border-customBorder">
         <div className="flex flex-row items-center w-[16.5rem]">
-          <img src="/assets/logo.png" alt="Logo" className="h-12 w-12 mr-2" />
-          <h1 className=" text-xl font-medium text-[#475466]">
+          <img
+            src="/assets/logo.png"
+            alt="Logo"
+            className="h-12 w-12 mr-2"
+          />
+          <h1 className="text-xl font-medium text-[#475466]">
             Team Progress
           </h1>
         </div>

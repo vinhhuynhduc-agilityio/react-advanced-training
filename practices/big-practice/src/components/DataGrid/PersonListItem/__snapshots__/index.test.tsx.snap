@@ -5,7 +5,7 @@ exports[`PersonListItem component matches snapshot for default state 1`] = `
   <div
     aria-label="Joe Bloggs"
     class="flex items-center py-2"
-    role="listitem"
+    data-testid="person-list-item"
   >
     <img
       alt="User Avatar"

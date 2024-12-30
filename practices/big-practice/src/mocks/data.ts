@@ -28,7 +28,7 @@ export const mockUsers = [
   },
 ];
 
-export const mockProject = [
+export const mockProjects = [
   {
     id: "f2d32cb6-12c7-4ae7-bb28-74f16d1d2cbb",
     projectName: "Support",
@@ -115,12 +115,8 @@ export const mockTasks = [
 ];
 
 export const mockContextValue = {
-  users: mockUsers,
   tasks: mockTasks,
-  projects: mockProject,
-  setUsers: jest.fn(),
   setTasks: jest.fn(),
-  setProjects: jest.fn(),
 };
 
 export const mockUserService = {
@@ -193,7 +189,7 @@ export const mockTaskService = {
 
 export const mockProjectService = {
   fetchProjects: jest.fn().mockResolvedValue({
-    data: mockProject,
+    data: mockProjects,
     error: null,
   }),
   createProject: jest.fn().mockResolvedValue({
@@ -204,3 +200,4 @@ export const mockProjectService = {
     error: null,
   }),
 };
+

@@ -43,14 +43,16 @@ import {
 // types
 import {
   FieldValue,
+  ProjectsData,
   TaskData,
+  UserData,
 } from '@/types';
 
 // constants
 import { FIELD_TYPE, FieldType } from '@/constant';
 
 // hooks
-import { useDashboardContext } from '@/hooks';
+import { useTasksContext } from '@/hooks';
 
 interface TaskDataProps {
   selectedUserId: string | null;
@@ -64,6 +66,8 @@ interface TaskDataProps {
   isSavingProject: boolean;
   isSavingUser: boolean;
   setSavingTask: (value: boolean) => void;
+  projects: ProjectsData[];
+  users: UserData[]
 };
 
 const TaskTable: React.FC<TaskDataProps> = ({
@@ -77,14 +81,14 @@ const TaskTable: React.FC<TaskDataProps> = ({
   updateEarningsForUsers,
   updateEarningsOnStatusChange,
   registerGridApiTaskDashboard,
-  setSavingTask
+  setSavingTask,
+  projects,
+  users,
 }) => {
   const {
     tasks,
-    projects,
-    users,
     setTasks
-  } = useDashboardContext();
+  } = useTasksContext();
   const gridApi = useRef<GridApi | null>(null);
   const tasksRef = useRef(tasks);
   const originalTaskNameRef = useRef<string>('');

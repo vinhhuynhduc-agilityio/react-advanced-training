@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import { useDashboardContext } from '@/hooks';
 
 // components
 import { Button } from '@/components/common';
@@ -8,9 +7,13 @@ import { TextField } from '@/components';
 // helpers
 import { isProjectDuplicate } from '@/helpers';
 
+// types
+import { ProjectsData } from '@/types';
+
 interface ProjectFormProps {
   onClose: () => void;
   onSubmit: (newProjectName: string) => void;
+  projects: ProjectsData[]
 };
 
 interface ProjectFormData {
@@ -19,9 +22,9 @@ interface ProjectFormData {
 
 const ProjectForm: React.FC<ProjectFormProps> = ({
   onClose,
-  onSubmit
+  onSubmit,
+  projects
 }) => {
-  const { projects } = useDashboardContext();
 
   const {
     register,

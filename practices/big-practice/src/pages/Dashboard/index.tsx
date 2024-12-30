@@ -1,5 +1,4 @@
-import React,
-{
+import React, {
   lazy,
   Suspense,
   useCallback,
@@ -11,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 // ag-grid
 import { GridApi } from 'ag-grid-community';
-
 
 // components
 import {
@@ -62,7 +60,7 @@ import {
 } from '@/pages/Dashboard/helper';
 
 // context
-import { DashboardContext } from '@/context';
+import { TasksContext } from '@/context';
 
 // hooks
 import {
@@ -371,6 +369,7 @@ const Dashboard: React.FC = () => {
           <ProjectForm
             onClose={() => setProjectModalOpen(false)}
             onSubmit={handleAddProject}
+            projects={projects}
           />
         </Suspense>
       }
@@ -386,6 +385,9 @@ const Dashboard: React.FC = () => {
           <TaskForm
             onClose={() => setTaskModalOpen(false)}
             onSubmit={handleAddNewTask}
+            users={users}
+            projects={projects}
+            tasks={tasks}
           />
         </Suspense>
       }
@@ -408,6 +410,7 @@ const Dashboard: React.FC = () => {
               onClose={() => setModalOpen(false)}
               onSubmit={handleOnSubmit}
               buttonLabel={buttonLabel}
+              users={users}
             />
           </Suspense>
         }
@@ -416,16 +419,12 @@ const Dashboard: React.FC = () => {
   };
 
   const contextValue = useMemo(() => ({
-    users,
     tasks,
-    projects,
-    setUsers,
     setTasks,
-    setProjects
-  }), [users, tasks, projects, setUsers, setTasks, setProjects]);
+  }), [tasks, setTasks]);
 
   return (
-    <DashboardContext.Provider value={contextValue}>
+    <TasksContext.Provider value={contextValue}>
       <div className="flex flex-col h-screen w-screen">
         <Header
           onAddUser={handleToggleUserForm}
@@ -446,12 +445,14 @@ const Dashboard: React.FC = () => {
               onUserDoubleClicked={handleUserDoubleClicked}
               isLoading={isLoading}
               isSavingUser={isSavingUser}
+              users={users}
             />
           </div>
           <div className="flex-grow bg-slate-100 my-4 mr-4 overflow-auto">
             <ErrorBoundary>
               <ChartTotalTasksCompleted
                 isLoading={isLoading}
+                tasks={tasks}
               />
             </ErrorBoundary>
             <div className="flex flex-row bg-slate-100 mt-4 h-[302px]">
@@ -459,11 +460,15 @@ const Dashboard: React.FC = () => {
                 <ChartIndividualEmployeeProgress
                   selectedUserId={selectedUserId}
                   isLoading={isLoading}
+                  users={users}
+                  tasks={tasks}
                 />
               </ErrorBoundary>
               <ErrorBoundary>
                 <ChartTotalTasksByProjects
                   isLoading={isLoading}
+                  projects={projects}
+                  tasks={tasks}
                 />
               </ErrorBoundary>
             </div>
@@ -480,6 +485,8 @@ const Dashboard: React.FC = () => {
                 isSavingProject={isSavingProject}
                 isSavingUser={isSavingUser}
                 setSavingTask={setSavingTask}
+                users={users}
+                projects={projects}
               />
             </div>
           </div>
@@ -491,7 +498,7 @@ const Dashboard: React.FC = () => {
       {isModalOpen && renderUserForm()}
       {isProjectModalOpen && renderProjectForm()}
       {isTaskModalOpen && renderTaskForm()}
-    </DashboardContext.Provider>
+    </TasksContext.Provider>
   );
 };
 

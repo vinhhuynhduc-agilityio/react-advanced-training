@@ -3,7 +3,10 @@
 exports[`ChartTotalTasksByProjects Component does not crash if there are no tasks or projects 1`] = `
 <div>
   <div
+    aria-label="Chart showing total tasks by projects"
     class="flex-1 bg-white border border-customBorder"
+    id="chart-tasks-by-projects"
+    role="figure"
   >
     <div
       data-testid="total-tasks-chart"
@@ -15,7 +18,10 @@ exports[`ChartTotalTasksByProjects Component does not crash if there are no task
 exports[`ChartTotalTasksByProjects Component renders the chart component 1`] = `
 <div>
   <div
+    aria-label="Chart showing total tasks by projects"
     class="flex-1 bg-white border border-customBorder"
+    id="chart-tasks-by-projects"
+    role="figure"
   >
     <div
       data-testid="total-tasks-chart"

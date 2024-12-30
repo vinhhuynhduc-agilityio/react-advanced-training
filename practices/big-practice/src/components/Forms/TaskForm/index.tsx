@@ -4,29 +4,27 @@ import { useForm, Controller } from 'react-hook-form';
 import { formatDropdownOptions, isTaskDuplicate } from '@/helpers';
 
 // types
-import { TaskFormValues } from '@/types';
+import { ProjectsData, TaskData, TaskFormValues, UserData } from '@/types';
 
 // components
 import { Button, Dropdown } from '@/components/common';
 import { TextField } from '@/components';
 
-// hooks
-import { useDashboardContext } from '@/hooks';
-
 interface TaskFormProps {
   onClose: () => void;
   onSubmit: (data: TaskFormValues) => void;
+  users: UserData[];
+  projects: ProjectsData[];
+  tasks: TaskData[];
 };
 
 const TaskForm: React.FC<TaskFormProps> = ({
   onClose,
   onSubmit,
+  users,
+  projects,
+  tasks
 }) => {
-  const {
-    users,
-    projects,
-    tasks
-  } = useDashboardContext();
 
   const {
     register,

@@ -4,29 +4,26 @@ import {
   fireEvent,
   waitFor,
 } from '@testing-library/react';
-import { mockContextValue, mockUsers } from '@/mocks';
-import { DashboardContext } from '@/context';
 import UserForm from '.';
+import { mockUsers } from '@/mocks';
 
-// Mock the onSubmit and onClose functions
 const mockOnSubmit = jest.fn();
 const mockOnClose = jest.fn();
 
 describe('UserForm', () => {
-  const defaultValues = mockUsers[0]; // Make sure mockUsers contains the user with valid data
+  const defaultValues = mockUsers[0];
 
   // Setup helper function
   const setup = (isEditUser = false, buttonLabel = 'Save') =>
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <UserForm
-          defaultValues={defaultValues}
-          isEditUser={isEditUser}
-          onClose={mockOnClose}
-          onSubmit={mockOnSubmit}
-          buttonLabel={buttonLabel}
-        />
-      </DashboardContext.Provider>
+      <UserForm
+        defaultValues={defaultValues}
+        isEditUser={isEditUser}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        buttonLabel={buttonLabel}
+        users={mockUsers}
+      />
     );
 
   it('matches snapshot for default state', () => {
@@ -42,7 +39,6 @@ describe('UserForm', () => {
     expect(screen.getByPlaceholderText('Enter full name')).toBeInTheDocument();
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Enter email')).toBeInTheDocument();
-    expect(screen.getByLabelText('Avatar')).toBeInTheDocument();
     expect(screen.getByText('Cancel')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
   });
@@ -109,28 +105,23 @@ describe('UserForm', () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  it('should run useEffect when isEditUser is true and defaultValues contain avatarUrl', async () => {
-    const { rerender } = setup(true);
+  it('should set avatar preview when defaultValues contain avatarUrl and isEditUser is true', async () => {
+    setup(true);
 
     // Check if the avatar preview is set correctly (based on defaultValues.avatarUrl)
     const avatarImage = screen.getByAltText('Avatar Preview');
     expect(avatarImage).toHaveAttribute('src', defaultValues.avatarUrl);
+  });
 
-    // If we update the defaultValues, rerender the component and check again
-    const updatedValues = { ...defaultValues, avatarUrl: 'new-avatar-url.png' };
-    rerender(
-      <DashboardContext.Provider value={mockContextValue}>
-        <UserForm
-          defaultValues={updatedValues}
-          isEditUser={true}
-          onClose={mockOnClose}
-          onSubmit={mockOnSubmit}
-          buttonLabel="Save"
-        />
-      </DashboardContext.Provider>
-    );
+  it('should update avatar preview when a new file is selected', async () => {
+    setup();
+    const avatarInput = screen.getByLabelText('Avatar');
+    const file = new File(['newAvatar'], 'newAvatar.png', { type: 'image/png' });
+    fireEvent.change(avatarInput!, { target: { files: [file] } });
 
-    // Check if the avatar preview is updated with the new value
-    expect(avatarImage).toHaveAttribute('src', 'new-avatar-url.png');
+    await waitFor(() => {
+      const avatarImage = screen.getByAltText('Avatar Preview');
+      expect(avatarImage).toHaveAttribute('src', expect.stringContaining('data:image/png;base64'));
+    });
   });
 });

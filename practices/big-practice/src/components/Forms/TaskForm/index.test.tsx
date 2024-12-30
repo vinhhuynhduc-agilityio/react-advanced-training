@@ -4,8 +4,7 @@ import {
   fireEvent
 } from '@testing-library/react';
 import TaskForm from '.';
-import { DashboardContext } from '@/context';
-import { mockContextValue } from '@/mocks';
+import { mockUsers, mockProjects, mockTasks } from '@/mocks';
 
 describe('TaskForm', () => {
   const mockOnClose = jest.fn();
@@ -13,14 +12,14 @@ describe('TaskForm', () => {
 
   const setup = () =>
     render(
-      <DashboardContext.Provider value={mockContextValue}>
-        <TaskForm
-          onClose={mockOnClose}
-          onSubmit={mockOnSubmit}
-        />
-      </DashboardContext.Provider>
+      <TaskForm
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        users={mockUsers}
+        projects={mockProjects}
+        tasks={mockTasks}
+      />
     );
-
 
   it('matches snapshot for default state', () => {
     const { container } = setup();

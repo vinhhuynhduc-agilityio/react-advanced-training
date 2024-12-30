@@ -7,7 +7,7 @@ import {
 import {
   mockTasks,
   mockUsers,
-  mockProject
+  mockProjects
 } from "../../mocks/data";
 import {
   FieldValue
@@ -18,12 +18,12 @@ describe("Utility Functions", () => {
   describe("getUpdatedRow", () => {
     it("should update the row with new project data", () => {
       const row = mockTasks[0];
-      const updatedRow = getUpdatedRow(FIELD_TYPE.PROJECT as FieldType, mockProject[1], row);
+      const updatedRow = getUpdatedRow(FIELD_TYPE.PROJECT as FieldType, mockProjects[1], row);
 
       expect(updatedRow).toEqual({
         ...row,
-        projectName: mockProject[1].projectName,
-        projectId: mockProject[1].id,
+        projectName: mockProjects[1].projectName,
+        projectId: mockProjects[1].id,
       });
     });
 

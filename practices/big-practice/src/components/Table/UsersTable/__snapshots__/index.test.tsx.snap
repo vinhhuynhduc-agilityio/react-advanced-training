@@ -328,7 +328,7 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                       <div
                         aria-label="Joe Bloggs"
                         class="flex items-center py-2"
-                        role="listitem"
+                        data-testid="person-list-item"
                       >
                         <img
                           alt="User Avatar"
@@ -373,7 +373,7 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                       <div
                         aria-label="Jane Smith"
                         class="flex items-center py-2"
-                        role="listitem"
+                        data-testid="person-list-item"
                       >
                         <img
                           alt="User Avatar"
@@ -418,7 +418,7 @@ exports[`UsersTable component matches snapshot for default state 1`] = `
                       <div
                         aria-label="Alice Brown"
                         class="flex items-center py-2"
-                        role="listitem"
+                        data-testid="person-list-item"
                       >
                         <img
                           alt="User Avatar"

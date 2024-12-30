@@ -1,6 +1,6 @@
 import { fetchProjects, createProject } from '@/services/project';
 import { apiRequest } from '@/services/apiRequest';
-import { mockProject } from '@/mocks';
+import { mockProjects } from '@/mocks';
 import { ProjectsData } from '@/types';
 
 jest.mock('@/services/apiRequest');
@@ -8,13 +8,13 @@ jest.mock('@/services/apiRequest');
 describe('Project Service', () => {
   describe('fetchProjects', () => {
     it('should return projects data on success', async () => {
-      (apiRequest as jest.Mock).mockResolvedValue(mockProject);
+      (apiRequest as jest.Mock).mockResolvedValue(mockProjects);
 
       const result = await fetchProjects();
 
       expect(apiRequest).toHaveBeenCalledWith('GET', expect.any(String));
       expect(result).toEqual({
-        data: mockProject,
+        data: mockProjects,
         error: null,
       });
     });

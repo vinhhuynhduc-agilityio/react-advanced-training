@@ -1,7 +1,7 @@
 
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Dashboard from '@/pages/Dashboard';
-import { mockContextValue, mockProject, mockProjectService, mockTasks, mockTaskService, mockUsers, mockUserService } from '@/mocks';
+import { mockContextValue, mockProjects, mockProjectService, mockTasks, mockTaskService, mockUsers, mockUserService } from '@/mocks';
 
 beforeAll(() => {
 
@@ -19,12 +19,12 @@ jest.mock('@/hooks/useFetchData', () => ({
     setProjects: jest.fn(),
     users: mockUsers,
     tasks: mockTasks,
-    projects: mockProject,
+    projects: mockProjects,
   }),
 }));
 
-jest.mock('@/hooks/useDashboardContext', () => ({
-  useDashboardContext: () => ({
+jest.mock('@/hooks/useTasksContext', () => ({
+  useTasksContext: () => ({
     ...mockContextValue
   })
 }));
@@ -310,22 +310,35 @@ describe('Dashboard Component', () => {
 
   test('calls doubleClick on user form', async () => {
     render(<Dashboard />);
-    const rowSelected = screen.getByRole('listitem', { name: 'Alice Brown' });
 
-    // Simulate button double-click
+    // Find all rows with data-testid="person-list-item"
+    const rows = await screen.findAllByTestId('person-list-item');
+
+    // Find the specific row containing 'Alice Brown'
+    const rowSelected = rows.find(row => row.getAttribute('aria-label') === 'Alice Brown');
+    if (!rowSelected) {
+      throw new Error('Row with aria-label "Alice Brown" not found');
+    }
+
+    // Simulate double-click event
     await act(async () => {
       fireEvent.dblClick(rowSelected);
     });
 
-    // Wait for 'Edit User' to be in the document
+    // Wait for 'Edit User' form to appear in the document
     await waitFor(() => {
       expect(screen.getByText('Edit User')).toBeInTheDocument();
     });
 
+    // Simulate clicking the save button
     const saveBtn = screen.getByLabelText('save-user');
-    // Click the Save button
     await act(async () => {
       fireEvent.click(saveBtn);
+    });
+
+    // Ensure the save action was handled correctly
+    await waitFor(() => {
+      expect(screen.queryByText('Edit User')).not.toBeInTheDocument();
     });
   });
 

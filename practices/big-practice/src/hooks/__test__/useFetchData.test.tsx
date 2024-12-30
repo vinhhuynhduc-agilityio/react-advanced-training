@@ -3,7 +3,7 @@ import { useFetchData } from '@/hooks/useFetchData';
 import { fetchUsers } from '@/services/user';
 import { fetchTasks } from '@/services/task';
 import { fetchProjects } from '@/services/project';
-import { mockUsers, mockTasks, mockProject } from '@/mocks';
+import { mockUsers, mockTasks, mockProjects } from '@/mocks';
 
 jest.mock('@/services/user', () => ({
   fetchUsers: jest.fn(),
@@ -27,7 +27,7 @@ describe('useFetchData Hook', () => {
   test('should fetch users, tasks, and projects successfully', async () => {
     mockFetchUsers.mockResolvedValue({ data: mockUsers, error: null });
     mockFetchTasks.mockResolvedValue({ data: mockTasks, error: null });
-    mockFetchProjects.mockResolvedValue({ data: mockProject, error: null });
+    mockFetchProjects.mockResolvedValue({ data: mockProjects, error: null });
 
     const { result } = renderHook(() => useFetchData());
 
@@ -43,13 +43,13 @@ describe('useFetchData Hook', () => {
 
     expect(result.current.users).toEqual(mockUsers);
     expect(result.current.tasks).toEqual(mockTasks);
-    expect(result.current.projects).toEqual(mockProject);
+    expect(result.current.projects).toEqual(mockProjects);
   });
 
   test('should handle errors when fetchUsers fails', async () => {
     mockFetchUsers.mockResolvedValue({ data: null, error: new Error('Fetch users error') });
     mockFetchTasks.mockResolvedValue({ data: mockTasks, error: null });
-    mockFetchProjects.mockResolvedValue({ data: mockProject, error: null });
+    mockFetchProjects.mockResolvedValue({ data: mockProjects, error: null });
 
     const { result } = renderHook(() => useFetchData());
 
@@ -63,6 +63,6 @@ describe('useFetchData Hook', () => {
     expect(mockFetchTasks).toHaveBeenCalledTimes(1);
     expect(mockFetchProjects).toHaveBeenCalledTimes(1);
     expect(result.current.tasks).toEqual(mockTasks);
-    expect(result.current.projects).toEqual(mockProject);
+    expect(result.current.projects).toEqual(mockProjects);
   });
 });

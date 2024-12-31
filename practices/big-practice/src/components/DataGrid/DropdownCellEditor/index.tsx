@@ -6,8 +6,6 @@ import {
 import clsx from 'clsx';
 
 // ag-grid
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ICellEditorParams } from 'ag-grid-community';
 import { Avatar } from '@/components';
 

@@ -52,7 +52,7 @@ describe('Button component', () => {
         onClick={() => { }} />
     );
     const button = container.querySelector('button');
-    expect(button).toHaveClass('px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300');
+    expect(button).toHaveClass('rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300');
   });
 
   it('applies correct class for primary variant', () => {

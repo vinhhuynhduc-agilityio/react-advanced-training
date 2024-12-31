@@ -91,7 +91,7 @@ const Dashboard: React.FC = () => {
     taskDashboardGridApi.current = api
   };
 
-  // Function to handle when row in TaskTable is selected
+  // Function to handle when row in TaskTable is selected.
   const handleTaskRowSelected = (userId: string | null) => {
     handleRowSelection(userId, 'TaskTable', handleRowSelected);
   };

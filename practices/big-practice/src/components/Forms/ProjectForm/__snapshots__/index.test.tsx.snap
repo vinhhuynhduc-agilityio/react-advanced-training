@@ -28,13 +28,13 @@ exports[`ProjectForm matches snapshot for default state 1`] = `
       class="flex justify-between border-t pt-3"
     >
       <button
-        class="bg-slate-200 text-pink-600 font-bold [object Object]"
+        class="rounded-md py-2.5 px-5 bg-slate-200 text-pink-600 font-bold hover:bg-slate-300 [object Object]"
         type="button"
       >
         Cancel
       </button>
       <button
-        class="bg-slate-200 text-blue-600 font-bold [object Object]"
+        class="rounded-md py-2.5 px-5 bg-slate-200 text-blue-600 font-bold hover:bg-slate-300 [object Object]"
         type="submit"
       >
         Save

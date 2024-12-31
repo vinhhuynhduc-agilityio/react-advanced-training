@@ -16,9 +16,6 @@ import {
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-// styles
-import '../../../style.css';
-
 // types
 import { UserData } from '@/types';
 

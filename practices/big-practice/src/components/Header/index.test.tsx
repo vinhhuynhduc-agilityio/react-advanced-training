@@ -35,7 +35,7 @@ describe('Header Component', () => {
     );
     const logoElement = screen.getByAltText('Logo');
     expect(logoElement).toBeInTheDocument();
-    expect(logoElement).toHaveAttribute('src', '/assets/logo.png');
+    expect(logoElement).toHaveAttribute('src', '/assets/logo.webp');
 
     const titleElement = screen.getByText('Team Progress');
     expect(titleElement).toBeInTheDocument();

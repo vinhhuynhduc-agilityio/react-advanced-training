@@ -11,7 +11,7 @@ exports[`Header Component matches snapshot for default state 1`] = `
       <img
         alt="Logo"
         class="h-12 w-12 mr-2"
-        src="/assets/logo.png"
+        src="/assets/logo.webp"
       />
       <h1
         class="text-xl font-medium text-[#475466]"

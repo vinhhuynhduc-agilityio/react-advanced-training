@@ -67,7 +67,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
         return;
       }
 
-      // If click or scroll inside dropdown then do not stopEditing
+      // If click or scroll inside dropdown then do not stopEditing.
       if (
         dropdownRef.current &&
         dropdownRef.current.contains(event.target as Node)
@@ -78,12 +78,12 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
       stopEditing();
     };
 
-    // Add event listeners for click, scroll, and resize
+    // Add event listeners for click, scroll, and resize.
     document.addEventListener('click', handleAnyClickOrScrollOrResize);
     document.addEventListener('scroll', handleAnyClickOrScrollOrResize, true);
     window.addEventListener('resize', handleAnyClickOrScrollOrResize);
 
-    // Cleanup event listeners when component unmounts
+    // Cleanup event listeners when component unmounts.
     return () => {
       document.removeEventListener('click', handleAnyClickOrScrollOrResize);
       document.removeEventListener('scroll', handleAnyClickOrScrollOrResize, true);
@@ -115,9 +115,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
             key={index}
             className={clsx(
               "flex items-center p-1.5 cursor-pointer border-b text-black border-gray-300 hover:bg-gray-200",
-              {
-                "bg-blue-100": optionValue === currentValue,
-              }
+              optionValue === currentValue && "bg-blue-100"
             )}
             onClick={() => handleSelect(option)}
           >

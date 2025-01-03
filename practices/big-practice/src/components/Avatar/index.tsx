@@ -1,10 +1,11 @@
-import React, { memo } from "react";
+import React, { memo } from 'react';
+import clsx from 'clsx';
 
 interface AvatarProps {
   src: string;
   alt?: string;
   size?: string;
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
 export const Avatar: React.FC<AvatarProps> = memo(({
@@ -13,11 +14,16 @@ export const Avatar: React.FC<AvatarProps> = memo(({
   size = 'w-10 h-10',
   ariaLabel = '',
 }) => {
+  const validSizes = ['w-10 h-10', 'w-8 h-8', 'w-24 h-24', 'w-14 h-14'];
+
   return (
     <img
       src={src}
       alt={alt}
-      className={`rounded-full object-cover ${size}`}
+      className={clsx(
+        'rounded-full object-cover',
+        validSizes.includes(size) ? size : 'w-10 h-10'
+      )}
       aria-label={ariaLabel}
     />
   );

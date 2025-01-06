@@ -23,21 +23,21 @@ exports[`renders Dashboard component with heading 1`] = `
         </h1>
       </div>
       <button
-        class="rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300 [object Object]"
+        class="rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300 opacity-50 cursor-not-allowed"
         disabled=""
         type="button"
       >
         Add a user
       </button>
       <button
-        class="rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300 [object Object]"
+        class="rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300 opacity-50 cursor-not-allowed"
         disabled=""
         type="button"
       >
         Add a task
       </button>
       <button
-        class="rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300 [object Object]"
+        class="rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300 opacity-50 cursor-not-allowed"
         disabled=""
         type="button"
       >

@@ -5,7 +5,7 @@ export const mockUsers = [
     earnings: "$11500",
     email: "john@example.com",
     avatarUrl: "https://i.pravatar.cc/150?img=1",
-    registered: "May 21, 2020 17:02:06",
+    registered: "May 21, 2024 17:02:06",
     lastUpdated: "Nov 11, 2024 14:34:21",
   },
   {
@@ -23,7 +23,7 @@ export const mockUsers = [
     earnings: "$7200",
     email: "alice@example.com",
     avatarUrl: "https://i.pravatar.cc/150?img=3",
-    registered: "April 15, 2020 14:02:06",
+    registered: "April 15, 2024 14:02:06",
     lastUpdated: "October 11, 2023 10:00:00",
   },
 ];
@@ -143,7 +143,7 @@ export const mockUserService = {
       email: "updatedjohn@example.com",
       avatarUrl: "https://i.pravatar.cc/150?img=1",
       earnings: "$12500",
-      registered: "May 21, 2020 17:02:06",
+      registered: "May 21, 2024 17:02:06",
       lastUpdated: "Dec 19, 2024",
     },
     error: null,

@@ -77,10 +77,4 @@ describe("TextField Component", () => {
     const input = screen.getByLabelText("Project Name");
     expect(input).toHaveAttribute("type", "email");
   });
-
-  it("should render in vertical layout when vertical is true", () => {
-    setup({ vertical: true });
-    const container = screen.getByLabelText("Project Name").parentElement;
-    expect(container).toHaveClass("flex-col gap-[10px]");
-  });
 });

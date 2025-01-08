@@ -1,67 +1,69 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-
-// helpers
 import { formatDataForChartTotalTasksByProjects } from '@/components/Chart/helpers';
+import { mockTasks, mockProjects } from '@/mocks';
 import { ChartTotalTasksByProjects } from '.';
 
-// Mock AgCharts component to simulate its rendering
-jest.mock('ag-charts-react', () => ({
-  AgCharts: () => <div data-testid="total-tasks-chart"></div>,
-}));
-
-// Mock helper functions
 jest.mock('@/components/Chart/helpers', () => ({
-  ...jest.requireActual('@/components/Chart/helpers'),
   formatDataForChartTotalTasksByProjects: jest.fn(),
+  renderTooltipProjectChart: jest.fn(),
 }));
 
-// Mock data
-import { mockTasks, mockProjects } from '@/mocks';
+jest.mock('ag-charts-react', () => ({
+  AgCharts: () => <div data-testid="mocked-chart"></div>,
+}));
 
-describe('ChartTotalTasksByProjects Component', () => {
+describe('ChartTotalTasksByProjects', () => {
+  const mockFormattedData = {
+    formattedData: [
+      { projectName: 'Project A', 2023: 10, 2024: 20 },
+      { projectName: 'Project B', 2023: 15, 2024: 25 },
+    ],
+    years: [2023, 2024],
+  };
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    (formatDataForChartTotalTasksByProjects as jest.Mock).mockReturnValue(mockFormattedData);
   });
 
-  it('renders the chart component', () => {
+  it('matches snapshot for mocked chart', () => {
     const { container } = render(
       <ChartTotalTasksByProjects isLoading={false} tasks={mockTasks} projects={mockProjects} />
     );
 
-    expect(screen.getByTestId('total-tasks-chart')).toBeInTheDocument();
     expect(container).toMatchSnapshot();
   });
 
-  it('calls formatDataForChartTotalTasksByProjects with correct data', () => {
-    render(
-      <ChartTotalTasksByProjects isLoading={false} tasks={mockTasks} projects={mockProjects} />
-    );
+  it('renders the loading spinner when isLoading is true', () => {
+    render(<ChartTotalTasksByProjects isLoading={true} tasks={mockTasks} projects={mockProjects} />);
+
+    expect(screen.getByRole('figure', { name: /loading chart: total tasks by projects/i })).toBeInTheDocument();
+  });
+
+  it('renders the chart when isLoading is false', () => {
+    render(<ChartTotalTasksByProjects isLoading={false} tasks={mockTasks} projects={mockProjects} />);
+
+    expect(screen.getByRole('figure', { name: /chart showing total tasks by projects/i })).toBeInTheDocument();
+    const mockedChart = screen.getByTestId('mocked-chart');
+    expect(mockedChart).toBeInTheDocument();
+  });
+
+  it('calls formatDataForChartTotalTasksByProjects with the correct data', () => {
+    render(<ChartTotalTasksByProjects isLoading={false} tasks={mockTasks} projects={mockProjects} />);
 
     expect(formatDataForChartTotalTasksByProjects).toHaveBeenCalledWith(mockTasks, mockProjects);
   });
 
-  it('does not crash if there are no tasks or projects', () => {
-    const { container } = render(
-      <ChartTotalTasksByProjects isLoading={false} tasks={[]} projects={[]} />
-    );
+  it('renders the correct aria-label for the chart', () => {
+    render(<ChartTotalTasksByProjects isLoading={false} tasks={mockTasks} projects={mockProjects} />);
 
-    expect(screen.getByTestId('total-tasks-chart')).toBeInTheDocument();
-    expect(formatDataForChartTotalTasksByProjects).toHaveBeenCalledWith([], []);
-    expect(container).toMatchSnapshot();
+    const chart = screen.getByRole('figure', { name: /chart showing total tasks by projects/i });
+    expect(chart).toBeInTheDocument();
   });
 
-  it('renders a spinner when isLoading is true', () => {
-    const { container } = render(
-      <ChartTotalTasksByProjects isLoading={true} tasks={mockTasks} projects={mockProjects} />
-    );
+  it('does not render the chart when isLoading is true', () => {
+    render(<ChartTotalTasksByProjects isLoading={true} tasks={mockTasks} projects={mockProjects} />);
 
-    const spinner = container.querySelector(
-      '.w-12.h-12.border-4.border-gray-300.border-t-blue-500.rounded-full.animate-spin'
-    );
-    expect(spinner).toBeInTheDocument();
-
-    const mockedChart = screen.queryByTestId('total-tasks-chart');
-    expect(mockedChart).not.toBeInTheDocument();
+    expect(screen.queryByRole('figure', { name: /chart showing total tasks by projects/i })).not.toBeInTheDocument();
   });
 });

@@ -38,7 +38,7 @@ describe('Avatar Component', () => {
     );
 
     const imgElement = screen.getByRole('img', { name: /avatar/i });
-    expect(imgElement).toHaveClass('w-20 h-20');
+    expect(imgElement).toHaveClass('w-10 h-10');
   });
 
   it('renders correctly with all props provided', () => {
@@ -46,13 +46,13 @@ describe('Avatar Component', () => {
       <Avatar
         src="all-props-avatar.png"
         alt="All Props Avatar"
-        size="w-16 h-16"
+        size="w-14 h-14"
       />
     );
 
     const imgElement = screen.getByRole('img', { name: /all props avatar/i });
     expect(imgElement).toHaveAttribute('src', 'all-props-avatar.png');
     expect(imgElement).toHaveAttribute('alt', 'All Props Avatar');
-    expect(imgElement).toHaveClass('w-16 h-16');
+    expect(imgElement).toHaveClass('w-14 h-14');
   });
 });

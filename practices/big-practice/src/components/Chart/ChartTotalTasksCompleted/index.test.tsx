@@ -1,35 +1,29 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-
-// component
+import { formatDataForChartTotalTasks } from '@/components/Chart/helpers';
+import { mockTasks } from '@/mocks';
 import { ChartTotalTasksCompleted } from '.';
 
-// mock data
-import { mockTasks } from '@/mocks';
+jest.mock('@/components/Chart/helpers', () => ({
+  formatDataForChartTotalTasks: jest.fn(),
+  renderTooltipChart: jest.fn(),
+}));
 
-// Mock AgCharts
 jest.mock('ag-charts-react', () => ({
   AgCharts: () => <div data-testid="mocked-chart"></div>,
 }));
 
-// Mock helpers
-jest.mock('@/components/Chart/helpers', () => ({
-  ...jest.requireActual('@/components/Chart/helpers'),
-  formatDataForChartTotalTasks: jest.fn(() => [
-    { month: 'January', '2023': 5, '2024': 10 },
-    { month: 'February', '2023': 3, '2024': 7 },
-  ]),
-}));
+describe('ChartTotalTasksCompleted', () => {
+  const mockFormattedData = {
+    formattedData: [
+      { month: 'Jan', 2023: 5, 2024: 10 },
+      { month: 'Feb', 2023: 15, 2024: 20 },
+    ],
+    years: [2023, 2024],
+  };
 
-describe('ChartTotalTasksCompleted Component', () => {
-  it('renders the mocked chart when isLoading is false', () => {
-    render(
-      <ChartTotalTasksCompleted isLoading={false} tasks={mockTasks} />
-    );
-
-    const mockedChart = screen.getByTestId('mocked-chart');
-    expect(mockedChart).toBeInTheDocument();
-    expect(screen.getByRole('figure', { name: /chart showing total tasks completed/i })).toBeInTheDocument();
+  beforeEach(() => {
+    (formatDataForChartTotalTasks as jest.Mock).mockReturnValue(mockFormattedData);
   });
 
   it('matches snapshot for mocked chart', () => {
@@ -40,27 +34,36 @@ describe('ChartTotalTasksCompleted Component', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('renders a spinner when isLoading is true', () => {
-    render(
-      <ChartTotalTasksCompleted isLoading={true} tasks={mockTasks} />
-    );
+  it('renders the loading spinner when isLoading is true', () => {
+    render(<ChartTotalTasksCompleted isLoading={true} tasks={mockTasks} />);
 
-    const spinner = screen.getByRole('figure', {
-      name: /loading chart: total tasks completed/i,
-    });
-    expect(spinner).toBeInTheDocument();
-
-    const mockedChart = screen.queryByTestId('mocked-chart');
-    expect(mockedChart).not.toBeInTheDocument();
+    expect(screen.getByRole('figure', { name: /loading chart: total tasks completed/i })).toBeInTheDocument();
   });
 
-  it('formats data correctly using the helper function', () => {
-    render(
-      <ChartTotalTasksCompleted isLoading={false} tasks={mockTasks} />
-    );
+  it('renders the chart when isLoading is false', () => {
+    render(<ChartTotalTasksCompleted isLoading={false} tasks={mockTasks} />);
 
-    // Check if the mocked helper function was called
-    const { formatDataForChartTotalTasks } = jest.requireMock('@/components/Chart/helpers');
+    expect(screen.getByRole('figure', { name: /chart showing total tasks completed/i })).toBeInTheDocument();
+    const mockedChart = screen.getByTestId('mocked-chart');
+    expect(mockedChart).toBeInTheDocument();
+  });
+
+  it('calls formatDataForChartTotalTasks with the correct tasks', () => {
+    render(<ChartTotalTasksCompleted isLoading={false} tasks={mockTasks} />);
+
     expect(formatDataForChartTotalTasks).toHaveBeenCalledWith(mockTasks);
+  });
+
+  it('renders the correct aria-label for the chart', () => {
+    render(<ChartTotalTasksCompleted isLoading={false} tasks={mockTasks} />);
+
+    const chart = screen.getByRole('figure', { name: /chart showing total tasks completed/i });
+    expect(chart).toBeInTheDocument();
+  });
+
+  it('does not render the chart when isLoading is true', () => {
+    render(<ChartTotalTasksCompleted isLoading={true} tasks={mockTasks} />);
+
+    expect(screen.queryByRole('figure', { name: /chart showing total tasks completed/i })).not.toBeInTheDocument();
   });
 });

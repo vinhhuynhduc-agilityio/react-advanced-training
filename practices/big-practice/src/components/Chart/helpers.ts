@@ -1,6 +1,6 @@
 import {
-  FormattedMonthData,
-  FormattedProjectData,
+  FormattedDataTotalTasksByProjects,
+  FormattedDataTotalTasksCompleted,
   ProjectsData,
   TaskData
 } from '@/types';
@@ -14,75 +14,117 @@ import {
 } from 'ag-charts-community';
 
 /**
- * @returns {FormattedMonthData[]} Array containing task completion data by month,
- * each object contains: `month` (month name), `2023` and `2024` (number of completed tasks)
+ * Formats the task data for the chart displaying total tasks completed.
+ *
+ * @param tasks - Array of TaskData containing information about completed tasks.
+ * @returns An object containing:
+ *   - formattedData: Array of objects representing months with task counts for each year.
+ *   - years: Array of unique years extracted from the task data, sorted in ascending order.
  */
 const formatDataForChartTotalTasks = (
   tasks: TaskData[]
-): FormattedMonthData[] => {
-  const months = {
-    Jan: { month: 'Jan', 2023: 0, 2024: 0 },
-    Feb: { month: 'Feb', 2023: 0, 2024: 0 },
-    Mar: { month: 'Mar', 2023: 0, 2024: 0 },
-    Apr: { month: 'Apr', 2023: 0, 2024: 0 },
-    May: { month: 'May', 2023: 0, 2024: 0 },
-    Jun: { month: 'Jun', 2023: 0, 2024: 0 },
-    Jul: { month: 'Jul', 2023: 0, 2024: 0 },
-    Aug: { month: 'Aug', 2023: 0, 2024: 0 },
-    Sep: { month: 'Sep', 2023: 0, 2024: 0 },
-    Oct: { month: 'Oct', 2023: 0, 2024: 0 },
-    Nov: { month: 'Nov', 2023: 0, 2024: 0 },
-    Dec: { month: 'Dec', 2023: 0, 2024: 0 },
+): { formattedData: FormattedDataTotalTasksCompleted[]; years: number[] } => {
+  // Set to store unique years present in the task data
+  const yearsSet = new Set<number>();
+
+  // Object to store task counts for each month
+  const months: { [key: string]: FormattedDataTotalTasksCompleted } = {
+    Jan: { month: 'Jan' },
+    Feb: { month: 'Feb' },
+    Mar: { month: 'Mar' },
+    Apr: { month: 'Apr' },
+    May: { month: 'May' },
+    Jun: { month: 'Jun' },
+    Jul: { month: 'Jul' },
+    Aug: { month: 'Aug' },
+    Sep: { month: 'Sep' },
+    Oct: { month: 'Oct' },
+    Nov: { month: 'Nov' },
+    Dec: { month: 'Dec' },
   };
 
+  // Process each task to extract the month and year, and update task counts
   tasks.forEach((task) => {
     const completedDate = task.completedDate;
 
     if (completedDate !== 'incomplete') {
-      const [, monthStr, yearStr] = completedDate.split(' ');
-      const year = parseInt('20' + yearStr);
 
-      if (year === 2023 || year === 2024) {
-        months[monthStr as keyof typeof months][year]++;
+      // Extract month and year from the completedDate
+      const [, monthStr, yearStr] = completedDate.split(' ');
+      const currentYear = new Date().getFullYear();
+      const currentCentury = Math.floor(currentYear / 100);
+      const year = parseInt(`${currentCentury}${yearStr}`, 10); // Convert yearStr to full year (e.g., "23" -> 2023)
+      yearsSet.add(year);
+
+      // Initialize the task count for the month and year if not already present
+      if (!months[monthStr][year]) {
+        months[monthStr][year] = 0;
       }
+
+      // Increment the task count for the respective month and year
+      months[monthStr][year]++;
     }
   });
 
-  return Object.values(months);
+  // Convert the set of years into a sorted array
+  const years = Array.from(yearsSet).sort();
+
+  const formattedData = Object.values(months).map((month) => {
+    years.forEach((year) => {
+      if (month[year] === undefined) {
+        month[year] = 0;
+      }
+    });
+    return month;
+  });
+
+  // Return the formatted data and list of years
+  return { formattedData, years };
 };
 
 const formatDataForChartTotalTasksByProjects = (
   tasks: TaskData[],
   projects: ProjectsData[]
-): FormattedProjectData[] => {
-  // Initialize the result with all projects from the `projects` parameter, and set 0 for both 2023 and 2024
+): { formattedData: FormattedDataTotalTasksByProjects[]; years: number[] } => {
+  const yearsSet = new Set<number>();
+
+  // Initialize the result with all projects, defaulting years to 0
   const result = projects.reduce((acc, project) => {
     acc[project.projectName] = {
       projectName: project.projectName,
-      2023: 0,
-      2024: 0,
     };
-
     return acc;
-  }, {} as { [key: string]: FormattedProjectData });
+  }, {} as { [key: string]: FormattedDataTotalTasksByProjects });
 
-  // Update the number of tasks per year for projects
+  // Populate task data
   tasks.forEach((task) => {
-    const {
-      projectName,
-      startDate
-    } = task;
-    const year = parseInt(`20${startDate.split(' ')[2]}`, 10);
+    const { projectName, startDate } = task;
+    const [, , yearStr] = startDate.split(' ');
+    const currentYear = new Date().getFullYear();
+    const currentCentury = Math.floor(currentYear / 100);
+    const year = parseInt(`${currentCentury}${yearStr}`, 10);
 
-    if (
-      result[projectName] &&
-      (year === 2023 || year === 2024)
-    ) {
-      result[projectName][year]++;
+    yearsSet.add(year);
+
+    if (!result[projectName][year]) {
+      result[projectName][year] = 0; // Initialize year if not already present
     }
+
+    result[projectName][year]++; // Increment the task count
   });
 
-  return Object.values(result);
+  // Ensure all projects have values for all years
+  const years = Array.from(yearsSet).sort();
+  const formattedData = Object.values(result).map((project) => {
+    years.forEach((year) => {
+      if (!project[year]) {
+        project[year] = 0; // Default missing years to 0
+      }
+    });
+    return project;
+  });
+
+  return { formattedData, years };
 };
 
 const formatDataForChartIndividualEmployee = (
@@ -173,93 +215,11 @@ const renderTooltipProjectChart = (
   };
 };
 
-const totalTasksByProjectsOption: AgChartOptions = {
-  title: {
-    text: 'Total tasks by projects',
-  },
-  data: [],
-  series: [
-    {
-      type: 'bar',
-      xKey: 'projectName',
-      yKey: '2023',
-      yName: '2023',
-      direction: 'horizontal',
-      tooltip: {
-        renderer: renderTooltipProjectChart
-      },
-    },
-    {
-      type: 'bar',
-      xKey: 'projectName',
-      yKey: '2024',
-      yName: '2024',
-      direction: 'horizontal',
-      tooltip: {
-        renderer: renderTooltipProjectChart
-      },
-    },
-  ],
-  legend: {
-    enabled: true,
-    position: 'bottom',
-    item: {
-      marker: {
-        size: 10,
-      },
-      label: {
-        fontWeight: 'bold',
-      },
-    },
-  },
-};
-
-const totalTasksCompletedOptions: AgChartOptions = {
-  title: {
-    text: 'Total tasks completed',
-  },
-  data: [],
-  series: [
-    {
-      type: 'line',
-      xKey: 'month',
-      yKey: '2023',
-      yName: '2023',
-      tooltip: {
-        renderer: renderTooltipChart
-      },
-    },
-    {
-      type: 'line',
-      xKey: 'month',
-      yKey: '2024',
-      yName: '2024',
-      tooltip: {
-        renderer: renderTooltipChart
-      },
-    },
-  ],
-  legend: {
-    enabled: true,
-    position: 'bottom',
-    item: {
-      marker: {
-        size: 10,
-      },
-      label: {
-        fontWeight: 'bold',
-      },
-    },
-  },
-};
-
 export {
   formatDataForChartTotalTasks,
   formatDataForChartTotalTasksByProjects,
   formatDataForChartIndividualEmployee,
   renderTooltipProjectChart,
   renderTooltipChart,
-  totalTasksByProjectsOption,
-  totalTasksCompletedOptions,
   individualEmployeeProgressOptions,
 };

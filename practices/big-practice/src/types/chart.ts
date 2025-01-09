@@ -1,11 +1,10 @@
-export interface FormattedMonthData {
+
+export interface FormattedDataTotalTasksCompleted {
   month: string;
-  2023: number;
-  2024: number;
+  [year: number]: number;
 };
 
-export interface FormattedProjectData {
+export interface FormattedDataTotalTasksByProjects {
   projectName: string;
-  2023: number;
-  2024: number;
-}
+  [year: number]: number;
+};

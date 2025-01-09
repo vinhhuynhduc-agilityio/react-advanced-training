@@ -1,0 +1,30 @@
+{
+  "headers": [
+    {
+      "source": "/dist/assets/index-DLxIU63Z.css",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://improve-pagespeed.vercel.app/assets/index-DLxIU63Z.css>; rel=preload; as=style"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/dist/assets/index-eyHDX-2_.js",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://improve-pagespeed.vercel.app/assets/index-eyHDX-2_.js>; rel=preload; as=script"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChartTotalTasksCompleted Component matches snapshot for mocked chart 1`] = `
+exports[`ChartTotalTasksCompleted matches snapshot for mocked chart 1`] = `
 <div>
   <div
     aria-label="Chart showing total tasks completed"

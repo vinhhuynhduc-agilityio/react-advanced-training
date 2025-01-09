@@ -1,32 +1,59 @@
-import {
-  useMemo,
-  memo
-} from 'react';
+import React, { useMemo, memo } from 'react';
 import { AgCharts } from 'ag-charts-react';
+import { AgChartOptions } from 'ag-charts-community';
 
-// component
+// Component
 import { Spinner } from '@/components/common';
 
-// helpers
-import { formatDataForChartTotalTasks, totalTasksCompletedOptions } from '@/components/Chart/helpers';
+// Helpers
+import { formatDataForChartTotalTasks, renderTooltipChart } from '@/components/Chart/helpers';
 
-// types
+// Types
 import { TaskData } from '@/types';
 
 interface ChartTotalTasksCompletedProps {
   isLoading: boolean;
-  tasks: TaskData[]
+  tasks: TaskData[];
 };
 
 export const ChartTotalTasksCompleted: React.FC<ChartTotalTasksCompletedProps> = memo(
   ({ isLoading, tasks }) => {
+    const { formattedData, years } = useMemo(
+      () => formatDataForChartTotalTasks(tasks),
+      [tasks]
+    );
 
-    const formattedData = useMemo(() => formatDataForChartTotalTasks(tasks), [tasks]);
+    const memoizedOptions = useMemo(() => {
+      const dynamicSeries = years.map((year) => ({
+        type: 'line',
+        xKey: 'month',
+        yKey: year.toString(),
+        yName: year.toString(),
+        tooltip: {
+          renderer: renderTooltipChart,
+        },
+      }));
 
-    const memoizedOptions = useMemo(() => ({
-      ...totalTasksCompletedOptions,
-      data: formattedData,
-    }), [formattedData]);
+      return {
+        title: {
+          text: 'Total tasks completed',
+        },
+        data: formattedData,
+        series: dynamicSeries,
+        legend: {
+          enabled: true,
+          position: 'bottom',
+          item: {
+            marker: {
+              size: 10,
+            },
+            label: {
+              fontWeight: 'bold',
+            },
+          },
+        },
+      } as AgChartOptions;;
+    }, [formattedData, years]);
 
     if (isLoading) {
       return (

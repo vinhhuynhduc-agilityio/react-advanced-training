@@ -16,16 +16,15 @@ export const CheckMark: React.FC<IconRendererProps> = (props) => {
     setIsComplete(props.value);
   }, [props.value]);
 
-  // Predefined variables for clarity
-  const isDisabledClass = isDisabled
-    ? "opacity-50 pointer-events-none"
-    : "cursor-pointer";
+  // Define classes dynamically based on `isDisabled`
+  const containerClass = `flex justify-center items-center w-full h-full ${isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer"
+    }`;
 
   return (
     <span
       data-testid="status-icon"
-      className={`flex justify-center items-center w-full h-full ${isDisabledClass}`}
-      onClick={onStatusValueChange}
+      className={containerClass}
+      onClick={!isDisabled ? onStatusValueChange : undefined}
       aria-label="icon"
     >
       {isComplete ? (

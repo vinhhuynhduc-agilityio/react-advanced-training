@@ -99,9 +99,7 @@ export const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
                 role="option"
                 className={clsx(
                   "p-1.5 cursor-pointer text-gray-700 hover:bg-gray-100 hover:text-blue-500 border-b border-gray-300 last:border-0",
-                  {
-                    "bg-blue-100": selectedOption?.id === option.id
-                  }
+                  selectedOption?.id === option.id && "bg-blue-100"
                 )}
                 onClick={() => handleSelect(option)}
               >

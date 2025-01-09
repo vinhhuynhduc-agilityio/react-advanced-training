@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChartTotalTasksByProjects Component does not crash if there are no tasks or projects 1`] = `
+exports[`ChartTotalTasksByProjects matches snapshot for mocked chart 1`] = `
 <div>
   <div
     aria-label="Chart showing total tasks by projects"
@@ -9,22 +9,7 @@ exports[`ChartTotalTasksByProjects Component does not crash if there are no task
     role="figure"
   >
     <div
-      data-testid="total-tasks-chart"
-    />
-  </div>
-</div>
-`;
-
-exports[`ChartTotalTasksByProjects Component renders the chart component 1`] = `
-<div>
-  <div
-    aria-label="Chart showing total tasks by projects"
-    class="flex-1 bg-white border border-customBorder"
-    id="chart-tasks-by-projects"
-    role="figure"
-  >
-    <div
-      data-testid="total-tasks-chart"
+      data-testid="mocked-chart"
     />
   </div>
 </div>

@@ -3,9 +3,10 @@ import {
   memo
 } from 'react';
 import { AgCharts } from 'ag-charts-react';
+import { AgChartOptions } from 'ag-charts-community';
 
 // helpers
-import { formatDataForChartTotalTasksByProjects, totalTasksByProjectsOption } from '@/components/Chart/helpers';
+import { formatDataForChartTotalTasksByProjects, renderTooltipProjectChart } from '@/components/Chart/helpers';
 
 // component
 import { Spinner } from '@/components/common';
@@ -13,25 +14,51 @@ import { Spinner } from '@/components/common';
 // types
 import { ProjectsData, TaskData } from '@/types';
 
-
 interface ChartTotalTasksByProjectsProps {
   isLoading: boolean;
   tasks: TaskData[];
-  projects: ProjectsData[]
+  projects: ProjectsData[];
 }
 
 export const ChartTotalTasksByProjects: React.FC<ChartTotalTasksByProjectsProps> = memo(
   ({ isLoading, tasks, projects }) => {
-
-    const formattedData = useMemo(
+    const { formattedData, years } = useMemo(
       () => formatDataForChartTotalTasksByProjects(tasks, projects),
       [tasks, projects]
     );
 
-    const memoizedOptions = useMemo(() => ({
-      ...totalTasksByProjectsOption,
-      data: formattedData,
-    }), [formattedData]);
+    const memoizedOptions = useMemo(() => {
+      const dynamicSeries = years.map((year) => ({
+        type: 'bar',
+        xKey: 'projectName',
+        yKey: year.toString(),
+        yName: year.toString(),
+        direction: 'horizontal',
+        tooltip: {
+          renderer: renderTooltipProjectChart,
+        },
+      }));
+
+      return {
+        title: {
+          text: 'Total tasks by projects',
+        },
+        data: formattedData,
+        series: dynamicSeries,
+        legend: {
+          enabled: true,
+          position: 'bottom',
+          item: {
+            marker: {
+              size: 10,
+            },
+            label: {
+              fontWeight: 'bold',
+            },
+          },
+        },
+      } as AgChartOptions;
+    }, [formattedData, years]);
 
     if (isLoading) {
       return (

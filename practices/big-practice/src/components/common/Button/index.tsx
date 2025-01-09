@@ -10,9 +10,9 @@ interface ButtonProps {
 };
 
 const buttonClasses = {
-  default: 'px-4 py-2 border-none mr-7 bg-[#F4F5F9] text-[#1CA1C1] hover:bg-slate-300',
-  primary: 'bg-slate-200 text-blue-600 font-bold',
-  secondary: 'bg-slate-200 text-pink-600 font-bold',
+  default: 'rounded-md px-4 py-2 mr-7 bg-[#F4F5F9] text-[#1CA1C1] font-medium hover:bg-slate-300',
+  primary: 'rounded-md py-2.5 px-5 bg-slate-200 text-blue-600 font-bold hover:bg-slate-300',
+  secondary: 'rounded-md py-2.5 px-5 bg-slate-200 text-pink-600 font-bold hover:bg-slate-300',
 };
 
 export const Button: React.FC<ButtonProps> = ({

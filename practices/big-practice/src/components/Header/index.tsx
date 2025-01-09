@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = memo(
       <header className=" bg-white flex flex-row py-2 px-3 items-center border border-customBorder">
         <div className="flex flex-row items-center w-[16.5rem]">
           <img
-            src="/assets/logo.png"
+            src="/assets/logo.webp"
             alt="Logo"
             className="h-12 w-12 mr-2"
           />

@@ -1,10 +1,14 @@
-import { UserData } from "@/types";
+import { memo } from "react";
 import { ICellRendererParams } from "ag-grid-community";
+
+// types
+import { UserData } from "@/types";
 
 // component
 import { Avatar } from "@/components";
 
-export const PersonListItem = (params: ICellRendererParams<UserData>) => {
+
+export const PersonListItem = memo((params: ICellRendererParams<UserData>) => {
   if (!params.data) {
     return null;
   }
@@ -27,4 +31,4 @@ export const PersonListItem = (params: ICellRendererParams<UserData>) => {
       </div>
     </div>
   );
-};
+});

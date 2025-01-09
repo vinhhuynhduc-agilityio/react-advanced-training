@@ -91,7 +91,7 @@ const Dashboard: React.FC = () => {
     taskDashboardGridApi.current = api
   };
 
-  // Function to handle when row in TaskTable is selected
+  // Function to handle when row in TaskTable is selected.
   const handleTaskRowSelected = (userId: string | null) => {
     handleRowSelection(userId, 'TaskTable', handleRowSelected);
   };
@@ -327,7 +327,7 @@ const Dashboard: React.FC = () => {
     setTasks((prevTasks) => [...prevTasks, response.data!]);
     setTaskModalOpen(false);
 
-    // Handles scrolling to new user
+    // Handles scrolling to new user.
     if (taskDashboardGridApi.current) {
       handleScrollingToAddedRow(newTask.id, taskDashboardGridApi.current);
     }
@@ -353,7 +353,7 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    // Update projects state with the new project
+    // Update projects state with the new project.
     setProjects((prevProjects) => [...prevProjects, response.data!]);
     setProjectModalOpen(false);
 

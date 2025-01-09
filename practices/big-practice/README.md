@@ -4,11 +4,12 @@ This application is using React to a web application to manage employee workload
 
 # Targets
 
-- React Advanced: Apply advanced React concepts to optimize performance and manage complex components effectively.
-- React Hook Form: Build forms with validation and submission.
-- Tailwind CSS: Understand and apply Tailwind CSS for UI design.
-- Testing: Write unit tests using React Testing Library ( achieved over 95% ).
-- Performance: Check re-renders, optimize with react.memo, useCallback, useMemo, code-splitting.
+- React Advanced: Apply advanced React techniques to optimize performance, manage state, and handle complex components efficiently.
+- React Hook Form: Develop dynamic forms with real-time validation and seamless submission handling.
+- Tailwind CSS: Design responsive and customizable UIs by leveraging Tailwind CSS utility classes.
+- Testing: Achieve over 95% unit test coverage using React Testing Library to validate component logic and user interactions.
+- React-scan: Detect and optimize unnecessary component re-renders.
+- Storybook: Develop, document, and test UI components for reusability.
 
 # Technical stacks
 

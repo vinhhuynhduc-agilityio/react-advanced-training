@@ -324,7 +324,7 @@ const TaskTable: React.FC<TaskDataProps> = ({
         tooltipShowDelay={0}
         enableBrowserTooltips={true}
         loadingOverlayComponent={Spinner}
-        loading={isLoading || isSavingTask}
+        loading={isLoading || isSavingTask || isSavingProject}
         suppressClickEdit={isDisabled}
       />
     </div>

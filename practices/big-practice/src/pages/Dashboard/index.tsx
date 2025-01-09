@@ -73,7 +73,7 @@ const Dashboard: React.FC = () => {
   const taskDashboardGridApi = useRef<GridApi | null>(null);
 
   // State variables related to opening modal dialog
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isUserModalOpen, setUserModalOpen] = useState(false);
   const [isEditUser, setEditUser] = useState(false);
   const [defaultValues, setDefaultValues] = useState<UserData>(defaultUserFormValues);
   const [isProjectModalOpen, setProjectModalOpen] = useState(false);
@@ -207,13 +207,13 @@ const Dashboard: React.FC = () => {
 
   const handleToggleUserForm = useCallback(() => {
     setDefaultValues(defaultUserFormValues);
-    setModalOpen(true);
+    setUserModalOpen(true);
     setEditUser(false);
   }, []);
 
   const handleUserDoubleClicked = (userData: UserData) => {
     setDefaultValues(userData);
-    setModalOpen(true);
+    setUserModalOpen(true);
     setEditUser(true);
   };
 
@@ -223,6 +223,8 @@ const Dashboard: React.FC = () => {
       : handleAddNewUser(data);
 
   const handleAddNewUser = async (data: UserFormData) => {
+    setUserModalOpen(false);
+
     const avatarUrl = data.avatarUrl ?? defaultAvatarUrl;
     const registeredDate = formatRegisteredDate();
 
@@ -249,8 +251,6 @@ const Dashboard: React.FC = () => {
     // Add the new user to the state
     setUsers((prevUsers) => [...prevUsers, response.data!]);
 
-    setModalOpen(false);
-
     // Handles scrolling to the new user
     if (userListGridApi.current) {
       handleScrollingToAddedRow(newUser.id, userListGridApi.current);
@@ -263,6 +263,8 @@ const Dashboard: React.FC = () => {
   };
 
   const handleEditUser = async (data: UserFormData) => {
+    setUserModalOpen(false);
+
     if (!defaultValues?.id) return;
 
     setSavingUser(true);
@@ -294,11 +296,12 @@ const Dashboard: React.FC = () => {
       )
     );
 
-    setModalOpen(false);
     setSavingUser(false);
   };
 
   const handleAddNewTask = async (data: TaskFormValues) => {
+    setTaskModalOpen(false);
+
     const { currency, project, taskName, user } = data;
     const currencyValue = typeof currency === 'string' ? parseInt(currency, 10) : currency;
 
@@ -326,7 +329,6 @@ const Dashboard: React.FC = () => {
 
     // If no error, update tasks state
     setTasks((prevTasks) => [...prevTasks, response.data!]);
-    setTaskModalOpen(false);
 
     // Handles scrolling to new user.
     if (taskDashboardGridApi.current) {
@@ -340,6 +342,8 @@ const Dashboard: React.FC = () => {
   };
 
   const handleAddProject = async (newProjectName: string) => {
+    setProjectModalOpen(false);
+
     const newProject: ProjectsData = {
       id: uuidv4(),
       projectName: newProjectName
@@ -356,7 +360,6 @@ const Dashboard: React.FC = () => {
 
     // Update projects state with the new project.
     setProjects((prevProjects) => [...prevProjects, response.data!]);
-    setProjectModalOpen(false);
 
     setSavingProject(false);
   };
@@ -402,13 +405,13 @@ const Dashboard: React.FC = () => {
     return (
       <Modal
         title={title}
-        onClose={() => setModalOpen(false)}
+        onClose={() => setUserModalOpen(false)}
         content={
           <Suspense fallback={<Spinner />}>
             <UserForm
               defaultValues={defaultValues}
               isEditUser={isEditUser}
-              onClose={() => setModalOpen(false)}
+              onClose={() => setUserModalOpen(false)}
               onSubmit={handleOnSubmit}
               buttonLabel={buttonLabel}
               users={users}
@@ -496,7 +499,7 @@ const Dashboard: React.FC = () => {
           content='Team Progress App'
         />
       </div>
-      {isModalOpen && renderUserForm()}
+      {isUserModalOpen && renderUserForm()}
       {isProjectModalOpen && renderProjectForm()}
       {isTaskModalOpen && renderTaskForm()}
     </TasksContext.Provider>

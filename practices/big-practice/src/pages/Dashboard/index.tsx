@@ -137,7 +137,6 @@ const Dashboard: React.FC = () => {
 
     // Wait for all updates to complete.
     const results = await Promise.all(updates);
-    console.log('results:', results)
 
     // Only update the data if all updates succeed
     results.forEach((result, index) => {

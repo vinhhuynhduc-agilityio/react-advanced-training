@@ -125,7 +125,7 @@ const UserForm: React.FC<UserFormProps> = ({
             <Avatar
               src={avatarUrl}
               alt="Avatar Preview"
-              size="w-24 h-24"
+              size="large"
             />
             <input
               type="file"

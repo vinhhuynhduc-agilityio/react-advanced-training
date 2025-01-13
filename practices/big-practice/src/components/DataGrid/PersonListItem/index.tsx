@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { ICellRendererParams } from "ag-grid-community";
 
 // types
@@ -7,8 +6,7 @@ import { UserData } from "@/types";
 // component
 import { Avatar } from "@/components";
 
-
-export const PersonListItem = memo((params: ICellRendererParams<UserData>) => {
+export const PersonListItem = (params: ICellRendererParams<UserData>) => {
   if (!params.data) {
     return null;
   }
@@ -23,7 +21,7 @@ export const PersonListItem = memo((params: ICellRendererParams<UserData>) => {
       <Avatar
         src={avatarUrl}
         alt="User Avatar"
-        size="w-14 h-14"
+        size="medium"
       />
       <div className="flex flex-col ml-4">
         <div className="text-base font-medium text-[#313131]">{fullName}</div>
@@ -31,4 +29,4 @@ export const PersonListItem = memo((params: ICellRendererParams<UserData>) => {
       </div>
     </div>
   );
-});
+};

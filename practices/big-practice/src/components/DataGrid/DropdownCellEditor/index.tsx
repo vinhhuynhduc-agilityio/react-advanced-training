@@ -123,7 +123,7 @@ export const DropdownCellEditor = <T, D>(props: CustomCellEditorParams<T, D>) =>
               <Avatar
                 src={avatarUrl}
                 alt={`Avatar for ${optionValue}`}
-                size="w-8 h-8"
+                size="small"
                 ariaLabel={`Avatar for ${optionValue}`}
               />
             )}

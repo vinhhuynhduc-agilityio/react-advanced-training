@@ -30,3 +30,4 @@ coverage/
 .env.local
 .env.production
 storybook-static/
+index.html

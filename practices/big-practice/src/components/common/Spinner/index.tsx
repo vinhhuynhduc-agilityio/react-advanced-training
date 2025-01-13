@@ -1,20 +1,14 @@
 interface SpinnerProps {
-  borderColor?: string;
-}
+  borderColor?: 'primary' | 'secondary';
+};
 
 export const Spinner: React.FC<SpinnerProps> = ({
-  borderColor = "border-t-blue-500",
+  borderColor = 'primary',
 }) => {
-  const validBorderColors = [
-    "border-t-blue-500",
-    "border-t-red-500",
-    "border-t-green-500",
-    "border-t-yellow-500",
-  ];
-
-  const spinnerBorderClass = validBorderColors.includes(borderColor)
-    ? borderColor
-    : "border-t-blue-500";
+  const spinnerBorderClass =
+    borderColor === 'primary'
+      ? 'border-t-blue-500'
+      : 'border-t-red-500';
 
   return (
     <div className="flex items-center justify-center w-full h-full">

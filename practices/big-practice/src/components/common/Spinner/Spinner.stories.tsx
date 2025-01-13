@@ -16,9 +16,9 @@ const meta: Meta<typeof Spinner> = {
   tags: ['autodocs'],
   argTypes: {
     borderColor: {
-      description: 'Sets the color of the top border of the spinner. Default is blue (`border-t-blue-500`).',
+      description: 'Sets the color of the top border of the spinner. Options are `primary` (blue) and `secondary` (red).',
       control: 'text',
-      defaultValue: 'border-t-blue-500',
+      defaultValue: 'primary',
     },
   },
 };
@@ -27,14 +27,14 @@ export default meta;
 
 type Story = StoryObj<typeof Spinner>;
 
-export const Default: Story = {
+export const Primary: Story = {
   args: {
-    borderColor: 'border-t-blue-500',
+    borderColor: 'primary',
   },
 };
 
-export const RedBorder: Story = {
+export const Secondary: Story = {
   args: {
-    borderColor: 'border-t-red-500',
+    borderColor: 'secondary',
   },
 };

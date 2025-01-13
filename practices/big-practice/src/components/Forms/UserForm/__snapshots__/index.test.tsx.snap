@@ -4,6 +4,7 @@ exports[`UserForm matches snapshot for default state 1`] = `
 <div>
   <form
     class="space-y-6"
+    data-testid="user-form"
     id="UserForm"
   >
     <div>

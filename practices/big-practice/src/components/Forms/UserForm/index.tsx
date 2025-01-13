@@ -8,14 +8,14 @@ import { UserData, UserFormData } from '@/types';
 import { defaultAvatarUrl } from '@/constant';
 
 // hooks
-import { useEmailValidation, useUserForm } from '@/hooks';
+import { useUserForm } from '@/hooks';
 
 // components
 import { Button } from '@/components/common';
 import { Avatar, TextField } from '@/components';
 
 // helpers
-import { readFileAsBase64 } from '@/helpers';
+import { readFileAsBase64, emailValidation } from './helpers';
 
 interface UserFormProps {
   defaultValues: UserData;
@@ -35,7 +35,7 @@ const UserForm: React.FC<UserFormProps> = ({
   users
 }) => {
   const [avatarUrl, setAvatarPreview] = useState<string>(defaultAvatarUrl);
-  const { isEmailDuplicate } = useEmailValidation(defaultValues?.email);
+  const { isEmailDuplicate } = emailValidation(defaultValues?.email);
   const { register, handleSubmit, errors } = useUserForm(defaultValues);
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const UserForm: React.FC<UserFormProps> = ({
       id='UserForm'
       onSubmit={handleSubmit(onSubmitWithPreview)}
       className='space-y-6'
+      data-testid='user-form'
     >
 
       {/* Full Name */}

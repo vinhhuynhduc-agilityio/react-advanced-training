@@ -1,7 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 
 // helpers
-import { formatDropdownOptions, isTaskDuplicate } from '@/helpers';
+import { formatDropdownOptions, isTaskDuplicate } from './helpers';
 
 // types
 import { ProjectsData, TaskData, TaskFormValues, UserData } from '@/types';
@@ -41,7 +41,11 @@ const TaskForm: React.FC<TaskFormProps> = ({
   const userOptions = formatDropdownOptions(users, 'fullName');
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
+    <form
+      onSubmit={handleSubmit(onSubmitForm)}
+      className="space-y-4"
+      data-testid="task-form"
+    >
       {/* Task Name */}
       <TextField
         name='taskName'

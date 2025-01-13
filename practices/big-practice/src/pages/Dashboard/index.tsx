@@ -13,16 +13,15 @@ import { GridApi } from 'ag-grid-community';
 
 // components
 import {
-  Modal,
   Footer,
   Header,
   TaskTable,
   ErrorBoundary,
   UsersTable,
 } from '@/components';
-const UserForm = lazy(() => import('@/components/Forms/UserForm'));
-const TaskForm = lazy(() => import('@/components/Forms/TaskForm'));
-const ProjectForm = lazy(() => import('@/components/Forms/ProjectForm'));
+const UserFormModal = lazy(() => import('@/components/FormModals/UserFormModal'));
+const ProjectFormModal = lazy(() => import('@/components/FormModals/ProjectFormModal'));
+const TaskFormModal = lazy(() => import('@/components/FormModals/TaskFormModal'));
 import { Spinner } from '@/components/common';
 import {
   ChartIndividualEmployeeProgress,
@@ -363,64 +362,6 @@ const Dashboard: React.FC = () => {
     setSavingProject(false);
   };
 
-  const renderProjectForm = () => (
-    <Modal
-      title='Add Project'
-      onClose={() => setProjectModalOpen(false)}
-      content={
-        <Suspense fallback={<Spinner />}>
-          <ProjectForm
-            onClose={() => setProjectModalOpen(false)}
-            onSubmit={handleAddProject}
-            projects={projects}
-          />
-        </Suspense>
-      }
-    />
-  );
-
-  const renderTaskForm = () => (
-    <Modal
-      title='Add Task'
-      onClose={() => setTaskModalOpen(false)}
-      content={
-        <Suspense fallback={<Spinner />}>
-          <TaskForm
-            onClose={() => setTaskModalOpen(false)}
-            onSubmit={handleAddNewTask}
-            users={users}
-            projects={projects}
-            tasks={tasks}
-          />
-        </Suspense>
-      }
-    />
-  );
-
-  const renderUserForm = () => {
-    const title = isEditUser ? 'Edit User' : 'Add User';
-    const buttonLabel = isEditUser ? 'Save' : 'Add';
-
-    return (
-      <Modal
-        title={title}
-        onClose={() => setUserModalOpen(false)}
-        content={
-          <Suspense fallback={<Spinner />}>
-            <UserForm
-              defaultValues={defaultValues}
-              isEditUser={isEditUser}
-              onClose={() => setUserModalOpen(false)}
-              onSubmit={handleOnSubmit}
-              buttonLabel={buttonLabel}
-              users={users}
-            />
-          </Suspense>
-        }
-      />
-    );
-  };
-
   const contextValue = useMemo(() => ({
     tasks,
     setTasks,
@@ -498,9 +439,37 @@ const Dashboard: React.FC = () => {
           content='Team Progress App'
         />
       </div>
-      {isUserModalOpen && renderUserForm()}
-      {isProjectModalOpen && renderProjectForm()}
-      {isTaskModalOpen && renderTaskForm()}
+      {isUserModalOpen && (
+        <Suspense fallback={<Spinner />}>
+          <UserFormModal
+            isEditUser={isEditUser}
+            defaultValues={defaultValues}
+            onClose={() => setUserModalOpen(false)}
+            onSubmit={handleOnSubmit}
+            users={users}
+          />
+        </Suspense>
+      )}
+      {isProjectModalOpen && (
+        <Suspense fallback={<Spinner />}>
+          <ProjectFormModal
+            onClose={() => setProjectModalOpen(false)}
+            onSubmit={handleAddProject}
+            projects={projects}
+          />
+        </Suspense>
+      )}
+      {isTaskModalOpen && (
+        <Suspense fallback={<Spinner />}>
+          <TaskFormModal
+            onClose={() => setTaskModalOpen(false)}
+            onSubmit={handleAddNewTask}
+            users={users}
+            projects={projects}
+            tasks={tasks}
+          />
+        </Suspense>
+      )}
     </TasksContext.Provider>
   );
 };

@@ -1,4 +1,4 @@
-import { isProjectDuplicate } from "@/helpers";
+import { isProjectDuplicate } from "./helpers";
 import { mockProjects } from "@/mocks";
 
 describe("isProjectDuplicate", () => {

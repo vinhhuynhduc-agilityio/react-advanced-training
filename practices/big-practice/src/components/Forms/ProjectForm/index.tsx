@@ -5,7 +5,7 @@ import { Button } from '@/components/common';
 import { TextField } from '@/components';
 
 // helpers
-import { isProjectDuplicate } from '@/helpers';
+import { isProjectDuplicate } from './helpers';
 
 // types
 import { ProjectsData } from '@/types';
@@ -37,7 +37,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
+    <form
+      onSubmit={handleSubmit(onSubmitForm)}
+      className="space-y-4"
+      data-testid="project-form"
+    >
 
       {/* Body */}
       <TextField

@@ -4,6 +4,7 @@ exports[`TaskForm matches snapshot for default state 1`] = `
 <div>
   <form
     class="space-y-4"
+    data-testid="task-form"
   >
     <div>
       <div

@@ -1,8 +1,7 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { useForm } from "react-hook-form";
 import { TextField } from "../TextField";
-import { isProjectDuplicate } from "@/helpers";
+import { isProjectDuplicate } from "@/components/Forms/ProjectForm/helpers";
 
 jest.mock("@/helpers", () => ({
   isProjectDuplicate: jest.fn(),

@@ -30,9 +30,7 @@ import { updateTask } from '@/services';
 // helpers
 import {
   getDateColumnSortComparator,
-  getUpdatedRow
-} from '@/helpers';
-import {
+  getUpdatedRow,
   handleProjectChange,
   handleStatusChange,
   handleTaskNameChange,

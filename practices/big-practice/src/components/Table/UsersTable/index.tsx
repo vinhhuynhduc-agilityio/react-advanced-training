@@ -115,7 +115,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
       getRowId={getRowId}
       onRowDoubleClicked={onRowDoubleClicked}
       loadingOverlayComponent={Spinner}
-      loading={isLoading || isSavingUser}
+      loading={isLoading}
     />
   );
 };

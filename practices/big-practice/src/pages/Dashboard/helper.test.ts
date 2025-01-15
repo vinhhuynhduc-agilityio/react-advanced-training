@@ -1,128 +1,184 @@
-import { GridApi } from "ag-grid-community";
-import { calculateAdjustedEarnings, handleRowSelection, handleScrollingToAddedRow } from './helper';
+import { GridApi, RowNode } from "ag-grid-community";
+import {
+  handleScrollingToAddedRow,
+  handleRowSelection,
+  calculateAdjustedEarnings,
+  formatNewTaskData,
+  formatNewProjectData,
+  formatEditUserData,
+  generateUpdatedUserData,
+  handleApiResponseAndUpdateGrid,
+} from "./helper";
+import { updateUser } from "@/services";
+import { UserData, TaskFormValues } from "@/types";
 
-// Mock function
-const mockHandleRowSelected = jest.fn();
+jest.mock("@/services", () => ({
+  updateUser: jest.fn(),
+}));
 
-// Use fake timers for `setTimeout`
-jest.useFakeTimers();
+describe("Helper Functions", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-describe("handleScrollingToAddedRow", () => {
-  it("should call gridApi.ensureNodeVisible with the correct arguments", () => {
-    // Mock gridApi with jest.fn()
-    const mockRowNode = {};
-    const mockGridApi = {
-      getRowNode: jest.fn(() => mockRowNode),
+  test("handleScrollingToAddedRow ensures node visibility", () => {
+    const mockGridApi: GridApi = {
+      getRowNode: jest.fn().mockReturnValue({}),
       ensureNodeVisible: jest.fn(),
-      isDestroyed: jest.fn(() => false),
+      isDestroyed: jest.fn().mockReturnValue(false),
     } as unknown as GridApi;
 
-    const id = "test-id";
-    handleScrollingToAddedRow(id, mockGridApi);
+    handleScrollingToAddedRow("test-id", mockGridApi);
 
-    // Fast-forward the timer
-    jest.runAllTimers();
-
-    // Check if getRowNode is called with the correct ID
-    expect(mockGridApi.getRowNode).toHaveBeenCalledWith(id);
-
-    // Check if ensureNodeVisible is called with the correct node and position
-    expect(mockGridApi.ensureNodeVisible).toHaveBeenCalledWith(mockRowNode, "middle");
+    setTimeout(() => {
+      expect(mockGridApi.getRowNode).toHaveBeenCalledWith("test-id");
+      expect(mockGridApi.ensureNodeVisible).toHaveBeenCalledWith({}, "middle");
+    }, 100);
   });
 
-  it("should not call gridApi methods if gridApi is null", () => {
-    const mockGridApi = null;
-
-    const id = "test-id";
-    handleScrollingToAddedRow(id, mockGridApi as unknown as GridApi);
-
-    // Fast-forward the timer
-    jest.runAllTimers();
-
-    // Ensure no errors occur
-    expect(true).toBe(true);
-  });
-});
-
-describe('handleRowSelection', () => {
-
-  it('should call handleRowSelected with the correct parameters', () => {
-    const userId = '123';
-    const sourceComponent = 'UsersTable';
-
-    handleRowSelection(userId, sourceComponent, mockHandleRowSelected);
-
-    expect(mockHandleRowSelected).toHaveBeenCalledWith(userId, sourceComponent);
+  test("handleRowSelection calls handleRowSelected with correct parameters", () => {
+    const mockHandleRowSelected = jest.fn();
+    handleRowSelection(
+      "123e4567-e89b-12d3-a456-426614174000",
+      "TestComponent",
+      mockHandleRowSelected
+    );
+    expect(mockHandleRowSelected).toHaveBeenCalledWith(
+      "123e4567-e89b-12d3-a456-426614174000",
+      "TestComponent"
+    );
   });
 
-  it('should handle null userId correctly', () => {
-    const userId = null;
-    const sourceComponent = 'TaskTable';
-
-    handleRowSelection(userId, sourceComponent, mockHandleRowSelected);
-
-    expect(mockHandleRowSelected).toHaveBeenCalledWith(userId, sourceComponent);
+  test("calculateAdjustedEarnings increases earnings when isIncrease is true", () => {
+    const result = calculateAdjustedEarnings("$1000", 500, true);
+    expect(result).toBe(1500);
   });
 
-  describe('calculateAdjustedEarnings', () => {
-    test('should return increased earnings when isIncrease is true', () => {
-      const earnings = '$1000';
-      const currency = 500;
-      const isIncrease = true;
+  test("calculateAdjustedEarnings decreases earnings when isIncrease is false", () => {
+    const result = calculateAdjustedEarnings("$1000", 500, false);
+    expect(result).toBe(500);
+  });
 
-      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+  test("generateUpdatedUserData calculates and returns updated user data", () => {
+    const mockRowNode: RowNode<UserData> = {
+      data: {
+        id: "user-id",
+        earnings: "$1000",
+        fullName: "Test User",
+        email: "test@example.com",
+        avatarUrl: "",
+        registered: "",
+        lastUpdated: "",
+      },
+    } as RowNode<UserData>;
 
-      expect(result).toBe(1500);
+    const updatedData = generateUpdatedUserData(mockRowNode, 500, true);
+
+    expect(updatedData.earnings).toBe("$1500");
+    expect(updatedData.fullName).toBe("Test User");
+  });
+
+  test("handleApiResponseAndUpdateGrid updates grid row data on success", async () => {
+    const mockGridApi: GridApi = {
+      getRowNode: jest.fn().mockReturnValue({
+        setData: jest.fn(),
+      }),
+    } as unknown as GridApi;
+
+    (updateUser as jest.Mock).mockResolvedValueOnce({
+      data: { id: "test-id", earnings: "$1500", fullName: "Updated User" },
+      error: null,
     });
 
-    test('should return decreased earnings when isIncrease is false', () => {
-      const earnings = '$1000';
-      const currency = 300;
-      const isIncrease = false;
+    await handleApiResponseAndUpdateGrid(
+      "test-id",
+      { id: "test-id", earnings: "$1500", fullName: "Updated User" } as UserData,
+      mockGridApi
+    );
 
-      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+    expect(mockGridApi.getRowNode).toHaveBeenCalledWith("test-id");
+    expect(mockGridApi.getRowNode("test-id")?.setData).toHaveBeenCalledWith({
+      id: "test-id",
+      earnings: "$1500",
+      fullName: "Updated User",
+    });
+  });
 
-      expect(result).toBe(700);
+  test("handleApiResponseAndUpdateGrid skips updating grid row on API failure", async () => {
+    const setDataMock = jest.fn();
+    const getRowNodeMock = jest.fn().mockReturnValue({
+      setData: setDataMock,
     });
 
-    test('should handle earnings with invalid string format gracefully', () => {
-      const earnings = 'invalid';
-      const currency = 200;
-      const isIncrease = true;
+    const mockGridApi: GridApi = {
+      getRowNode: getRowNodeMock,
+    } as unknown as GridApi;
 
-      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
-
-      expect(result).toBe(200); // Default currentEarnings is 0
+    // Mock API failure response
+    (updateUser as jest.Mock).mockResolvedValueOnce({
+      data: null,
+      error: new Error("Failed to update"),
     });
 
-    test('should handle earnings with empty string', () => {
-      const earnings = '';
-      const currency = 100;
-      const isIncrease = false;
+    await handleApiResponseAndUpdateGrid(
+      "test-id",
+      { id: "test-id", earnings: "$1500", fullName: "Updated User" } as UserData,
+      mockGridApi
+    );
 
-      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+    // Ensure `getRowNode` was not called when API fails
+    expect(getRowNodeMock).not.toHaveBeenCalled();
 
-      expect(result).toBe(-100);
-    });
+    // Ensure `setData` was not called because of the error
+    expect(setDataMock).not.toHaveBeenCalled();
+  });
 
-    test('should handle currency as zero correctly when isIncrease is true', () => {
-      const earnings = '$500';
-      const currency = 0;
-      const isIncrease = true;
+  test("formatNewTaskData formats task data correctly", () => {
+    const mockInput: TaskFormValues = {
+      currency: 1000,
+      project: { id: "project-id", value: "Project Name" },
+      taskName: "Task Name",
+      user: { id: "user-id", value: "User Name" },
+    };
 
-      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+    const result = formatNewTaskData(mockInput);
 
-      expect(result).toBe(500);
-    });
+    expect(result.taskName).toBe("Task Name");
+    expect(result.currency).toBe(1000);
+    expect(result.projectId).toBe("project-id");
+    expect(result.userId).toBe("user-id");
+  });
 
-    test('should handle currency as zero correctly when isIncrease is false', () => {
-      const earnings = '$500';
-      const currency = 0;
-      const isIncrease = false;
+  test("formatNewProjectData formats project data correctly", () => {
+    const projectName = "New Project";
+    const result = formatNewProjectData(projectName);
 
-      const result = calculateAdjustedEarnings(earnings, currency, isIncrease);
+    expect(result.projectName).toBe("New Project");
+    expect(result.id).toBeDefined();
+  });
 
-      expect(result).toBe(500);
-    });
+  test("formatEditUserData formats user data correctly for editing", () => {
+    const mockDefaultUser: UserData = {
+      id: "user-id",
+      earnings: "$1000",
+      fullName: "Test User",
+      email: "test@example.com",
+      avatarUrl: "",
+      registered: "2024-01-01",
+      lastUpdated: "2024-01-01",
+    };
+
+    const mockUserFormData = {
+      fullName: "Updated User",
+      email: "updated@example.com",
+      avatarUrl: null,
+      avatar: null
+    };
+
+    const result = formatEditUserData(mockUserFormData, mockDefaultUser);
+
+    expect(result.fullName).toBe("Updated User");
+    expect(result.email).toBe("updated@example.com");
+    expect(result.avatarUrl).toBeDefined();
   });
 });

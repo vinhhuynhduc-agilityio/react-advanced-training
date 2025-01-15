@@ -6,10 +6,9 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 // ag-grid
-import { GridApi } from 'ag-grid-community';
+import { GridApi, RowNode } from 'ag-grid-community';
 
 // components
 import {
@@ -32,8 +31,6 @@ import {
 // types
 import {
   UserFormData,
-  ProjectsData,
-  TaskData,
   UserData,
   TaskFormValues
 } from '@/types';
@@ -43,20 +40,21 @@ import { createProject, createTask, createUser, updateUser } from '@/services';
 
 // constant
 import {
-  defaultAvatarUrl,
   defaultUserFormValues
 } from '@/constant';
 
-// helpers
 import {
-  formatStartDate,
-  formatRegisteredDate,
-} from '@/helpers';
-import {
-  calculateAdjustedEarnings,
+  formatEditUserData,
+  formatNewProjectData,
+  formatNewTaskData,
+  formatNewUserData,
+  generateUpdatedUserData,
+  handleApiResponseAndUpdateGrid,
   handleRowSelection,
-  handleScrollingToAddedRow
-} from '@/pages/Dashboard/helper';
+  handleScrollingToAddedRow,
+  prepareUpdatedUserData,
+  updateGridRowData
+} from './helper';
 
 // context
 import { TasksContext } from '@/context';
@@ -115,40 +113,18 @@ const Dashboard: React.FC = () => {
     const updates: Promise<{ data: UserData | null; error: Error | null }>[] = [];
 
     [oldUserId, newUserId].forEach((userId) => {
-      const rowNode = userListGridApi.current!.getRowNode(userId);
+      const update = prepareUpdatedUserData(userId, oldUserId, currency, userListGridApi.current!);
 
-      if (rowNode) {
-        const adjustedEarnings = calculateAdjustedEarnings(
-          rowNode.data.earnings,
-          currency,
-          userId !== oldUserId
-        );
-
-        const updatedData: UserData = {
-          ...rowNode.data,
-          earnings: `$${adjustedEarnings}`,
-        };
-
-        // Push the updateUser call to the updates array
-        updates.push(updateUser(userId, updatedData));
-      }
+      if (update) updates.push(update);
     });
 
     // Wait for all updates to complete.
     const results = await Promise.all(updates);
 
-    // Only update the data if all updates succeed
+    // Update grid rows based on the results
     results.forEach((result, index) => {
-      if (result.error) {
-        setSavingUser(false); // Stop saving and return early if there’s any error
-        return;
-      }
-
       const userId = [oldUserId, newUserId][index];
-      const rowNode = userListGridApi.current!.getRowNode(userId);
-      if (rowNode && result.data) {
-        rowNode.setData(result.data);
-      }
+      updateGridRowData(userId, result, userListGridApi.current!);
     });
 
     setSavingUser(false);
@@ -161,34 +137,18 @@ const Dashboard: React.FC = () => {
   ) => {
     setSavingUser(true);
 
-    // Retrieve `rowNode` by `userId` to update the specific row
-    const rowNode = userListGridApi.current && userListGridApi.current.getRowNode(userId);
+    const gridApi = userListGridApi.current;
+    const rowNode = gridApi?.getRowNode(userId) as RowNode<UserData>;
 
     if (rowNode) {
-      const adjustedEarnings = calculateAdjustedEarnings(
-        rowNode.data.earnings,
-        currency,
-        status
-      );
+      const updatedData = generateUpdatedUserData(rowNode, currency, status);
 
-      const updatedData: UserData = {
-        ...rowNode.data,
-        earnings: `$${adjustedEarnings}`,
-      };
-
-      // Call updateUser API
-      const response = await updateUser(userId, updatedData);
-
-      if (response.error) {
-        setSavingUser(false);
-        return;
+      if (updatedData && gridApi) {
+        await handleApiResponseAndUpdateGrid(userId, updatedData, gridApi);
       }
-
-      // Update row data only if the API call is successful
-      rowNode.setData(response.data);
-
-      setSavingUser(false);
     }
+
+    setSavingUser(false);
   };
 
   const registerGridApi = (api: GridApi) => {
@@ -222,21 +182,9 @@ const Dashboard: React.FC = () => {
 
   const handleAddNewUser = async (data: UserFormData) => {
     setUserModalOpen(false);
-
-    const avatarUrl = data.avatarUrl ?? defaultAvatarUrl;
-    const registeredDate = formatRegisteredDate();
-
     setSavingUser(true);
 
-    const newUser: UserData = {
-      id: uuidv4(),
-      fullName: data.fullName,
-      earnings: '$0',
-      email: data.email,
-      avatarUrl: avatarUrl,
-      registered: registeredDate,
-      lastUpdated: registeredDate,
-    };
+    const newUser = formatNewUserData(data);
 
     // Call createUser API
     const response = await createUser(newUser);
@@ -267,15 +215,7 @@ const Dashboard: React.FC = () => {
 
     setSavingUser(true);
 
-    const editUser: UserData = {
-      id: defaultValues.id,
-      fullName: data.fullName,
-      earnings: defaultValues.earnings,
-      email: data.email,
-      avatarUrl: data.avatarUrl || defaultAvatarUrl,
-      registered: defaultValues.registered,
-      lastUpdated: formatRegisteredDate(),
-    };
+    const editUser = formatEditUserData(data, defaultValues);
 
     // Call updateUser API
     const response = await updateUser(defaultValues.id, editUser);
@@ -288,9 +228,7 @@ const Dashboard: React.FC = () => {
     // Update the users state with the updated user
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
-        user.id === defaultValues.id
-          ? response.data!
-          : user
+        user.id === defaultValues.id ? response.data! : user
       )
     );
 
@@ -299,25 +237,9 @@ const Dashboard: React.FC = () => {
 
   const handleAddNewTask = async (data: TaskFormValues) => {
     setTaskModalOpen(false);
-
-    const { currency, project, taskName, user } = data;
-    const currencyValue = typeof currency === 'string' ? parseInt(currency, 10) : currency;
-
     setSavingTask(true);
 
-    const newTask: TaskData = {
-      id: uuidv4(),
-      userId: user.id,
-      projectId: project.id,
-      taskName: taskName,
-      startDate: formatStartDate(new Date()),
-      completedDate: 'incomplete',
-      currency: currencyValue,
-      status: false,
-      projectName: project.value,
-      fullName: user.value,
-    };
-
+    const newTask = formatNewTaskData(data);
     const response = await createTask(newTask);
 
     if (response.error) {
@@ -325,15 +247,14 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    // If no error, update tasks state
+    // Update tasks state and scroll to the new task row
     setTasks((prevTasks) => [...prevTasks, response.data!]);
 
-    // Handles scrolling to new user.
     if (taskDashboardGridApi.current) {
       handleScrollingToAddedRow(newTask.id, taskDashboardGridApi.current);
     }
 
-    // Handle selected for new task
+    // Handle selection for the new task
     handleTaskRowSelected(newTask.userId);
 
     setSavingTask(false);
@@ -341,14 +262,9 @@ const Dashboard: React.FC = () => {
 
   const handleAddProject = async (newProjectName: string) => {
     setProjectModalOpen(false);
-
-    const newProject: ProjectsData = {
-      id: uuidv4(),
-      projectName: newProjectName
-    };
-
     setSavingProject(true);
 
+    const newProject = formatNewProjectData(newProjectName);
     const response = await createProject(newProject);
 
     if (response.error) {
@@ -356,7 +272,7 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    // Update projects state with the new project.
+    // Update projects state with the new project
     setProjects((prevProjects) => [...prevProjects, response.data!]);
 
     setSavingProject(false);

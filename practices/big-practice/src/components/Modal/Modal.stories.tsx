@@ -1,7 +1,37 @@
+import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Modal } from '.';
 
-// Metadata for story
+// Wrapper component for Modal
+const ModalWrapper: React.FC<{
+  title: string;
+  content: React.ReactNode;
+}> = ({ title, content }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="flex items-center justify-center h-full">
+      {/* Button to open modal */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Open Modal
+      </button>
+
+      {/* Render Modal if open */}
+      {isOpen && (
+        <Modal
+          title={title}
+          content={content}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
+    </div>
+  );
+};
+
+// Metadata for Storybook
 const meta: Meta<typeof Modal> = {
   title: 'Components/Modal',
   component: Modal,
@@ -16,17 +46,22 @@ const meta: Meta<typeof Modal> = {
   },
   tags: ['autodocs'],
   decorators: [
-    (Story: React.FC) => (
+    (Story) => (
       <div
         style={{
           position: 'relative',
           width: '710px',
-          height: '440px',
+          height: '220px',
+          border: '1px solid #ddd',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
         }}
       >
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     title: {
@@ -48,17 +83,16 @@ export default meta;
 
 type Story = StoryObj<typeof Modal>;
 
-// Default story
 export const Default: Story = {
+  render: (args) => <ModalWrapper {...args} />,
   args: {
     title: 'Default Modal Title',
     content: <p style={{ color: 'black' }}>This is the modal body content.</p>,
-    onClose: () => console.log('Modal closed'),
   },
 };
 
-// Story with custom content
 export const CustomContent: Story = {
+  render: (args) => <ModalWrapper {...args} />,
   args: {
     title: 'Custom Content Modal',
     content: (
@@ -67,32 +101,5 @@ export const CustomContent: Story = {
         <p>Custom modal content goes here.</p>
       </div>
     ),
-    onClose: () => console.log('Modal closed'),
-  },
-};
-
-// Story with longer content
-export const LongContent: Story = {
-  args: {
-    title: 'Modal with Long Content',
-    content: (
-      <div style={{ color: 'black' }}>
-        <h3>Long Content Example</h3>
-        <p>
-          This is an example of a modal with longer content. Lorem ipsum dolor
-          sit amet, consectetur adipiscing elit. Praesent euismod nisl non
-          libero euismod, non cursus ligula fringilla. Ut sit amet felis vel
-          sapien dictum volutpat. Pellentesque habitant morbi tristique
-          senectus et netus et malesuada fames ac turpis egestas.
-        </p>
-        <p>
-          Quisque nec nisl et orci pharetra feugiat non in leo. Aliquam erat
-          volutpat. Nullam eget hendrerit est. Maecenas ullamcorper, ligula
-          vitae accumsan elementum, risus justo egestas orci, id mollis quam
-          ligula nec neque.
-        </p>
-      </div>
-    ),
-    onClose: () => console.log('Modal closed'),
   },
 };
